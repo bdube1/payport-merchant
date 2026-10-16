@@ -164,6 +164,25 @@ export const platformApi = {
     addDestination: (body) => api.post('/settlement-destinations', body),
 };
 
+// Phase 8: agent network (cash-in / cash-out) and POS terminals. Dashboard only; switched on by PayPort.
+export const agentApi = {
+    me: () => api.get('/agent'),
+    apply: (name, phone, location) => api.post('/agent/apply', { name, phone, location }),
+    deposits: () => api.get('/agent/float-deposits'),
+    notifyDeposit: (amountMinor, currency, bankReference) => api.post('/agent/float-deposits', { amountMinor, currency, bankReference }),
+    cashIn: (customer, currency, amountMinor, clientRef) => api.post('/agent/cash-in', { customer, currency, amountMinor, clientRef }),
+    cashOut: (customerPhone, code) => api.post('/agent/cash-out', { customerPhone, code }),
+    transactions: () => api.get('/agent/transactions'),
+    commissions: () => api.get('/agent/commissions'),
+};
+
+export const posApi = {
+    terminals: () => api.get('/pos/terminals'),
+    register: (label) => api.post('/pos/terminals', { label }),
+    setStatus: (terminalId, active, reason) => api.post(`/pos/terminals/${encodeURIComponent(terminalId)}/status`, { active, reason }),
+    sales: () => api.get('/pos/sales'),
+};
+
 export const API_KEY_SCOPES = ['checkout:read', 'checkout:write', 'refunds:write', 'disputes:read', 'disputes:write',
     'payment_links:write', 'balances:read', 'payouts:read', 'webhooks:manage'];
 

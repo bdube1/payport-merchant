@@ -18,6 +18,36 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/agents",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/agents/float-deposits",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/agents/float-deposits",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/agents/float-deposits/{id}/decide",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/agents/{id}/decide",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/agents/{id}/status",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/channels",
    "access": null
   },
@@ -483,7 +513,17 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/ledger/accounts",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/ledger/balance",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/categories",
    "access": null
   },
   {
@@ -539,6 +579,11 @@
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/tax-rates/{id}/reject",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/trial-balance",
    "access": null
   },
   {
@@ -763,6 +808,16 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/pos/terminals",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/pos/terminals/{terminalId}/status",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/provider-health",
    "access": null
   },
@@ -784,6 +839,26 @@
   {
    "method": "GET",
    "path": "/api/v1/admin/provider-query/zimswitch",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-settlement-rules",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/provider-settlement-rules",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/provider-settlement-rules/{id}/decide",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/provider-settlement-rules/{id}/retire",
    "access": null
   },
   {
@@ -982,6 +1057,41 @@
    "access": null
   },
   {
+   "method": "GET",
+   "path": "/api/v1/admin/wallets",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/wallets/refunds/{reference}",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/wallets/totals",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/wallets/{ref}/statement",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/wallets/{ref}/status",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/wallets/{ref}/tier",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/whatsapp",
+   "access": null
+  },
+  {
    "method": "POST",
    "path": "/api/v1/assistant/chat",
    "access": null
@@ -1088,7 +1198,22 @@
   },
   {
    "method": "POST",
+   "path": "/api/v1/callbacks/airtel-money",
+   "access": null
+  },
+  {
+   "method": "POST",
    "path": "/api/v1/callbacks/ecocash",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/callbacks/mtn-momo",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/callbacks/mtn-momo",
    "access": null
   },
   {
@@ -1169,6 +1294,46 @@
   {
    "method": "POST",
    "path": "/api/v1/merchant-portal/track/{reference}/review-notes/{noteId}/resolve",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/agent",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/agent/apply",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/agent/cash-in",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/agent/cash-out",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/agent/commissions",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/agent/float-deposits",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/agent/float-deposits",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/agent/transactions",
    "access": null
   },
   {
@@ -1294,6 +1459,26 @@
   {
    "method": "GET",
    "path": "/api/v1/merchant/payouts",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/pos/sales",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/pos/terminals",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/pos/terminals",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/pos/terminals/{terminalId}/status",
    "access": null
   },
   {
@@ -1482,6 +1667,21 @@
    "access": null
   },
   {
+   "method": "POST",
+   "path": "/api/v1/pos/sales",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/pos/sales/{saleRef}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/pos/sales/{saleRef}/card",
+   "access": null
+  },
+  {
    "method": "GET",
    "path": "/api/v1/products",
    "access": null
@@ -1564,6 +1764,66 @@
   {
    "method": "GET",
    "path": "/api/v1/vendors/balance",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/wallet",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/wallet/cash-out-codes",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/cash-out-codes",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/fx/conversions",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/fx/quotes",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/open",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/pay",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/pay-checkout",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/transfers",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/wallet/{ref}/statement",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/whatsapp/webhook",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/whatsapp/webhook",
    "access": null
   },
   {

@@ -1,3 +1,5 @@
+import Agent from './pages/Agent';
+import Pos from './pages/Pos';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './lib/auth.jsx';
@@ -56,6 +58,8 @@ function AppRoutes() {
             <Route path="/payouts" element={<RequireAuth><Payouts /></RequireAuth>} />
             <Route path="/webhooks" element={<RequireAuth><Webhooks /></RequireAuth>} />
             <Route path="/team" element={<RequireAuth><Team /></RequireAuth>} />
+            <Route path="/agent" element={<RequireAuth><Agent /></RequireAuth>} />
+            <Route path="/pos" element={<RequireAuth><Pos /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );
