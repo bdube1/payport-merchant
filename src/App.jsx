@@ -12,9 +12,12 @@ import Queries from './pages/Queries.jsx';
 import Reports from './pages/Reports.jsx';
 import PaymentLinks from './pages/PaymentLinks.jsx';
 import Settlements from './pages/Settlements.jsx';
-import ApiKeys from './pages/ApiKeys.jsx';
 import Webhooks from './pages/Webhooks.jsx';
 import Team from './pages/Team.jsx';
+import Developers from './pages/Developers.jsx';
+import GoLive from './pages/GoLive.jsx';
+import Balances from './pages/Balances.jsx';
+import Payouts from './pages/Payouts.jsx';
 
 function RequireAuth({ children }) {
     const { user } = useAuth();
@@ -47,7 +50,10 @@ function AppRoutes() {
             <Route path="/reports" element={<RequireAuth><Reports /></RequireAuth>} />
             <Route path="/payment-links" element={<RequireAuth><PaymentLinks /></RequireAuth>} />
             <Route path="/settlements" element={<RequireAuth><Settlements /></RequireAuth>} />
-            <Route path="/api-keys" element={<RequireAuth><ApiKeys /></RequireAuth>} />
+            <Route path="/api-keys" element={<RequireAuth><Developers /></RequireAuth>} />
+            <Route path="/go-live" element={<RequireAuth><GoLive /></RequireAuth>} />
+            <Route path="/balances" element={<RequireAuth><Balances /></RequireAuth>} />
+            <Route path="/payouts" element={<RequireAuth><Payouts /></RequireAuth>} />
             <Route path="/webhooks" element={<RequireAuth><Webhooks /></RequireAuth>} />
             <Route path="/team" element={<RequireAuth><Team /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />

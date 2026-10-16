@@ -86,6 +86,10 @@ export const checkoutSessionsApi = {
 
 export const balanceApi = {
     get: () => api.get('/balance'),
+    // Four buckets per currency: pending (hold), available, in settlement, paid out.
+    balances: (mode = 'live') => api.get('/balances', { params: { mode } }),
+    statement: (currency, from, to, mode = 'live') => api.get('/statement', { params: { currency, from, to, mode } }),
+    payouts: () => api.get('/payouts'),
 };
 
 export const reportsApi = {
@@ -104,12 +108,19 @@ export const teamApi = {
 
 export const apiKeysApi = {
     list: () => api.get('/api-keys'),
+    create: (environment, label, scopes, expiresAt) => api.post('/api-keys', { environment, label, scopes, expiresAt: expiresAt || null }),
+    rotate: (id, overlapHours = 24) => api.post(`/api-keys/${id}/rotate`, null, { params: { overlapHours } }),
+    revoke: (id) => api.post(`/api-keys/${id}/revoke`),
 };
 
 export const webhooksApi = {
     list: () => api.get('/webhooks'),
     register: (url) => api.post('/webhooks', { url }),
     deliveries: (webhookId) => api.get(`/webhooks/${webhookId}/deliveries`),
+    test: (id) => api.post(`/webhooks/${id}/test`),
+    replay: (deliveryId) => api.post(`/webhooks/deliveries/${deliveryId}/replay`),
+    rotateSecret: (id) => api.post(`/webhooks/${id}/rotate-secret`),
+    disable: (id) => api.post(`/webhooks/${id}/disable`),
 };
 
 export const refundsApi = {
@@ -146,6 +157,15 @@ export const paymentLinksApi = {
 export const settlementsApi = {
     list: () => api.get('/settlements'),
 };
+
+export const platformApi = {
+    readiness: () => api.get('/readiness'),
+    destinations: () => api.get('/settlement-destinations'),
+    addDestination: (body) => api.post('/settlement-destinations', body),
+};
+
+export const API_KEY_SCOPES = ['checkout:read', 'checkout:write', 'refunds:write', 'disputes:read', 'disputes:write',
+    'payment_links:write', 'balances:read', 'payouts:read', 'webhooks:manage'];
 
 export const applicationApi = {
     getStatus: () => api.get('/application'),

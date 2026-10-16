@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion } from 'lucide-react';
+import { LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket } from 'lucide-react';
 import { useAuth } from '../lib/auth.jsx';
 
 // API Keys/Webhooks require OWNER or DEVELOPER (matches the backend's
@@ -10,7 +10,9 @@ const nav = [
     { to: '/transactions', icon: Receipt, label: 'Transactions', roles: null },
     { to: '/queries', icon: MessageCircleQuestion, label: 'Queries', roles: null },
     { to: '/payment-links', icon: Link2, label: 'Payment Links', roles: ['OWNER', 'DEVELOPER'] },
-    { to: '/settlements', icon: Landmark, label: 'Settlements', roles: null },
+    { to: '/balances', icon: Wallet, label: 'Balances', roles: null },
+    { to: '/payouts', icon: Landmark, label: 'Payouts', roles: null },
+    { to: '/go-live', icon: Rocket, label: 'Go-live', roles: ['OWNER', 'DEVELOPER'] },
     { to: '/reports', icon: PieChart, label: 'Reports', roles: null },
     { to: '/api-keys', icon: Key, label: 'API Keys', roles: ['OWNER', 'DEVELOPER'] },
     { to: '/webhooks', icon: Webhook, label: 'Webhooks', roles: ['OWNER', 'DEVELOPER'] },

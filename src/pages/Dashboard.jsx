@@ -22,7 +22,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         Promise.all([
-            balanceApi.get(),
+            balanceApi.balances('live'),
             checkoutSessionsApi.list(),
             reportsApi.trends(30),
         ]).then(([balRes, sessRes, trendsRes]) => {
@@ -37,7 +37,7 @@ export default function Dashboard() {
         }).finally(() => setLoading(false));
     }, []);
 
-    const currencies = balance?.currencies || {};
+    const currencies = Object.fromEntries((balance?.balances || []).map(b => [b.currency, b]));
     const hasAnyBalance = Object.keys(currencies).length > 0;
 
     return (
@@ -56,12 +56,13 @@ export default function Dashboard() {
                     Object.entries(currencies).map(([currency, t]) => (
                         <div key={currency} className="card" style={{ padding: 22 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-2)', fontSize: 12.5, fontWeight: 700, marginBottom: 10 }}>
-                                <Wallet size={14} /> {currency} — NET OWED
+                                <Wallet size={14} /> {currency} — AVAILABLE
                             </div>
-                            <div style={{ fontSize: 26, fontWeight: 800, marginBottom: 10 }}>{formatAmount(t.netCents, currency)}</div>
-                            <div style={{ display: 'flex', gap: 16, fontSize: 12, color: 'var(--text-2)' }}>
-                                <span>Gross: {formatAmount(t.grossCents, currency)}</span>
-                                <span>Commission: {formatAmount(t.commissionCents, currency)}</span>
+                            <div style={{ fontSize: 26, fontWeight: 800, marginBottom: 10 }}>{formatAmount(t.availableMinor, currency)}</div>
+                            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', fontSize: 12, color: 'var(--text-2)' }}>
+                                <span>On hold: {formatAmount(t.pendingMinor, currency)}</span>
+                                <span>In settlement: {formatAmount(t.inSettlementMinor, currency)}</span>
+                                <span>Paid out: {formatAmount(t.paidOutMinor, currency)}</span>
                             </div>
                         </div>
                     ))
@@ -75,8 +76,10 @@ export default function Dashboard() {
                 )}
             </div>
 
-            {balance?.note && (
-                <p style={{ fontSize: 11.5, color: 'var(--text-faint)', marginBottom: 28, lineHeight: 1.5 }}>{balance.note}</p>
+            {balance?.holdHours !== undefined && (
+                <p style={{ fontSize: 11.5, color: 'var(--text-faint)', marginBottom: 28, lineHeight: 1.5 }}>
+                    Payments are held for {balance.holdHours} hours before they become available. Details under Balances; payouts under Payouts.
+                </p>
             )}
 
             <div className="card" style={{ padding: '20px 22px', marginBottom: 20 }}>
