@@ -15,4 +15,6 @@ jobs:
           node-version: '20'
           cache: npm
       - run: npm ci
+      - name: API contract (every backend call matches a backend route)
+        run: npm test
       - run: npm run build

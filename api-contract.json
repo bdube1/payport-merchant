@@ -1,0 +1,1580 @@
+{
+ "generatedBy": "static-annotation-scan",
+ "routes": [
+  {
+   "method": "GET",
+   "path": "/",
+   "file": "HomeController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/account/change-password",
+   "file": "AccountController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/account/change-pin",
+   "file": "AccountController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/channels",
+   "file": "ChannelController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/channels/{code}",
+   "file": "ChannelController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance-authorities",
+   "file": "ComplianceAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance-authorities/requests",
+   "file": "ComplianceAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance-authorities/revoke",
+   "file": "ComplianceAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/alerts",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/audit",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/audit/verify",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/authorities",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/authority-requests/{approvalId}/decide",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/cases",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/cases",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/cases/{id}",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/cases/{id}/assign",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/cases/{id}/decide",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/cases/{id}/notes",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/cases/{id}/propose",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/parameter-changes/{approvalId}/decide",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/parameters",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/parameters/{key}/change-requests",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/report-templates",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/report-templates",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/report-templates/{id}/activate",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/reports",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/reports/ctr",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/reports/{id}",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/reports/{id}/approve",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "PATCH",
+   "path": "/api/v1/admin/compliance/reports/{id}/fields",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/reports/{id}/submitted",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/rule-changes",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/rule-changes/{approvalId}/decide",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/rules",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/rules",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/rules/{code}/change-requests",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/screening/check",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/screening/lists",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/screening/lists",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/screening/lists/UN-CONSOLIDATED/refresh",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/compliance/screening/lists/{code}/load",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/screening/runs",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/compliance/screening/status",
+   "file": "ComplianceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/config/payment-methods",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/config/payment-methods/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/config/prefixes",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/config/prefixes",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/admin/config/prefixes/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/config/prefixes/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/config/products",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/config/products",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/admin/config/products/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/config/products/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/config/products/{id}/currencies",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/config/products/{id}/currencies/{currency}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/consumers/dashboard",
+   "file": "AdminConsumerDashboardController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/customer-statement",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/dashboard/attention-queue",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/dashboard/kpis",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/dispute-timelines",
+   "file": "DisputeSlaController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/dispute-timelines/settings",
+   "file": "DisputeSlaController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/dispute-timelines/{id}/acknowledge",
+   "file": "DisputeSlaController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/dispute-timelines/{id}/updates",
+   "file": "DisputeSlaController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/disputes",
+   "file": "DisputeAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/disputes",
+   "file": "DisputeAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/disputes/{id}/resolve",
+   "file": "DisputeAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/iso20022/camt053",
+   "file": "BankMessageController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/iso20022/messages",
+   "file": "BankMessageController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/iso20022/pain002",
+   "file": "BankMessageController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/iso20022/schemas",
+   "file": "BankMessageController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/iso20022/statements",
+   "file": "BankMessageController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/iso20022/statements/{id}/entries",
+   "file": "BankMessageController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/recon/exceptions",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/recon/exceptions/{id}/resolve",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/recon/statements",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/recon/statements/{id}/run",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/settlement/batches",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/settlement/batches/{id}",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/settlement/batches/{id}/approve",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/settlement/batches/{id}/cancel",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/settlement/batches/{id}/instruct",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/finance/settlement/eligible",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/finance/settlement/payout-results",
+   "file": "FinanceOpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/float-thresholds",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/float-thresholds",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/fx/rates",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/fx/rates",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/fx/rates/{id}/decide",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/health-status",
+   "file": "ProviderHealthController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/health-status/{providerCode}",
+   "file": "ProviderHealthController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/integrations",
+   "file": "IntegrationAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/integrations/{code}",
+   "file": "IntegrationAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/integrations/{code}/resume",
+   "file": "IntegrationAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/integrations/{code}/suspend",
+   "file": "IntegrationAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/integrations/{code}/verifications",
+   "file": "IntegrationAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/balance",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/integrity",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/integrity/run",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/shadow/backfill",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/shadow/comparison",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/shadow/failures",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/shadow/failures/resolve",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/shadow/run",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/ledger/tax-rates",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/tax-rates",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/tax-rates/{id}/approve",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ledger/tax-rates/{id}/reject",
+   "file": "LedgerAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/logs/audit",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/logs/notifications",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/markets",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/markets",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/markets/currencies/{currency}/disable",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/markets/currencies/{currency}/live-off",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/markets/requests",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/markets/requests/{id}/decide",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/markets/settings",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/markets/{country}/change-requests",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/markets/{country}/suspend",
+   "file": "MarketController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchant-transactions",
+   "file": "AdminMerchantTransactionsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants/commission/default",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/merchants/commission/default",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants/dashboard",
+   "file": "AdminMerchantDashboardController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants/{id}",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/merchants/{id}",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/approve",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/merchants/{id}/commission",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/reactivate",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/reject",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/request-info",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants/{id}/review-notes",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/review-notes/{noteId}/resolve",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/start-review",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/suspend",
+   "file": "AdminMerchantController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants/{merchantId}/documents",
+   "file": "AdminMerchantDocumentController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/merchants/{merchantId}/documents/{documentId}/download",
+   "file": "AdminMerchantDocumentController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/netone/data-bundles",
+   "file": "NetOneReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/netone/end-user-balance",
+   "file": "NetOneReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/netone/pin-stock",
+   "file": "NetOneReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/netone/query-transaction",
+   "file": "NetOneReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/netone/wallet-balance",
+   "file": "NetOneReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/netone/wallet-balance-usd",
+   "file": "NetOneReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/platform/kyb/{merchantId}",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/platform/kyb/{merchantId}/assign",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/platform/kyb/{merchantId}/decide",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/platform/kyb/{merchantId}/recommend",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/platform/merchants/{merchantId}/enablements",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/platform/merchants/{merchantId}/readiness",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/platform/settlement-destinations",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/platform/settlement-destinations/{id}/verify",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/platform/work-queues",
+   "file": "AdminPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-health",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-query/ecocash",
+   "file": "ProviderQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-query/omari",
+   "file": "ProviderQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-query/onemoney",
+   "file": "ProviderQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-query/zimswitch",
+   "file": "ProviderQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/queries",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/queries/by-reference/{referenceNumber}",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/queries/{id}/attachments",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/queries/{id}/attachments",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/queries/{id}/attachments/{attachmentId}/download",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/queries/{id}/messages",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/queries/{id}/messages",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/queries/{id}/respond",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/queries/{id}/status",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/queriesmultipart/form-data",
+   "file": "AdminTransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reconciliation/run",
+   "file": "ReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reconciliation/statements/runs",
+   "file": "StatementReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reconciliation/statements/runs/{id}/matches",
+   "file": "StatementReconciliationController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/reconciliation/statements/upload",
+   "file": "StatementReconciliationController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reports/commission",
+   "file": "CommissionReportController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reports/consolidated",
+   "file": "ConsolidatedReportController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/service-lines",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/service-lines/licence-requests/{id}/decide",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/service-lines/{code}",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/service-lines/{code}/licence-requests",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/settlements",
+   "file": "AdminSettlementController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/settlements/run",
+   "file": "AdminSettlementController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/settlements/{id}/paid",
+   "file": "AdminSettlementController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/settlements/{id}/processing",
+   "file": "AdminSettlementController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/transactions-export/csv",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/transactions-search",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/transactions/{ref}/complete-refund",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/transactions/{ref}/refund",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/transactions/{ref}/retry-fulfilment",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/upload-logo",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/user-history",
+   "file": "OpsController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/users",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/users",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/admin/users/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/users/{id}",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/users/{id}/activate",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/users/{id}/reset-pin",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/users/{id}/unlock",
+   "file": "OpsProductConfigController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/wallet-balances",
+   "file": "WalletBalanceController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/wallet-balances/{providerCode}",
+   "file": "WalletBalanceController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/assistant/chat",
+   "file": "AssistantController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/auth/login",
+   "file": "AuthController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/auth/ops/forgot-password",
+   "file": "AuthController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/auth/ops/login",
+   "file": "AuthController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/auth/ops/reset-password",
+   "file": "AuthController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/auth/register",
+   "file": "AuthController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/beneficiaries",
+   "file": "BeneficiaryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/beneficiaries",
+   "file": "BeneficiaryController.java"
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/beneficiaries/{id}",
+   "file": "BeneficiaryController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/beneficiaries/{id}",
+   "file": "BeneficiaryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/billers",
+   "file": "BillerController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/billers/{code}/lookup",
+   "file": "BillerController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/bills/customer-info",
+   "file": "BillCustomerInfoController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/bundles/admin/upload",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/bundles/admin/{provider}/bulk-status",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/bundles/admin/{provider}/code/{bundleCode}",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/bundles/admin/{provider}/code/{bundleCode}",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/bundles/admin/{provider}/create",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/bundles/{provider}",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/bundles/{provider}/categories",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/bundles/{provider}/code/{bundleCode}",
+   "file": "BundleController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/callbacks/ecocash",
+   "file": "CallbackController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/callbacks/onemoney",
+   "file": "CallbackController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/callbacks/telecash",
+   "file": "CallbackController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/callbacks/zimswitch",
+   "file": "ZimSwitchCallbackController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/callbacks/zimswitch/result",
+   "file": "ZimSwitchCallbackController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/checkout/{id}",
+   "file": "CheckoutController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/checkout/{id}/pay",
+   "file": "CheckoutController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/checkout/{id}/qr",
+   "file": "QrController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/econet/admin/balance",
+   "file": "EconetAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/econet/admin/transaction-status",
+   "file": "EconetAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/econet/admin/validate",
+   "file": "EconetAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/fx/quote",
+   "file": "ProductsController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant-portal/login",
+   "file": "MerchantOnboardingController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant-portal/signup",
+   "file": "MerchantOnboardingController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant-portal/track/{reference}",
+   "file": "PublicMerchantTrackingController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant-portal/track/{reference}/documents",
+   "file": "PublicMerchantTrackingController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant-portal/track/{reference}/review-notes/{noteId}/resolve",
+   "file": "PublicMerchantTrackingController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/api-keys",
+   "file": "ApiKeyController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/api-keys",
+   "file": "ApiKeyController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/api-keys/{id}/revoke",
+   "file": "ApiKeyController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/api-keys/{id}/rotate",
+   "file": "ApiKeyController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/application",
+   "file": "MerchantApplicationStatusController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/application-status",
+   "file": "ApplicationStatusController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/application-status/review-notes/{id}/resolve",
+   "file": "ApplicationStatusController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/application/review-notes/{id}/resolve",
+   "file": "MerchantApplicationStatusController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/balance",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/balances",
+   "file": "MerchantPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/checkout-sessions",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/checkout-sessions",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/checkout-sessions/by-reference/{reference}",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/checkout-sessions/{id}",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/checkout-sessions/{id}/cancel",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/checkout-sessions/{sessionId}/disputes",
+   "file": "DisputeController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/checkout-sessions/{sessionId}/refunds",
+   "file": "RefundController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/checkout-sessions/{sessionId}/refunds",
+   "file": "RefundController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/collections-by-method",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/documents",
+   "file": "MerchantDocumentController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/documents",
+   "file": "MerchantDocumentController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/payment-links",
+   "file": "PaymentLinkController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/payment-links",
+   "file": "PaymentLinkController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/payment-links/{id}/disable",
+   "file": "PaymentLinkController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/payouts",
+   "file": "MerchantPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/queries",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/queries",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/queries/by-reference/{referenceNumber}",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/queries/by-session/{sessionId}",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/queries/{id}/attachments",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/queries/{id}/attachments",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/queries/{id}/attachments/{attachmentId}/download",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/queries/{id}/messages",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/queries/{id}/messages",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/queries/{id}/reopen",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/queriesmultipart/form-data",
+   "file": "TransactionQueryController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/readiness",
+   "file": "MerchantPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/reports/trends",
+   "file": "CheckoutSessionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/settlement-destinations",
+   "file": "MerchantPlatformController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/settlement-destinations",
+   "file": "MerchantPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/settlements",
+   "file": "SettlementController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/statement",
+   "file": "MerchantPlatformController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/team",
+   "file": "MerchantTeamController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/team",
+   "file": "MerchantTeamController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/team/change-password",
+   "file": "MerchantTeamController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/team/{id}/deactivate",
+   "file": "MerchantTeamController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/team/{id}/reactivate",
+   "file": "MerchantTeamController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/team/{id}/reset-password",
+   "file": "MerchantTeamController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/webhooks",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/webhooks",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/webhooks/deliveries/{deliveryId}/replay",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/webhooks/{id}/deliveries",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/webhooks/{id}/disable",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/webhooks/{id}/rotate-secret",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/webhooks/{id}/test",
+   "file": "WebhookController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/omari/admin/auth",
+   "file": "OmariAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/omari/admin/payment",
+   "file": "OmariAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/omari/admin/query/{reference}",
+   "file": "OmariAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/omari/admin/test-flow",
+   "file": "OmariAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/omari/admin/test-payment",
+   "file": "OmariAdminController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/omari/admin/void",
+   "file": "OmariAdminController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/pay/{slug}",
+   "file": "PublicPaymentLinkController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/pay/{slug}/start",
+   "file": "PublicPaymentLinkController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/products",
+   "file": "ProductCatalogueController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/products/data-bundles",
+   "file": "ProductCatalogueController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/products/detect-network/{phone}",
+   "file": "ProductCatalogueController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/products/payment-methods",
+   "file": "ProductCatalogueController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/products/{code}/currencies",
+   "file": "ProductCatalogueController.java"
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/profile/push-token",
+   "file": "PushTokenController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/profile/push-token",
+   "file": "PushTokenController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/qr/resolve",
+   "file": "QrController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/transactions/initiate",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/transactions/my-history",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/transactions/pay",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/transactions/{reference}",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/transactions/{reference}/confirm-omari-otp",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/transactions/{reference}/outcome",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/transactions/{reference}/timeline",
+   "file": "TransactionController.java"
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/ussd",
+   "file": "UssdController.java"
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/vendors/balance",
+   "file": "VendorBalanceController.java"
+  }
+ ]
+}
