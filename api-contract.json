@@ -1,1580 +1,1575 @@
 {
- "generatedBy": "static-annotation-scan",
+ "generatedBy": "ApiContractExportTest (verified in CI against the running application)",
  "routes": [
   {
    "method": "GET",
    "path": "/",
-   "file": "HomeController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/account/change-password",
-   "file": "AccountController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/account/change-pin",
-   "file": "AccountController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/channels",
-   "file": "ChannelController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/channels/{code}",
-   "file": "ChannelController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance-authorities",
-   "file": "ComplianceAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance-authorities/requests",
-   "file": "ComplianceAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance-authorities/revoke",
-   "file": "ComplianceAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/alerts",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/audit",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/audit/verify",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/authorities",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/authority-requests/{approvalId}/decide",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/cases",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/cases",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/cases/{id}",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/cases/{id}/assign",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/cases/{id}/decide",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/cases/{id}/notes",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/cases/{id}/propose",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/parameter-changes/{approvalId}/decide",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/parameters",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/parameters/{key}/change-requests",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/report-templates",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/report-templates",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/report-templates/{id}/activate",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/reports",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/reports/ctr",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/reports/{id}",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/reports/{id}/approve",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "PATCH",
    "path": "/api/v1/admin/compliance/reports/{id}/fields",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/reports/{id}/submitted",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/rule-changes",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/rule-changes/{approvalId}/decide",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/rules",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/rules",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/rules/{code}/change-requests",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/screening/check",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/screening/lists",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/screening/lists",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/screening/lists/UN-CONSOLIDATED/refresh",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/compliance/screening/lists/{code}/load",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/screening/runs",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/compliance/screening/status",
-   "file": "ComplianceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/config/payment-methods",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/config/payment-methods/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/config/prefixes",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/config/prefixes",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "DELETE",
    "path": "/api/v1/admin/config/prefixes/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/config/prefixes/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/config/products",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/config/products",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "DELETE",
    "path": "/api/v1/admin/config/products/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/config/products/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/config/products/{id}/currencies",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/config/products/{id}/currencies/{currency}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/consumers/dashboard",
-   "file": "AdminConsumerDashboardController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/customer-statement",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/dashboard/attention-queue",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/dashboard/kpis",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/dispute-timelines",
-   "file": "DisputeSlaController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/dispute-timelines/settings",
-   "file": "DisputeSlaController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/dispute-timelines/{id}/acknowledge",
-   "file": "DisputeSlaController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/dispute-timelines/{id}/updates",
-   "file": "DisputeSlaController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/disputes",
-   "file": "DisputeAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/disputes",
-   "file": "DisputeAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/disputes/{id}/resolve",
-   "file": "DisputeAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/iso20022/camt053",
-   "file": "BankMessageController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/iso20022/messages",
-   "file": "BankMessageController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/iso20022/pain002",
-   "file": "BankMessageController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/iso20022/schemas",
-   "file": "BankMessageController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/iso20022/statements",
-   "file": "BankMessageController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/iso20022/statements/{id}/entries",
-   "file": "BankMessageController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/recon/exceptions",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/recon/exceptions/{id}/resolve",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/recon/statements",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/recon/statements/{id}/run",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/settlement/batches",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/settlement/batches/{id}",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/settlement/batches/{id}/approve",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/settlement/batches/{id}/cancel",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/settlement/batches/{id}/instruct",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/finance/settlement/eligible",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/finance/settlement/payout-results",
-   "file": "FinanceOpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/float-thresholds",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/float-thresholds",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/fx/rates",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/fx/rates",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/fx/rates/{id}/decide",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/health-status",
-   "file": "ProviderHealthController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/health-status/{providerCode}",
-   "file": "ProviderHealthController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/integrations",
-   "file": "IntegrationAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/integrations/{code}",
-   "file": "IntegrationAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/integrations/{code}/resume",
-   "file": "IntegrationAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/integrations/{code}/suspend",
-   "file": "IntegrationAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/integrations/{code}/verifications",
-   "file": "IntegrationAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/ledger/balance",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/ledger/integrity",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/integrity/run",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/shadow/backfill",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/ledger/shadow/comparison",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/ledger/shadow/failures",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/shadow/failures/resolve",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/shadow/run",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/ledger/tax-rates",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/tax-rates",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/tax-rates/{id}/approve",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/ledger/tax-rates/{id}/reject",
-   "file": "LedgerAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/logs/audit",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/logs/notifications",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/markets",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/markets",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/markets/currencies/{currency}/disable",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/markets/currencies/{currency}/live-off",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/markets/requests",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/markets/requests/{id}/decide",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/markets/settings",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/markets/{country}/change-requests",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/markets/{country}/suspend",
-   "file": "MarketController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchant-transactions",
-   "file": "AdminMerchantTransactionsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants/commission/default",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/merchants/commission/default",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants/dashboard",
-   "file": "AdminMerchantDashboardController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants/{id}",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/merchants/{id}",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/approve",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/merchants/{id}/commission",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/reactivate",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/reject",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/request-info",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants/{id}/review-notes",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/review-notes/{noteId}/resolve",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/start-review",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/merchants/{id}/suspend",
-   "file": "AdminMerchantController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants/{merchantId}/documents",
-   "file": "AdminMerchantDocumentController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/merchants/{merchantId}/documents/{documentId}/download",
-   "file": "AdminMerchantDocumentController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/data-bundles",
-   "file": "NetOneReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/end-user-balance",
-   "file": "NetOneReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/pin-stock",
-   "file": "NetOneReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/query-transaction",
-   "file": "NetOneReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/wallet-balance",
-   "file": "NetOneReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/wallet-balance-usd",
-   "file": "NetOneReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/platform/kyb/{merchantId}",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/platform/kyb/{merchantId}/assign",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/platform/kyb/{merchantId}/decide",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/platform/kyb/{merchantId}/recommend",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/platform/merchants/{merchantId}/enablements",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/platform/merchants/{merchantId}/readiness",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/platform/settlement-destinations",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/platform/settlement-destinations/{id}/verify",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/platform/work-queues",
-   "file": "AdminPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/provider-health",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/provider-query/ecocash",
-   "file": "ProviderQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/provider-query/omari",
-   "file": "ProviderQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/provider-query/onemoney",
-   "file": "ProviderQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/provider-query/zimswitch",
-   "file": "ProviderQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/queries",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/queries/by-reference/{referenceNumber}",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/queries/{id}/attachments",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/queries/{id}/attachments",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/queries/{id}/attachments/{attachmentId}/download",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/queries/{id}/messages",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/queries/{id}/messages",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/queries/{id}/respond",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/queries/{id}/status",
-   "file": "AdminTransactionQueryController.java"
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/admin/queriesmultipart/form-data",
-   "file": "AdminTransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/reconciliation/run",
-   "file": "ReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/reconciliation/statements/runs",
-   "file": "StatementReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/reconciliation/statements/runs/{id}/matches",
-   "file": "StatementReconciliationController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/reconciliation/statements/upload",
-   "file": "StatementReconciliationController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/reports/commission",
-   "file": "CommissionReportController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/reports/consolidated",
-   "file": "ConsolidatedReportController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/service-lines",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/service-lines/licence-requests/{id}/decide",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/service-lines/{code}",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/service-lines/{code}/licence-requests",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/settlements",
-   "file": "AdminSettlementController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/settlements/run",
-   "file": "AdminSettlementController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/settlements/{id}/paid",
-   "file": "AdminSettlementController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/settlements/{id}/processing",
-   "file": "AdminSettlementController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/transactions-export/csv",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/transactions-search",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/transactions/{ref}/complete-refund",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/transactions/{ref}/refund",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/transactions/{ref}/retry-fulfilment",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/upload-logo",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/user-history",
-   "file": "OpsController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/users",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/users",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "DELETE",
    "path": "/api/v1/admin/users/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/admin/users/{id}",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/users/{id}/activate",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/users/{id}/reset-pin",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/admin/users/{id}/unlock",
-   "file": "OpsProductConfigController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/wallet-balances",
-   "file": "WalletBalanceController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/admin/wallet-balances/{providerCode}",
-   "file": "WalletBalanceController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/assistant/chat",
-   "file": "AssistantController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/auth/login",
-   "file": "AuthController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/auth/ops/forgot-password",
-   "file": "AuthController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/auth/ops/login",
-   "file": "AuthController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/auth/ops/reset-password",
-   "file": "AuthController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/auth/register",
-   "file": "AuthController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/beneficiaries",
-   "file": "BeneficiaryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/beneficiaries",
-   "file": "BeneficiaryController.java"
+   "access": null
   },
   {
    "method": "DELETE",
    "path": "/api/v1/beneficiaries/{id}",
-   "file": "BeneficiaryController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/beneficiaries/{id}",
-   "file": "BeneficiaryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/billers",
-   "file": "BillerController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/billers/{code}/lookup",
-   "file": "BillerController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/bills/customer-info",
-   "file": "BillCustomerInfoController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/bundles/admin/upload",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/bundles/admin/{provider}/bulk-status",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "DELETE",
    "path": "/api/v1/bundles/admin/{provider}/code/{bundleCode}",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "PUT",
    "path": "/api/v1/bundles/admin/{provider}/code/{bundleCode}",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/bundles/admin/{provider}/create",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/bundles/{provider}",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/bundles/{provider}/categories",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/bundles/{provider}/code/{bundleCode}",
-   "file": "BundleController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/callbacks/ecocash",
-   "file": "CallbackController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/callbacks/onemoney",
-   "file": "CallbackController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/callbacks/telecash",
-   "file": "CallbackController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/callbacks/zimswitch",
-   "file": "ZimSwitchCallbackController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/callbacks/zimswitch/result",
-   "file": "ZimSwitchCallbackController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/checkout/{id}",
-   "file": "CheckoutController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/checkout/{id}/pay",
-   "file": "CheckoutController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/checkout/{id}/qr",
-   "file": "QrController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/econet/admin/balance",
-   "file": "EconetAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/econet/admin/transaction-status",
-   "file": "EconetAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/econet/admin/validate",
-   "file": "EconetAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/fx/quote",
-   "file": "ProductsController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant-portal/login",
-   "file": "MerchantOnboardingController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant-portal/signup",
-   "file": "MerchantOnboardingController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant-portal/track/{reference}",
-   "file": "PublicMerchantTrackingController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant-portal/track/{reference}/documents",
-   "file": "PublicMerchantTrackingController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant-portal/track/{reference}/review-notes/{noteId}/resolve",
-   "file": "PublicMerchantTrackingController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/api-keys",
-   "file": "ApiKeyController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/api-keys",
-   "file": "ApiKeyController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/api-keys/{id}/revoke",
-   "file": "ApiKeyController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/api-keys/{id}/rotate",
-   "file": "ApiKeyController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/application",
-   "file": "MerchantApplicationStatusController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/application-status",
-   "file": "ApplicationStatusController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/application-status/review-notes/{id}/resolve",
-   "file": "ApplicationStatusController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/application/review-notes/{id}/resolve",
-   "file": "MerchantApplicationStatusController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/balance",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/balances",
-   "file": "MerchantPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/checkout-sessions",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/checkout-sessions",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/checkout-sessions/by-reference/{reference}",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/checkout-sessions/{id}",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/checkout-sessions/{id}/cancel",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/checkout-sessions/{sessionId}/disputes",
-   "file": "DisputeController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/checkout-sessions/{sessionId}/refunds",
-   "file": "RefundController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/checkout-sessions/{sessionId}/refunds",
-   "file": "RefundController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/collections-by-method",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/documents",
-   "file": "MerchantDocumentController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/documents",
-   "file": "MerchantDocumentController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/payment-links",
-   "file": "PaymentLinkController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/payment-links",
-   "file": "PaymentLinkController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/payment-links/{id}/disable",
-   "file": "PaymentLinkController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/payouts",
-   "file": "MerchantPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/queries",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/queries",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/queries/by-reference/{referenceNumber}",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/queries/by-session/{sessionId}",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/queries/{id}/attachments",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/queries/{id}/attachments",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/queries/{id}/attachments/{attachmentId}/download",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/queries/{id}/messages",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/queries/{id}/messages",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/queries/{id}/reopen",
-   "file": "TransactionQueryController.java"
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/merchant/queriesmultipart/form-data",
-   "file": "TransactionQueryController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/readiness",
-   "file": "MerchantPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/reports/trends",
-   "file": "CheckoutSessionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/settlement-destinations",
-   "file": "MerchantPlatformController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/settlement-destinations",
-   "file": "MerchantPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/settlements",
-   "file": "SettlementController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/statement",
-   "file": "MerchantPlatformController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/team",
-   "file": "MerchantTeamController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/team",
-   "file": "MerchantTeamController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/team/change-password",
-   "file": "MerchantTeamController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/team/{id}/deactivate",
-   "file": "MerchantTeamController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/team/{id}/reactivate",
-   "file": "MerchantTeamController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/team/{id}/reset-password",
-   "file": "MerchantTeamController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/webhooks",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/webhooks",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/webhooks/deliveries/{deliveryId}/replay",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/merchant/webhooks/{id}/deliveries",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/webhooks/{id}/disable",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/webhooks/{id}/rotate-secret",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/merchant/webhooks/{id}/test",
-   "file": "WebhookController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/omari/admin/auth",
-   "file": "OmariAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/omari/admin/payment",
-   "file": "OmariAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/omari/admin/query/{reference}",
-   "file": "OmariAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/omari/admin/test-flow",
-   "file": "OmariAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/omari/admin/test-payment",
-   "file": "OmariAdminController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/omari/admin/void",
-   "file": "OmariAdminController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/pay/{slug}",
-   "file": "PublicPaymentLinkController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/pay/{slug}/start",
-   "file": "PublicPaymentLinkController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/products",
-   "file": "ProductCatalogueController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/products/data-bundles",
-   "file": "ProductCatalogueController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/products/detect-network/{phone}",
-   "file": "ProductCatalogueController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/products/payment-methods",
-   "file": "ProductCatalogueController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/products/{code}/currencies",
-   "file": "ProductCatalogueController.java"
+   "access": null
   },
   {
    "method": "DELETE",
    "path": "/api/v1/profile/push-token",
-   "file": "PushTokenController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/profile/push-token",
-   "file": "PushTokenController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/qr/resolve",
-   "file": "QrController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/transactions/initiate",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/transactions/my-history",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/transactions/pay",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/transactions/{reference}",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/transactions/{reference}/confirm-omari-otp",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/transactions/{reference}/outcome",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/transactions/{reference}/timeline",
-   "file": "TransactionController.java"
+   "access": null
   },
   {
    "method": "POST",
    "path": "/api/v1/ussd",
-   "file": "UssdController.java"
+   "access": null
   },
   {
    "method": "GET",
    "path": "/api/v1/vendors/balance",
-   "file": "VendorBalanceController.java"
+   "access": null
+  },
+  {
+   "method": "ANY",
+   "path": "/error",
+   "access": null
   }
  ]
 }
