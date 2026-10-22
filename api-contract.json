@@ -852,6 +852,11 @@
    "access": null
   },
   {
+   "method": "GET",
+   "path": "/api/v1/admin/provider-settlement-rules/positions",
+   "access": null
+  },
+  {
    "method": "POST",
    "path": "/api/v1/admin/provider-settlement-rules/{id}/decide",
    "access": null
@@ -943,17 +948,7 @@
   },
   {
    "method": "POST",
-   "path": "/api/v1/admin/service-lines/licence-requests/{id}/decide",
-   "access": null
-  },
-  {
-   "method": "POST",
    "path": "/api/v1/admin/service-lines/{code}",
-   "access": null
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/admin/service-lines/{code}/licence-requests",
    "access": null
   },
   {
