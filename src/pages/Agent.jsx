@@ -25,7 +25,6 @@ export default function Agent() {
         return (
             <Page title="Become a PayPort agent" subtitle="Agents give customers cash-in (cash to wallet) and cash-out (wallet to cash) and earn a commission on each.">
                 <Section>
-                    <p style={{ fontSize: 13, marginTop: 0 }}>Apply below. PayPort compliance reviews every application before you can serve customers.</p>
                     <FormButton label="Apply to be an agent" title="Agent application" submitLabel="Apply"
                         fields={[{ name: 'name', label: 'Agent name (as customers see it)', required: true },
                             { name: 'phone', label: 'Agent phone (international format)', required: true, help: 'e.g. +263772100100' },
@@ -40,7 +39,7 @@ export default function Agent() {
     return (
         <Page title={`Agent ${agent.agent_code}`} subtitle={`${agent.name} · ${agent.location}`}
             actions={<Badge value={agent.status} />}>
-            {agent.status === 'PENDING' && <Notice kind="warn">Your application is with PayPort compliance. You can serve customers once it is approved.</Notice>}
+            {agent.status === 'PENDING' && <Notice kind="warn">Your application is being reviewed.</Notice>}
             {agent.status === 'SUSPENDED' && <Notice kind="error">Your agent account is suspended{agent.status_reason ? `: ${agent.status_reason}` : ''}. Contact PayPort.</Notice>}
             {last && <Notice kind="ok">{last}</Notice>}
 

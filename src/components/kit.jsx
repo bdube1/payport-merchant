@@ -30,7 +30,6 @@ export function Page({ title, subtitle, actions, children }) {
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 20 }}>
                 <div>
                     <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{title}</h1>
-                    {subtitle && <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '6px 0 0', maxWidth: 820 }}>{subtitle}</p>}
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>{actions}</div>
             </div>
@@ -155,7 +154,6 @@ export function FormModal({ title, intro, fields, submitLabel = 'Submit', onSubm
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={onClose}>
             <form onSubmit={submit} onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: 18, padding: 24, width: '100%', maxWidth: 520, maxHeight: '90vh', overflow: 'auto', border: '1px solid var(--border)' }}>
                 <h2 style={{ fontSize: 17, fontWeight: 800, margin: '0 0 4px' }}>{title}</h2>
-                {intro && <p style={{ fontSize: 12.5, color: 'var(--text-2)', margin: '0 0 14px' }}>{intro}</p>}
                 {error && <Notice kind="error">{error}</Notice>}
                 {fields.map(f => (
                     <div key={f.name} style={{ marginBottom: 12 }}>
