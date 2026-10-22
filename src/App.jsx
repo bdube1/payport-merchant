@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './lib/auth.jsx';
 import Layout from './components/Layout.jsx';
 import Login from './pages/Login.jsx';
+import Signup from './pages/Signup.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import ApplicationStatus from './pages/ApplicationStatus.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -38,6 +39,7 @@ function AppRoutes() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/change-password" element={<RequireChangePasswordAuth />} />
             <Route path="/" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/transactions" element={<RequireAuth><Transactions /></RequireAuth>} />

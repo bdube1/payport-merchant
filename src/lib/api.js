@@ -68,7 +68,14 @@ const portalApi = axios.create({
 
 export const authApi = {
     login: (email, password) => portalApi.post('/login', { email, password }),
+    signup: (application) => portalApi.post('/signup', application),
 };
+
+/** The server's own message for a failed call (message: the specific reason, e.g. the first invalid field; error.message as fallback). */
+export function errorMessage(err, fallback) {
+    const d = err?.response?.data;
+    return d?.message || d?.error?.message || fallback;
+}
 
 export const checkoutSessionsApi = {
     list: (status) => api.get('/checkout-sessions', { params: status ? { status } : {} }),

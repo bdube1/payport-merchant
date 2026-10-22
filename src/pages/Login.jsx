@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth.jsx';
 
 export default function Login() {
@@ -61,9 +61,11 @@ export default function Login() {
                     {loading ? 'Signing in…' : 'Sign in'}
                 </button>
 
-                <p style={{ fontSize: 12, color: 'var(--text-faint)', textAlign: 'center', marginTop: 20, lineHeight: 1.6 }}>
-                    Applications are reviewed before you can log in. If your business hasn't been approved yet,
-                    sign-in will say so directly.
+                <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 20 }}>
+                    New to PayPort? <Link to="/signup">Apply for a merchant account</Link>
+                </p>
+                <p style={{ fontSize: 12, color: 'var(--text-faint)', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>
+                    Applicants can sign in to follow their review. Payments and API keys open once the business is approved.
                 </p>
             </form>
         </div>
