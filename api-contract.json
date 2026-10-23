@@ -22,6 +22,16 @@
    "access": null
   },
   {
+   "method": "POST",
+   "path": "/api/v1/admin/agents",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/agents/dashboard",
+   "access": null
+  },
+  {
    "method": "GET",
    "path": "/api/v1/admin/agents/float-deposits",
    "access": null
@@ -34,6 +44,21 @@
   {
    "method": "POST",
    "path": "/api/v1/admin/agents/float-deposits/{id}/decide",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/agents/onboardable-merchants",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/agents/{id}",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/agents/{id}",
    "access": null
   },
   {
@@ -1264,6 +1289,11 @@
   {
    "method": "GET",
    "path": "/api/v1/fx/quote",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/markets",
    "access": null
   },
   {

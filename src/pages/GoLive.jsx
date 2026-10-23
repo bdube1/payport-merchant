@@ -22,7 +22,7 @@ export default function GoLive() {
             <Section title="Settlement destinations" right={user?.role === 'OWNER' && (
                 <FormButton label="Add destination" title="New settlement destination"
                     intro="PayPort verifies every destination (and every change) before paying anything to it. The account must be in your business's name."
-                    fields={[{ name: 'currency', label: 'Currency', type: 'text', required: true, initial: 'USD' },
+                    fields={[{ name: 'currency', label: 'Currency', type: 'currency', required: true, initial: 'USD' },
                         { name: 'type', label: 'Type', type: 'select', options: ['BANK', 'MOBILE_WALLET'], required: true, initial: 'BANK' },
                         { name: 'accountName', label: 'Account name', type: 'text', required: true }, { name: 'accountNumber', label: 'Account / wallet number', type: 'text', required: true },
                         { name: 'institution', label: 'Bank / wallet provider', type: 'text', required: true }, { name: 'branch', label: 'Branch', type: 'text' }]}

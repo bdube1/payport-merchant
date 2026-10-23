@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link2, Plus, Copy, Ban } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { paymentLinksApi, formatAmount } from '../lib/api';
+import { CurrencySelect } from '../components/kit';
 
 function CreateModal({ onClose, onCreated }) {
     const [amount, setAmount] = useState('');
@@ -38,10 +39,7 @@ function CreateModal({ onClose, onCreated }) {
                 <input type="number" step="0.01" min="0.01" value={amount} onChange={e => setAmount(e.target.value)} placeholder="10.00" style={{ width: '100%', marginBottom: 14 }} />
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Currency</label>
-                <select value={currency} onChange={e => setCurrency(e.target.value)} style={{ width: '100%', marginBottom: 14 }}>
-                    <option value="USD">USD</option>
-                    <option value="ZWG">ZWG</option>
-                </select>
+                <CurrencySelect value={currency} onChange={setCurrency} style={{ width: '100%', marginBottom: 14 }} />
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Description</label>
                 <input value={description} onChange={e => setDescription(e.target.value)} placeholder="Consulting fee, product name, etc." style={{ width: '100%', marginBottom: 14 }} />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { authApi, errorMessage } from '../lib/api.js';
+import { authApi, errorMessage, DOC_TYPES, uploadDocumentWithToken } from '../lib/api.js';
 
 // Merchant application form. Creates the business and its owner login in one step
 // (POST /api/v1/merchant-portal/signup). The account stays PENDING until PayPort's KYB review
@@ -43,6 +43,9 @@ export default function Signup() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [done, setDone] = useState(null);
+    const [files, setFiles] = useState({});
+    const [uploads, setUploads] = useState([]);
+    const [copied, setCopied] = useState(false);
 
     const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
     const pwProblems = form.password ? passwordProblems(form.password) : [];
@@ -53,11 +56,30 @@ export default function Signup() {
         if (pwProblems.length) return setError('Password needs ' + pwProblems.join(', ') + '.');
         if (form.password !== form.confirm) return setError('The two passwords do not match.');
         if (!accepted) return setError('Please confirm the declaration.');
+        const tooBig = Object.entries(files).find(([, f]) => f && f.size > 10 * 1024 * 1024);
+        if (tooBig) return setError(`${(DOC_TYPES.find(d => d.value === tooBig[0]) || {}).label} is larger than 10 MB.`);
         setLoading(true);
         try {
             const { confirm, ...body } = form;
             const res = await authApi.signup({ ...body, contactEmail: body.contactEmail.trim(), businessName: body.businessName.trim() });
-            setDone(res.data?.data);
+            const app = res.data?.data;
+            // Attach the KYC documents chosen on the form, signed in as the new applicant.
+            const chosen = Object.entries(files).filter(([, f]) => f);
+            const results = [];
+            if (chosen.length) {
+                try {
+                    const login = await authApi.login(body.contactEmail.trim(), body.password);
+                    const token = (login.data?.data || login.data)?.token;
+                    for (const [type, file] of chosen) {
+                        try { await uploadDocumentWithToken(token, type, file); results.push({ type, ok: true }); }
+                        catch (err) { results.push({ type, ok: false, message: errorMessage(err, 'Upload failed') }); }
+                    }
+                } catch {
+                    chosen.forEach(([type]) => results.push({ type, ok: false, message: 'Sign in to upload it' }));
+                }
+            }
+            setUploads(results);
+            setDone(app);
         } catch (err) {
             setError(errorMessage(err, 'We could not submit your application. Please try again.'));
         } finally {
@@ -76,11 +98,25 @@ export default function Signup() {
                     <div style={{ fontFamily: 'monospace', fontSize: 20, fontWeight: 800, padding: '12px 16px', background: 'var(--bg-2)', borderRadius: 10, marginBottom: 18 }}>
                         {done.applicationReference}
                     </div>
-                    <p style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, margin: '0 0 22px' }}>
-                        We have emailed it to you. Sign in at any time with your email and password to follow the review,
-                        upload documents and answer any questions. You will get test API keys as soon as you are approved.
-                    </p>
-                    <Link to="/login" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: 13 }}>Go to sign in</Link>
+                    <button type="button" className="btn btn-ghost" style={{ marginBottom: 14 }}
+                        onClick={() => { navigator.clipboard?.writeText(done.applicationReference); setCopied(true); }}>{copied ? 'Copied' : 'Copy reference'}</button>
+                    <div style={{ background: 'var(--badge-amber, #FEF3C7)', borderRadius: 10, padding: '12px 14px', fontSize: 13.5, lineHeight: 1.6, margin: '0 0 18px', textAlign: 'left' }}>
+                        <strong>Keep this application reference number.</strong> You will need it to track your application.
+                        We have also emailed it to you.
+                    </div>
+                    {uploads.length > 0 && (
+                        <div style={{ textAlign: 'left', fontSize: 13, margin: '0 0 18px' }}>
+                            {uploads.map(u => (
+                                <div key={u.type} style={{ color: u.ok ? 'var(--green, #2f855a)' : 'var(--red)' }}>
+                                    {u.ok ? '✓' : '✗'} {(DOC_TYPES.find(d => d.value === u.type) || {}).label || u.type}{u.ok ? '' : ` — ${u.message}`}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div style={{ display: 'flex', gap: 10 }}>
+                        <Link to={`/track?ref=${encodeURIComponent(done.applicationReference)}`} className="btn btn-ghost" style={{ flex: 1, justifyContent: 'center', padding: 13 }}>Track application</Link>
+                        <Link to="/login" className="btn btn-primary" style={{ flex: 1, justifyContent: 'center', padding: 13 }}>Sign in</Link>
+                    </div>
                 </div>
             </div>
         );
@@ -133,6 +169,15 @@ export default function Signup() {
                 <label style={label} htmlFor="confirm">Confirm password</label>
                 <input id="confirm" type="password" value={form.confirm} onChange={set('confirm')} required style={field} autoComplete="new-password" />
 
+                <h2 style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, color: 'var(--text-2)', margin: '8px 0 12px' }}>KYC documents (PDF, JPG or PNG, up to 10 MB)</h2>
+                {DOC_TYPES.map(d => (
+                    <div key={d.value} style={{ marginBottom: 12 }}>
+                        <label style={label} htmlFor={`doc-${d.value}`}>{d.label}</label>
+                        <input id={`doc-${d.value}`} type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                            onChange={e => setFiles(f => ({ ...f, [d.value]: e.target.files?.[0] || null }))} style={{ width: '100%' }} />
+                    </div>
+                ))}
+
                 <label style={{ fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 8, margin: '4px 0 22px', cursor: 'pointer', lineHeight: 1.5 }}>
                     <input type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} style={{ width: 'auto', marginTop: 3 }} />
                     I confirm the information is true and that PayPort may verify the business, its directors and its bank account before approving it.
@@ -143,7 +188,7 @@ export default function Signup() {
                 </button>
 
                 <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 18 }}>
-                    Already applied? <Link to="/login">Sign in</Link>
+                    Already applied? <Link to="/track">Track your application</Link> or <Link to="/login">sign in</Link>
                 </p>
             </form>
         </div>

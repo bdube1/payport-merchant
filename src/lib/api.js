@@ -66,6 +66,9 @@ const portalApi = axios.create({
     headers: { 'Content-Type': 'application/json' },
 });
 
+// Public, read-only: countries and currencies PayPort serves.
+export const marketsApi = { list: () => axios.get(`${BASE}/api/v1/markets`) };
+
 export const authApi = {
     login: (email, password) => portalApi.post('/login', { email, password }),
     signup: (application) => portalApi.post('/signup', application),
@@ -82,6 +85,7 @@ export const checkoutSessionsApi = {
     get: (id) => api.get(`/checkout-sessions/${id}`),
     getByReference: (reference) => api.get(`/checkout-sessions/by-reference/${encodeURIComponent(reference)}`),
     cancel: (id) => api.post(`/checkout-sessions/${id}/cancel`),
+    create: (body) => api.post('/checkout-sessions', body),
 };
 
 export const balanceApi = {
@@ -146,6 +150,7 @@ export const queriesApi = {
         return api.post(`/queries/${queryId}/attachments`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
     },
     listAttachments: (queryId) => api.get(`/queries/${queryId}/attachments`),
+    downloadAttachment: (queryId, attachmentId) => api.get(`/queries/${queryId}/attachments/${attachmentId}/download`, { responseType: 'blob' }),
 };
 
 export const paymentLinksApi = {
@@ -190,6 +195,27 @@ export const applicationApi = {
     getStatus: () => api.get('/application'),
     resolveNote: (id) => api.post(`/application/review-notes/${id}/resolve`),
 };
+
+// Document types the gateway accepts for an application.
+export const DOC_TYPES = [
+    { value: 'CERTIFICATE_OF_INCORPORATION', label: 'Certificate of incorporation / business registration' },
+    { value: 'DIRECTOR_ID', label: "Director's ID or passport" },
+    { value: 'PROOF_OF_ADDRESS', label: 'Proof of business address' },
+    { value: 'TAX_CLEARANCE', label: 'Tax clearance certificate' },
+    { value: 'BANK_CONFIRMATION', label: 'Bank account confirmation letter' },
+    { value: 'OTHER', label: 'Other supporting document' },
+];
+
+// Public status of an application by its reference (no login).
+export const trackApi = { status: (reference) => portalApi.get(`/track/${encodeURIComponent(reference.trim().toUpperCase())}`) };
+
+/** Uploads one application document with a given login token (used right after signing up). */
+export function uploadDocumentWithToken(token, documentType, file) {
+    const formData = new FormData();
+    formData.append('documentType', documentType);
+    formData.append('file', file);
+    return axios.post(`${BASE}/api/v1/merchant/documents`, formData, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } });
+}
 
 export const documentsApi = {
     list: () => api.get('/documents'),

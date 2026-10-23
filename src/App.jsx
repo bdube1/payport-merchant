@@ -8,6 +8,7 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import ApplicationStatus from './pages/ApplicationStatus.jsx';
+import Track from './pages/Track.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Transactions from './pages/Transactions.jsx';
 import Queries from './pages/Queries.jsx';
@@ -45,6 +46,7 @@ function AppRoutes() {
         <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/track" element={<Track />} />
             <Route path="/change-password" element={<RequireChangePasswordAuth />} />
             <Route path="/" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/transactions" element={<RequireAuth><Transactions /></RequireAuth>} />
