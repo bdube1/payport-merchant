@@ -222,9 +222,17 @@ function QueryThread({ query, onChanged }) {
             {attachments && attachments.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
                     {attachments.map(a => (
-                        <div key={a.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11.5, padding: '5px 10px', background: 'var(--bg-2)', borderRadius: 8, color: 'var(--text-2)' }}>
+                        <button key={a.id} type="button" title="Download"
+                            onClick={async () => {
+                                const r = await queriesApi.downloadAttachment(query.id, a.id);
+                                const link = document.createElement('a');
+                                link.href = URL.createObjectURL(r.data);
+                                link.download = a.originalFilename || 'attachment';
+                                link.click();
+                            }}
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11.5, padding: '5px 10px', background: 'var(--bg-2)', borderRadius: 8, color: 'var(--text-2)', border: 'none', cursor: 'pointer' }}>
                             <Paperclip size={11} /> {a.originalFilename}
-                        </div>
+                        </button>
                     ))}
                 </div>
             )}

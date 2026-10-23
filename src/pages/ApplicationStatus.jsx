@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Clock, CheckCircle2, AlertCircle, Upload, FileText, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { applicationApi, documentsApi } from '../lib/api';
+import { applicationApi, documentsApi, DOC_TYPES } from '../lib/api';
 import { useAuth } from '../lib/auth.jsx';
 
 const STATUS_CONFIG = {
@@ -11,20 +11,13 @@ const STATUS_CONFIG = {
     REJECTED: { label: 'Not Approved', color: '#E53E3E', desc: null },
 };
 
-const DOC_TYPES = [
-    { value: 'BUSINESS_REGISTRATION', label: 'Business Registration Certificate' },
-    { value: 'PROOF_OF_ADDRESS', label: 'Proof of Business Address' },
-    { value: 'DIRECTOR_ID', label: "Director's ID / Passport" },
-    { value: 'BANK_CONFIRMATION', label: 'Bank Account Confirmation Letter' },
-    { value: 'OTHER', label: 'Other Supporting Document' },
-];
 
 export default function ApplicationStatus() {
     const { logout } = useAuth();
     const [data, setData] = useState(null);
     const [docs, setDocs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [uploadType, setUploadType] = useState('BUSINESS_REGISTRATION');
+    const [uploadType, setUploadType] = useState('CERTIFICATE_OF_INCORPORATION');
     const [uploading, setUploading] = useState(false);
 
     const load = () => {
@@ -80,7 +73,9 @@ export default function ApplicationStatus() {
                     <div>
                         <img src="/favicon.png" alt="" style={{ width: 36, height: 36, borderRadius: 8, marginBottom: 10 }} />
                         <h1 style={{ fontSize: 20, fontWeight: 800, margin: 0 }}>{data.businessName}</h1>
-                        <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '4px 0 0' }}>Application status</p>
+                        <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '4px 0 0' }}>
+                            Application {data.applicationReference ? <strong style={{ fontFamily: 'monospace' }}>{data.applicationReference}</strong> : 'status'}
+                        </p>
                     </div>
                     <button onClick={logout} className="btn btn-ghost"><LogOut size={14} /> Sign out</button>
                 </div>

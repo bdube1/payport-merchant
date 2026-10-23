@@ -36,9 +36,29 @@ export default function Agent() {
     }
 
     const active = agent.status === 'ACTIVE';
+    const today = new Date().toISOString().slice(0, 10), month = today.slice(0, 7);
+    const sumBy = (rows, test, field) => (rows || []).filter(test).reduce((acc, r) => ({ ...acc, [r.currency]: (acc[r.currency] || 0) + Number(r[field] || 0) }), {});
+    const fmtSum = (m) => Object.keys(m).length ? Object.entries(m).map(([c, v]) => minor(v, c)).join(' · ') : '—';
+    const isToday = r => String(r.created_at || '').slice(0, 10) === today;
+    const cashInToday = (txs.value || []).filter(r => isToday(r) && r.kind === 'CASH_IN');
+    const cashOutToday = (txs.value || []).filter(r => isToday(r) && r.kind === 'CASH_OUT');
+    const Card = ({ label, value, sub }) => (
+        <div className="card" style={{ padding: 16, minWidth: 180, flex: 1 }}>
+            <div style={{ fontSize: 12, color: 'var(--text-2)', fontWeight: 700 }}>{label}</div>
+            <div style={{ fontSize: 20, fontWeight: 800, marginTop: 6 }}>{value}</div>
+            {sub && <div style={{ fontSize: 12, color: 'var(--text-2)', marginTop: 4 }}>{sub}</div>}
+        </div>
+    );
     return (
-        <Page title={`Agent ${agent.agent_code}`} subtitle={`${agent.name} · ${agent.location}`}
-            actions={<Badge value={agent.status} />}>
+        <Page title={`${agent.name}`} actions={<Badge value={agent.status} />}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
+                <Card label="Agent code" value={<span style={{ fontFamily: 'monospace' }}>{agent.agent_code}</span>} sub={agent.location} />
+                <Card label="Float" value={fmtSum(agent.float || {})} />
+                <Card label="Cash-in today" value={fmtSum(sumBy(cashInToday, () => true, 'amount_minor'))} sub={`${cashInToday.length} customers`} />
+                <Card label="Cash-out today" value={fmtSum(sumBy(cashOutToday, () => true, 'amount_minor'))} sub={`${cashOutToday.length} customers`} />
+                <Card label="Commission today" value={fmtSum(sumBy(txs.value, isToday, 'commission_minor'))}
+                    sub={`This month: ${fmtSum(sumBy(txs.value, r => String(r.created_at || '').slice(0, 7) === month, 'commission_minor'))}`} />
+            </div>
             {agent.status === 'PENDING' && <Notice kind="warn">Your application is being reviewed.</Notice>}
             {agent.status === 'SUSPENDED' && <Notice kind="error">Your agent account is suspended{agent.status_reason ? `: ${agent.status_reason}` : ''}. Contact PayPort.</Notice>}
             {last && <Notice kind="ok">{last}</Notice>}

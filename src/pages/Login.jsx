@@ -62,7 +62,7 @@ export default function Login() {
                 </button>
 
                 <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 20 }}>
-                    New to PayPort? <Link to="/signup">Apply for a merchant account</Link>
+                    New to PayPort? <Link to="/signup">Apply for a merchant account</Link> · <Link to="/track">Track an application</Link>
                 </p>
                 <p style={{ fontSize: 12, color: 'var(--text-faint)', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>
                     Applicants can sign in to follow their review. Payments and API keys open once the business is approved.

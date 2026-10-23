@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { RefreshCw, Download, ChevronDown, ChevronUp, RotateCcw, AlertTriangle, MessageCircleQuestion } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { checkoutSessionsApi, refundsApi, disputesApi, queriesApi, formatAmount, METHOD_LABELS } from '../lib/api';
+import { FormButton } from '../components/kit';
 
 const STATUS_BADGE = {
     PAID: 'badge-green',
@@ -167,6 +168,7 @@ export default function Transactions() {
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState(null);
     const [refundTarget, setRefundTarget] = useState(null);
+    const [created, setCreated] = useState(null);
 
     const load = () => {
         setLoading(true);
@@ -202,10 +204,29 @@ export default function Transactions() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Transactions</h1>
                 <div style={{ display: 'flex', gap: 8 }}>
+                    <FormButton label="Request payment" title="New payment request" submitLabel="Create"
+                        fields={[{ name: 'amount', label: 'Amount', type: 'number', step: '0.01', required: true },
+                            { name: 'currency', label: 'Currency', type: 'currency', required: true, initial: 'USD' },
+                            { name: 'description', label: 'What it is for', required: true },
+                            { name: 'reference', label: 'Your reference (optional)' },
+                            { name: 'customerPhone', label: 'Customer phone (optional)' }, { name: 'customerEmail', label: 'Customer email (optional)' }]}
+                        onSubmit={v => checkoutSessionsApi.create({
+                            reference: v.reference?.trim() || `REQ-${Date.now()}`, amountCents: Math.round(Number(v.amount) * 100), currency: v.currency,
+                            description: v.description, customerPhone: v.customerPhone?.trim() || null, customerEmail: v.customerEmail?.trim() || null })}
+                        onDone={d => { setCreated(d); load(); }} />
                     <button onClick={exportCsv} className="btn btn-ghost"><Download size={14} /> Export CSV</button>
                     <button onClick={load} className="btn btn-ghost"><RefreshCw size={14} /> Refresh</button>
                 </div>
             </div>
+
+            {created?.checkoutUrl && (
+                <div className="card" style={{ padding: 14, marginBottom: 16, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+                    <strong style={{ fontSize: 13 }}>Payment link:</strong>
+                    <a href={created.checkoutUrl} target="_blank" rel="noreferrer" style={{ fontFamily: 'monospace', fontSize: 12.5, wordBreak: 'break-all', flex: 1 }}>{created.checkoutUrl}</a>
+                    <button className="btn btn-ghost" onClick={() => { navigator.clipboard?.writeText(created.checkoutUrl); toast.success('Copied'); }}>Copy</button>
+                    <button className="btn btn-ghost" onClick={() => setCreated(null)}>Close</button>
+                </div>
+            )}
 
             <div style={{ display: 'flex', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
                 <input
