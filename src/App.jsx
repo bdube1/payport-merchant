@@ -1,4 +1,3 @@
-import Agent from './pages/Agent';
 import Pos from './pages/Pos';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -9,6 +8,9 @@ import Signup from './pages/Signup.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import ApplicationStatus from './pages/ApplicationStatus.jsx';
 import Track from './pages/Track.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
+import AgentApp from './agent/AgentApp.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Transactions from './pages/Transactions.jsx';
 import Queries from './pages/Queries.jsx';
@@ -47,6 +49,9 @@ function AppRoutes() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/track" element={<Track />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/agent/*" element={<AgentApp />} />
             <Route path="/change-password" element={<RequireChangePasswordAuth />} />
             <Route path="/" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/transactions" element={<RequireAuth><Transactions /></RequireAuth>} />
@@ -60,7 +65,6 @@ function AppRoutes() {
             <Route path="/payouts" element={<RequireAuth><Payouts /></RequireAuth>} />
             <Route path="/webhooks" element={<RequireAuth><Webhooks /></RequireAuth>} />
             <Route path="/team" element={<RequireAuth><Team /></RequireAuth>} />
-            <Route path="/agent" element={<RequireAuth><Agent /></RequireAuth>} />
             <Route path="/pos" element={<RequireAuth><Pos /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

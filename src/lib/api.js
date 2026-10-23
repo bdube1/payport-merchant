@@ -72,6 +72,8 @@ export const marketsApi = { list: () => axios.get(`${BASE}/api/v1/markets`) };
 export const authApi = {
     login: (email, password) => portalApi.post('/login', { email, password }),
     signup: (application) => portalApi.post('/signup', application),
+    forgotPassword: (email) => portalApi.post('/forgot-password', { email }),
+    resetPassword: (token, newPassword) => portalApi.post('/reset-password', { token, newPassword }),
 };
 
 /** The server's own message for a failed call (message: the specific reason, e.g. the first invalid field; error.message as fallback). */
@@ -169,18 +171,7 @@ export const platformApi = {
     addDestination: (body) => api.post('/settlement-destinations', body),
 };
 
-// Phase 8: agent network (cash-in / cash-out) and POS terminals. Dashboard only; switched on by PayPort.
-export const agentApi = {
-    me: () => api.get('/agent'),
-    apply: (name, phone, location) => api.post('/agent/apply', { name, phone, location }),
-    deposits: () => api.get('/agent/float-deposits'),
-    notifyDeposit: (amountMinor, currency, bankReference) => api.post('/agent/float-deposits', { amountMinor, currency, bankReference }),
-    cashIn: (customer, currency, amountMinor, clientRef) => api.post('/agent/cash-in', { customer, currency, amountMinor, clientRef }),
-    cashOut: (customerPhone, code) => api.post('/agent/cash-out', { customerPhone, code }),
-    transactions: () => api.get('/agent/transactions'),
-    commissions: () => api.get('/agent/commissions'),
-};
-
+// POS terminals (switched on by PayPort).
 export const posApi = {
     terminals: () => api.get('/pos/terminals'),
     register: (label) => api.post('/pos/terminals', { label }),

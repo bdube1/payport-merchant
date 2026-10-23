@@ -21,6 +21,26 @@
   --badge-blue: rgba(6,163,218,0.12);
 }
 
+:root[data-theme="dark"] {
+  --navy: #050B17;
+  --bg: #070D1A;
+  --bg-card: #0F1A2E;
+  --bg-2: #16233B;
+  --border: #22314D;
+  --text: #E8EEF7;
+  --text-2: #9AA8BD;
+  --text-faint: #6B7A90;
+  --badge-green: rgba(52,173,84,0.18);
+  --badge-red: rgba(229,62,62,0.18);
+  --badge-amber: rgba(245,158,11,0.18);
+  --badge-gray: rgba(154,168,189,0.14);
+  --badge-blue: rgba(6,163,218,0.18);
+  color-scheme: dark;
+}
+
+body { transition: background 0.2s, color 0.2s; }
+a { color: var(--blue); }
+
 * { box-sizing: border-box; }
 
 body {

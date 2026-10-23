@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket, HandCoins, MonitorSmartphone } from 'lucide-react';
+import { LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket, MonitorSmartphone } from 'lucide-react';
+import { ThemeToggle } from '../lib/theme.jsx';
 import { useAuth } from '../lib/auth.jsx';
 
 // API Keys/Webhooks require OWNER or DEVELOPER (matches the backend's
@@ -16,7 +17,6 @@ const nav = [
     { to: '/reports', icon: PieChart, label: 'Reports', roles: null },
     { to: '/api-keys', icon: Key, label: 'API Keys', roles: ['OWNER', 'DEVELOPER'] },
     { to: '/webhooks', icon: Webhook, label: 'Webhooks', roles: ['OWNER', 'DEVELOPER'] },
-    { to: '/agent', icon: HandCoins, label: 'Agent', roles: null },
     { to: '/pos', icon: MonitorSmartphone, label: 'POS terminals', roles: ['OWNER', 'DEVELOPER'] },
     { to: '/team', icon: Users, label: 'Team', roles: ['OWNER'] },
 ];
@@ -55,6 +55,7 @@ export default function Layout({ children }) {
                         <div style={{ fontSize: 13, fontWeight: 700 }}>{user?.merchantName}</div>
                         <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.5)' }}>{user?.fullName} · {user?.role}</div>
                     </div>
+                    <ThemeToggle variant="sidebar" style={{ width: '100%', marginBottom: 6 }} />
                     <NavLink
                         to="/change-password"
                         style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', borderRadius: 10, color: 'rgba(255,255,255,0.65)', fontSize: 13, fontWeight: 600, textDecoration: 'none', marginBottom: 6 }}

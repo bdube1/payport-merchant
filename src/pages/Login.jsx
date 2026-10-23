@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth.jsx';
+import { ThemeToggle } from '../lib/theme.jsx';
 
 export default function Login() {
     const { login } = useAuth();
@@ -26,7 +27,8 @@ export default function Login() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', padding: 20 }}>
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', padding: 20, position: 'relative' }}>
+            <ThemeToggle style={{ position: 'absolute', top: 16, right: 16 }} />
             <form onSubmit={handleSubmit} className="card" style={{ width: '100%', maxWidth: 380, padding: 36 }}>
                 <div style={{ textAlign: 'center', marginBottom: 28 }}>
                     <img src="/favicon.png" alt="" style={{ width: 44, height: 44, borderRadius: 10, marginBottom: 12 }} />
@@ -52,10 +54,13 @@ export default function Login() {
                     required style={{ width: '100%', marginBottom: 16 }}
                 />
 
-                <label style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 22, cursor: 'pointer' }}>
-                    <input type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} style={{ width: 'auto' }} />
-                    Remember me on this device
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 22, gap: 10 }}>
+                    <label style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                        <input type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} style={{ width: 'auto' }} />
+                        Remember me
+                    </label>
+                    <Link to="/forgot-password" style={{ fontSize: 13 }}>Forgot password?</Link>
+                </div>
 
                 <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: 13 }}>
                     {loading ? 'Signing in…' : 'Sign in'}
@@ -64,8 +69,8 @@ export default function Login() {
                 <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 20 }}>
                     New to PayPort? <Link to="/signup">Apply for a merchant account</Link> · <Link to="/track">Track an application</Link>
                 </p>
-                <p style={{ fontSize: 12, color: 'var(--text-faint)', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>
-                    Applicants can sign in to follow their review. Payments and API keys open once the business is approved.
+                <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 8 }}>
+                    PayPort agent? <Link to="/agent/login">Sign in to the agent portal</Link>
                 </p>
             </form>
         </div>

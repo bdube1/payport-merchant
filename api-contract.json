@@ -48,11 +48,6 @@
   },
   {
    "method": "GET",
-   "path": "/api/v1/admin/agents/onboardable-merchants",
-   "access": null
-  },
-  {
-   "method": "GET",
    "path": "/api/v1/admin/agents/{id}",
    "access": null
   },
@@ -69,6 +64,16 @@
   {
    "method": "POST",
    "path": "/api/v1/admin/agents/{id}/status",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/agents/{id}/users",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/agents/{id}/users/{userId}/reset-password",
    "access": null
   },
   {
@@ -748,6 +753,16 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/merchants/{id}/users",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/merchants/{id}/users/{userId}/reset-password",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/merchants/{merchantId}/documents",
    "access": null
   },
@@ -1068,6 +1083,21 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/ussd/networks",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/ussd/networks/{code}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/ussd/networks/{code}/access-key",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/wallet-balances",
    "access": null
   },
@@ -1109,6 +1139,91 @@
   {
    "method": "GET",
    "path": "/api/v1/admin/whatsapp",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/whatsapp/settings",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/whatsapp/test",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent-portal/apply",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent-portal/forgot-password",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent-portal/login",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent-portal/reset-password",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent-portal/track/{reference}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent/cash-in",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent/cash-out",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent/change-password",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/commissions",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/customer",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/dashboard",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/float-deposits",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent/float-deposits",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/me",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/transactions",
    "access": null
   },
   {
@@ -1228,6 +1343,11 @@
   },
   {
    "method": "POST",
+   "path": "/api/v1/callbacks/innbucks",
+   "access": null
+  },
+  {
+   "method": "POST",
    "path": "/api/v1/callbacks/mtn-momo",
    "access": null
   },
@@ -1298,7 +1418,17 @@
   },
   {
    "method": "POST",
+   "path": "/api/v1/merchant-portal/forgot-password",
+   "access": null
+  },
+  {
+   "method": "POST",
    "path": "/api/v1/merchant-portal/login",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant-portal/reset-password",
    "access": null
   },
   {
@@ -1319,46 +1449,6 @@
   {
    "method": "POST",
    "path": "/api/v1/merchant-portal/track/{reference}/review-notes/{noteId}/resolve",
-   "access": null
-  },
-  {
-   "method": "GET",
-   "path": "/api/v1/merchant/agent",
-   "access": null
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/merchant/agent/apply",
-   "access": null
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/merchant/agent/cash-in",
-   "access": null
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/merchant/agent/cash-out",
-   "access": null
-  },
-  {
-   "method": "GET",
-   "path": "/api/v1/merchant/agent/commissions",
-   "access": null
-  },
-  {
-   "method": "GET",
-   "path": "/api/v1/merchant/agent/float-deposits",
-   "access": null
-  },
-  {
-   "method": "POST",
-   "path": "/api/v1/merchant/agent/float-deposits",
-   "access": null
-  },
-  {
-   "method": "GET",
-   "path": "/api/v1/merchant/agent/transactions",
    "access": null
   },
   {
@@ -1784,6 +1874,21 @@
   {
    "method": "POST",
    "path": "/api/v1/ussd",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/ussd/econet",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/ussd/netone",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/ussd/telecel",
    "access": null
   },
   {
