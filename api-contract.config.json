@@ -1,1 +1,11 @@
-{"src":["src"],"clients":{"api":"/api/v1/merchant","portalApi":"/api/v1/merchant-portal"}}
+{
+  "src": [
+    "src"
+  ],
+  "clients": {
+    "api": "/api/v1/merchant",
+    "portalApi": "/api/v1/merchant-portal",
+    "agentHttp": "/api/v1/agent",
+    "agentPortalHttp": "/api/v1/agent-portal"
+  }
+}
