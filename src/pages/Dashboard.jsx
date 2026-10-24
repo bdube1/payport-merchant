@@ -1,3 +1,4 @@
+import MerchantQr from '../components/MerchantQr';
 import { useState, useEffect } from 'react';
 import { Wallet, Receipt, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -53,6 +54,8 @@ export default function Dashboard() {
                     </span>
                 )}
             </div>
+
+            <MerchantQr code={user?.merchantCode} name={user?.merchantName} />
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, marginBottom: 10 }}>
                 {hasAnyBalance ? (
