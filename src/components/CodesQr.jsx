@@ -49,7 +49,7 @@ function CodeCard({ c, owner, onNewQr }) {
                 {c.qrIssuedAt && <div style={{ fontSize: 12, color: 'var(--text-2)', marginTop: 4 }}>QR issued {show(c.qrIssuedAt)}</div>}
                 <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
                     <button className="btn btn-primary" disabled={!src} onClick={() => printQr(src, title, c.code, c.address)} style={{ padding: '7px 14px', fontSize: 13 }}>Print</button>
-                    <a className="btn btn-ghost" href={src || undefined} download={`payport-qr-${c.code}.png`} style={{ padding: '7px 14px', fontSize: 13 }}>Download</a>
+                    <a className="btn btn-ghost" href={src || undefined} download={`payport-qr-${c.code}.png`} style={{ padding: '7px 14px', fontSize: 13, textDecoration: 'none' }}>Download</a>
                     <button className="btn btn-ghost" disabled={busy} style={{ padding: '7px 14px', fontSize: 13 }} onClick={async () => {
                         if (!window.confirm('Generate a new QR code? The current QR code will stop working; the code stays the same.')) return;
                         setBusy(true);
@@ -154,7 +154,7 @@ export function MainCode({ api, owner }) {
                 <div style={{ fontFamily: 'monospace', fontSize: 30, fontWeight: 800, letterSpacing: 4, margin: '2px 0 10px' }}>{c.code}</div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     <button className="btn btn-primary" disabled={!src} onClick={() => printQr(src, owner, c.code, c.address)} style={{ padding: '7px 14px', fontSize: 13 }}>Print QR</button>
-                    <a className="btn btn-ghost" href={src || undefined} download={`payport-qr-${c.code}.png`} style={{ padding: '7px 14px', fontSize: 13 }}>Download</a>
+                    <a className="btn btn-ghost" href={src || undefined} download={`payport-qr-${c.code}.png`} style={{ padding: '7px 14px', fontSize: 13, textDecoration: 'none' }}>Download</a>
                 </div>
             </div>
         </div>
