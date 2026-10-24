@@ -51,7 +51,6 @@ export const agentApi = {
     deposits: () => agentHttp.get('/float-deposits'),
     notifyDeposit: (amountMinor, currency, bankReference) => agentHttp.post('/float-deposits', { amountMinor, currency, bankReference }),
     cashIn: (customer, currency, amountMinor, clientRef) => agentHttp.post('/cash-in', { customer, currency, amountMinor, clientRef }),
-    cashOut: (customerPhone, code) => agentHttp.post('/cash-out', { customerPhone, code }),
     transactions: () => agentHttp.get('/transactions'),
     commissions: () => agentHttp.get('/commissions'),
 };

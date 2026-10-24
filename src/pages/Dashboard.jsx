@@ -43,7 +43,10 @@ export default function Dashboard() {
     return (
         <div style={{ padding: 32 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
-                <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Dashboard</h1>
+                <div>
+                    <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Dashboard</h1>
+                    {user?.merchantCode && <div style={{ fontSize: 13, color: 'var(--text-2)', marginTop: 4 }}>Merchant code <strong style={{ fontFamily: 'monospace', fontSize: 16, color: 'var(--text)', letterSpacing: 2 }}>{user.merchantCode}</strong></div>}
+                </div>
                 {user?.merchantStatus && (
                     <span className={`badge ${user.merchantStatus === 'ACTIVE' ? 'badge-green' : 'badge-amber'}`}>
                         {user.merchantStatus}

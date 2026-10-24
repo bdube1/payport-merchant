@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { agentApi, errorMessage } from './agentApi';
 import { Page, Section, Table, Notice, useLoad, Badge, minor, FormButton, KeyValues, show } from '../components/kit';
 
@@ -44,7 +43,7 @@ export function AgentDashboard() {
             <StatusNotice agent={a} />
             {a && <>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
-                    <Card label="Agent code" value={<span style={{ fontFamily: 'monospace' }}>{a.agent_code}</span>} sub={a.location} />
+                    <Card label="Agent code" value={<span style={{ fontFamily: 'monospace' }}>{a.code || a.agent_code}</span>} sub={a.location} />
                     <Card label="E-float" value={fmt(a.float)} sub={v.pendingDeposits ? `${v.pendingDeposits} deposit(s) awaiting confirmation` : null} />
                     <Card label="Cash-in today" value={fmt(sumBy(v.today, 'CASH_IN', 'amount_minor'))} sub={`${count(v.today, 'CASH_IN')} customers`} />
                     <Card label="Cash-out today" value={fmt(sumBy(v.today, 'CASH_OUT', 'amount_minor'))} sub={`${count(v.today, 'CASH_OUT')} customers`} />
@@ -68,6 +67,8 @@ export function AgentDashboard() {
 
 export function AgentServe() {
     const me = useLoad(() => agentApi.me());
+    const tx = useLoad(() => agentApi.transactions());
+    const cashOuts = (tx.value || []).filter(r => r.kind === 'CASH_OUT').slice(0, 20);
     const a = me.value?.agent;
     const currencies = Object.keys(a?.float || {});
     const active = a?.status === 'ACTIVE';
@@ -95,16 +96,11 @@ export function AgentServe() {
                     }} onDone={me.reload} />}>
                     <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: 0 }}>Take the cash, then send the same amount from your e-float to the customer's PayPort wallet.</p>
                 </Section>
-                <Section title="Cash out" right={<FormButton label="Cash out" kind="ghost" title="Cash out: the customer receives cash" submitLabel="Redeem code"
-                    fields={[{ name: 'customerPhone', label: 'Customer phone', required: true }, { name: 'code', label: 'Cash-out code', required: true }]}
-                    onSubmit={async v => {
-                        const r = await agentApi.cashOut(v.customerPhone.trim(), v.code.trim());
-                        const d = r.data?.data || {};
-                        setLast(`Pay out ${minor(d.amountMinor, d.currency)} in cash now. Commission ${minor(d.commissionMinor, d.currency)}. E-float now ${minor(d.floatMinor, d.currency)}.`);
-                        toast.success('Code redeemed: pay out the cash');
-                        return r;
-                    }} onDone={me.reload} />}>
-                    <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: 0 }}>The customer creates a one-time cash-out code in the PayPort app or on USSD. Pay out only after the code is accepted.</p>
+                <Section title="Cash out" right={<button className="btn btn-ghost" onClick={() => { tx.reload(); me.reload(); }} style={{ padding: '6px 12px', fontSize: 12.5 }}>Refresh</button>}>
+                    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
+                        <Card label="Your agent code" value={<span style={{ fontFamily: 'monospace', fontSize: 26, letterSpacing: 3 }}>{a.code || '—'}</span>} sub={a.name} />
+                    </div>
+                    <Table rows={cashOuts} empty="No cash-outs yet." columns={txColumns} />
                 </Section>
             </>}
         </Page>
@@ -135,7 +131,7 @@ export function AgentFloat() {
                     { key: 'status', label: 'Status', render: r => <Badge value={r.status} /> }, { key: 'note', label: 'Note' },
                 ]} />
             </Section>
-            {a && <Section title="Agent details"><KeyValues obj={{ 'Agent code': a.agent_code, Business: a.name, Contact: a.contact_person, Phone: a.phone, Email: a.email, Location: a.location }} /></Section>}
+            {a && <Section title="Agent details"><KeyValues obj={{ 'Agent code': a.code || a.agent_code, Business: a.name, Contact: a.contact_person, Phone: a.phone, Email: a.email, Location: a.location }} /></Section>}
         </Page>
     );
 }
