@@ -50,9 +50,20 @@ export const agentApi = {
     customer: (customer, currency) => agentHttp.get('/customer', { params: { customer, currency } }),
     deposits: () => agentHttp.get('/float-deposits'),
     notifyDeposit: (amountMinor, currency, bankReference) => agentHttp.post('/float-deposits', { amountMinor, currency, bankReference }),
-    cashIn: (customer, currency, amountMinor, clientRef) => agentHttp.post('/cash-in', { customer, currency, amountMinor, clientRef }),
+    cashIn: (customer, currency, amountMinor, clientRef, code) => agentHttp.post('/cash-in', { customer, currency, amountMinor, clientRef, code }),
     transactions: () => agentHttp.get('/transactions'),
     commissions: () => agentHttp.get('/commissions'),
+    codes: () => agentHttp.get('/codes'),
+    requestCode: (label, address) => agentHttp.post('/codes/requests', { label, address }),
+    newQr: (code) => agentHttp.post(`/codes/${code}/qr`),
+    codesReport: ({ code, from, to }) => agentHttp.get('/codes/report', { params: { ...(code ? { code } : {}), from, to } }),
+};
+
+export const agentCodesApi = {
+    list: () => agentApi.codes(),
+    request: (label, address) => agentApi.requestCode(label, address),
+    newQr: (code) => agentApi.newQr(code),
+    report: (p) => agentApi.codesReport(p),
 };
 
 export const errorMessage = (err, fallback) => err?.response?.data?.message || err?.response?.data?.error?.message || fallback;

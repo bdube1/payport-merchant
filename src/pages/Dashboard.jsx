@@ -1,4 +1,6 @@
-import MerchantQr from '../components/MerchantQr';
+import { ExportArea } from '../components/kit';
+import { MainCode } from '../components/CodesQr';
+import { codesApi } from '../lib/api';
 import { useState, useEffect } from 'react';
 import { Wallet, Receipt, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -46,7 +48,6 @@ export default function Dashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Dashboard</h1>
-                    {user?.merchantCode && <div style={{ fontSize: 13, color: 'var(--text-2)', marginTop: 4 }}>Merchant code <strong style={{ fontFamily: 'monospace', fontSize: 16, color: 'var(--text)', letterSpacing: 2 }}>{user.merchantCode}</strong></div>}
                 </div>
                 {user?.merchantStatus && (
                     <span className={`badge ${user.merchantStatus === 'ACTIVE' ? 'badge-green' : 'badge-amber'}`}>
@@ -55,7 +56,7 @@ export default function Dashboard() {
                 )}
             </div>
 
-            <MerchantQr code={user?.merchantCode} name={user?.merchantName} />
+            <MainCode api={codesApi} owner={user?.merchantName} />
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, marginBottom: 10 }}>
                 {hasAnyBalance ? (
@@ -122,7 +123,7 @@ export default function Dashboard() {
                 ) : sessions.length === 0 ? (
                     <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-2)' }}>No transactions yet.</div>
                 ) : (
-                    <table>
+                    <ExportArea name="Dashboard"><table>
                         <thead>
                             <tr><th>Reference</th><th>Amount</th><th>Status</th><th>Created</th></tr>
                         </thead>
@@ -136,7 +137,7 @@ export default function Dashboard() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table></ExportArea>
                 )}
             </div>
         </div>

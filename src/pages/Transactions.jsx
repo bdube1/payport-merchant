@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { RefreshCw, Download, ChevronDown, ChevronUp, RotateCcw, AlertTriangle, MessageCircleQuestion } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { checkoutSessionsApi, refundsApi, disputesApi, queriesApi, formatAmount, METHOD_LABELS } from '../lib/api';
-import { FormButton } from '../components/kit';
+import { FormButton, ExportArea } from '../components/kit';
 
 const STATUS_BADGE = {
     PAID: 'badge-green',
@@ -251,7 +251,7 @@ export default function Transactions() {
                 ) : filtered.length === 0 ? (
                     <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-2)' }}>No transactions match.</div>
                 ) : (
-                    <table>
+                    <ExportArea name="Transactions"><table>
                         <thead>
                             <tr><th></th><th>Reference</th><th>Method</th><th>Amount</th><th>Customer</th><th>Status</th><th>Created</th><th></th></tr>
                         </thead>
@@ -288,7 +288,7 @@ export default function Transactions() {
                                 </Fragment>
                             ))}
                         </tbody>
-                    </table>
+                    </table></ExportArea>
                 )}
             </div>
 

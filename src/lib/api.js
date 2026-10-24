@@ -103,6 +103,13 @@ export const reportsApi = {
     trends: (days = 30, currency) => api.get('/reports/trends', { params: { days, ...(currency ? { currency } : {}) } }),
 };
 
+export const codesApi = {
+    list: () => api.get('/codes'),
+    request: (label, address) => api.post('/codes/requests', { label, address }),
+    newQr: (code) => api.post(`/codes/${code}/qr`),
+    report: ({ code, from, to }) => api.get('/codes/report', { params: { ...(code ? { code } : {}), from, to } }),
+};
+
 export const teamApi = {
     list: () => api.get('/team'),
     invite: (fullName, email, role) => api.post('/team', { fullName, email, role }),

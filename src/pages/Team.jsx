@@ -1,3 +1,4 @@
+import { ExportArea } from '../components/kit';
 import { useState, useEffect } from 'react';
 import { Users, Plus, Copy, UserX, UserCheck, KeyRound } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -165,7 +166,7 @@ export default function Team() {
                 {loading ? (
                     <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-2)' }}>Loading…</div>
                 ) : (
-                    <table>
+                    <ExportArea name="Team"><table>
                         <thead>
                             <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr>
                         </thead>
@@ -192,7 +193,7 @@ export default function Team() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table></ExportArea>
                 )}
             </div>
 

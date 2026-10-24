@@ -1,3 +1,4 @@
+import { ExportArea } from '../components/kit';
 import { useState, useEffect } from 'react';
 import { PieChart as PieIcon } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
@@ -55,7 +56,7 @@ export default function Reports() {
                                     </PieChart>
                                 </ResponsiveContainer>
 
-                                <table style={{ marginTop: 12 }}>
+                                <ExportArea name="Reports"><table style={{ marginTop: 12 }}>
                                     <thead><tr><th>Method</th><th>Count</th><th>Total</th></tr></thead>
                                     <tbody>
                                         {rows.sort((a, b) => b.grossCents - a.grossCents).map(r => (
@@ -66,7 +67,7 @@ export default function Reports() {
                                             </tr>
                                         ))}
                                     </tbody>
-                                </table>
+                                </table></ExportArea>
                             </div>
                         );
                     })}

@@ -103,6 +103,41 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/codes",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/codes/report",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/codes/requests",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/codes/requests/{id}/decide",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/codes/{code}/status",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/codes/{type}/{partyId}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/codes/{type}/{partyId}",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/compliance-authorities",
    "access": null
   },
@@ -1233,6 +1268,26 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/agent/codes",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/agent/codes/report",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent/codes/requests",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/agent/codes/{code}/qr",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/agent/commissions",
    "access": null
   },
@@ -1418,6 +1473,11 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/charges/quote",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/checkout/{id}",
    "access": null
   },
@@ -1429,6 +1489,11 @@
   {
    "method": "GET",
    "path": "/api/v1/checkout/{id}/qr",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/codes/scan",
    "access": null
   },
   {
@@ -1579,6 +1644,26 @@
   {
    "method": "POST",
    "path": "/api/v1/merchant/checkout-sessions/{sessionId}/refunds",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/codes",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/codes/report",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/codes/requests",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/merchant/codes/{code}/qr",
    "access": null
   },
   {
@@ -1974,6 +2059,11 @@
   {
    "method": "POST",
    "path": "/api/v1/wallet/cards/{ref}/refresh",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/wallet/cards/{ref}/reveal",
    "access": null
   },
   {
