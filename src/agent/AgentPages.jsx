@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { agentApi, errorMessage } from './agentApi';
+import CodesQr, { MainCode } from '../components/CodesQr';
+import { agentCodesApi, agentApi, errorMessage } from './agentApi';
 import { Page, Section, Table, Notice, useLoad, Badge, minor, FormButton, KeyValues, show } from '../components/kit';
 
 const sumBy = (rows, kind, field) => (rows || []).filter(r => !kind || r.kind === kind)
@@ -41,6 +42,7 @@ export function AgentDashboard() {
         <Page title={a ? a.name : 'Dashboard'} actions={a && <Badge value={a.status} />}>
             {d.error && <Notice kind="error">{d.error}</Notice>}
             <StatusNotice agent={a} />
+            {a?.status === 'ACTIVE' && <MainCode api={agentCodesApi} owner={a.name} />}
             {a && <>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
                     <Card label="Agent code" value={<span style={{ fontFamily: 'monospace' }}>{a.code || a.agent_code}</span>} sub={a.location} />
@@ -68,6 +70,8 @@ export function AgentDashboard() {
 export function AgentServe() {
     const me = useLoad(() => agentApi.me());
     const tx = useLoad(() => agentApi.transactions());
+    const codes = useLoad(() => agentApi.codes());
+    const myCodes = codes.value?.codes || [];
     const cashOuts = (tx.value || []).filter(r => r.kind === 'CASH_OUT').slice(0, 20);
     const a = me.value?.agent;
     const currencies = Object.keys(a?.float || {});
@@ -85,11 +89,13 @@ export function AgentServe() {
                 <Section title="Cash in" right={<FormButton label="Cash in" title="Cash in: the customer gives you cash" submitLabel="Send to wallet"
                     fields={[{ name: 'customer', label: 'Customer phone or wallet number', required: true },
                         { name: 'currency', label: 'Currency', type: 'select', options: currencies, required: true, initial: currencies[0] || '' },
-                        { name: 'amount', label: 'Amount', type: 'number', step: '0.01', required: true }]}
+                        { name: 'amount', label: 'Amount', type: 'number', step: '0.01', required: true },
+                        ...(myCodes.length > 1 ? [{ name: 'code', label: 'At (agent code)', type: 'select', required: true, initial: myCodes[0].code,
+                            options: myCodes.map(c => ({ value: c.code, label: `${c.code} ${c.primary ? '(main)' : '– ' + c.label}` })) }] : [])]}
                     onSubmit={async v => {
                         const who = await agentApi.customer(v.customer.trim(), v.currency).then(r => r.data?.data).catch(e => { throw new Error(errorMessage(e, 'Customer not found')); });
                         if (!window.confirm(`Send ${v.currency} ${Number(v.amount).toFixed(2)} to ${who.name || who.wallet} (${who.wallet})?`)) throw new Error('Cancelled');
-                        const r = await agentApi.cashIn(v.customer.trim(), v.currency, Math.round(Number(v.amount) * 100), `web-${Date.now()}`);
+                        const r = await agentApi.cashIn(v.customer.trim(), v.currency, Math.round(Number(v.amount) * 100), `web-${Date.now()}`, v.code || null);
                         const d = r.data?.data || {};
                         setLast(`Cash-in done: ${minor(d.amountMinor, d.currency)} to ${d.wallet}. Commission ${minor(d.commissionMinor, d.currency)}. E-float now ${minor(d.floatMinor, d.currency)}.`);
                         return r;
@@ -98,7 +104,9 @@ export function AgentServe() {
                 </Section>
                 <Section title="Cash out" right={<button className="btn btn-ghost" onClick={() => { tx.reload(); me.reload(); }} style={{ padding: '6px 12px', fontSize: 12.5 }}>Refresh</button>}>
                     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
-                        <Card label="Your agent code" value={<span style={{ fontFamily: 'monospace', fontSize: 26, letterSpacing: 3 }}>{a.code || '—'}</span>} sub={a.name} />
+                        {(myCodes.length ? myCodes : [{ code: a.code, primary: true }]).map(c => (
+                            <Card key={c.code} label={c.primary ? 'Your agent code' : c.label} value={<span style={{ fontFamily: 'monospace', fontSize: 26, letterSpacing: 3 }}>{c.code || '—'}</span>} sub={c.address || a.name} />
+                        ))}
                     </div>
                     <Table rows={cashOuts} empty="No cash-outs yet." columns={txColumns} />
                 </Section>
@@ -165,4 +173,9 @@ export function AgentCommissions() {
             </Section>
         </Page>
     );
+}
+
+export function AgentCodes() {
+    const me = useLoad(() => agentApi.me());
+    return <CodesQr word="Agent" owner={me.value?.agent?.name || 'Agent'} api={agentCodesApi} />;
 }

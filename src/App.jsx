@@ -11,6 +11,7 @@ import Track from './pages/Track.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import AgentApp from './agent/AgentApp.jsx';
+import Codes from './pages/Codes';
 import Dashboard from './pages/Dashboard.jsx';
 import Transactions from './pages/Transactions.jsx';
 import Queries from './pages/Queries.jsx';
@@ -66,6 +67,7 @@ function AppRoutes() {
             <Route path="/webhooks" element={<RequireAuth><Webhooks /></RequireAuth>} />
             <Route path="/team" element={<RequireAuth><Team /></RequireAuth>} />
             <Route path="/pos" element={<RequireAuth><Pos /></RequireAuth>} />
+            <Route path="/codes" element={<RequireAuth><Codes /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );

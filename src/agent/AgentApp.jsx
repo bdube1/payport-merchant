@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ArrowDownUp, Landmark, Receipt, Percent, LogOut, KeyRound } from 'lucide-react';
+import { LayoutDashboard, ArrowDownUp, Landmark, Receipt, Percent, LogOut, KeyRound, QrCode } from 'lucide-react';
 import { agentSession } from './agentApi';
 import { AgentAuthProvider, useAgentAuth } from './agentAuth.jsx';
 import { ThemeToggle } from '../lib/theme.jsx';
 import { AgentLogin, AgentForgotPassword, AgentResetPassword, AgentApply, AgentTrack, AgentChangePassword } from './AgentPublic.jsx';
-import { AgentDashboard, AgentServe, AgentFloat, AgentTransactions, AgentCommissions } from './AgentPages.jsx';
+import { AgentDashboard, AgentServe, AgentFloat, AgentTransactions, AgentCommissions, AgentCodes } from './AgentPages.jsx';
 
 const nav = [
     { to: '/agent', icon: LayoutDashboard, label: 'Dashboard', end: true },
@@ -12,6 +12,7 @@ const nav = [
     { to: '/agent/float', icon: Landmark, label: 'Float' },
     { to: '/agent/transactions', icon: Receipt, label: 'Transactions' },
     { to: '/agent/commissions', icon: Percent, label: 'Commissions' },
+    { to: '/agent/codes', icon: QrCode, label: 'Codes & QR' },
 ];
 
 function AgentLayout({ children }) {
@@ -77,6 +78,7 @@ export default function AgentApp() {
                 <Route path="float" element={<RequireAgent><AgentFloat /></RequireAgent>} />
                 <Route path="transactions" element={<RequireAgent><AgentTransactions /></RequireAgent>} />
                 <Route path="commissions" element={<RequireAgent><AgentCommissions /></RequireAgent>} />
+                <Route path="codes" element={<RequireAgent><AgentCodes /></RequireAgent>} />
                 <Route path="*" element={<Navigate to="/agent" replace />} />
             </Routes>
         </AgentAuthProvider>

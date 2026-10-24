@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link2, Plus, Copy, Ban } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { paymentLinksApi, formatAmount } from '../lib/api';
-import { CurrencySelect } from '../components/kit';
+import { CurrencySelect, ExportArea } from '../components/kit';
 
 function CreateModal({ onClose, onCreated }) {
     const [amount, setAmount] = useState('');
@@ -105,7 +105,7 @@ export default function PaymentLinks() {
                 </div>
             ) : (
                 <div className="card" style={{ padding: 0 }}>
-                    <table>
+                    <ExportArea name="Payment links"><table>
                         <thead>
                             <tr><th>Description</th><th>Amount</th><th>Reusable</th><th>Status</th><th>Link</th><th></th></tr>
                         </thead>
@@ -131,7 +131,7 @@ export default function PaymentLinks() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table></ExportArea>
                 </div>
             )}
 

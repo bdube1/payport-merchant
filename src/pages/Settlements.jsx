@@ -1,3 +1,4 @@
+import { ExportArea } from '../components/kit';
 import { useState, useEffect } from 'react';
 import { Landmark } from 'lucide-react';
 import { settlementsApi, formatAmount } from '../lib/api';
@@ -36,7 +37,7 @@ export default function Settlements() {
                 </div>
             ) : (
                 <div className="card" style={{ padding: 0 }}>
-                    <table>
+                    <ExportArea name="Settlements"><table>
                         <thead>
                             <tr><th>Period</th><th>Currency</th><th>Transactions</th><th>Gross</th><th>Commission</th><th>Refunds</th><th>Net paid out</th><th>Status</th><th>Reference</th></tr>
                         </thead>
@@ -57,7 +58,7 @@ export default function Settlements() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table></ExportArea>
                 </div>
             )}
         </div>

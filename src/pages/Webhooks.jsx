@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Webhook as WebhookIcon, Plus, Copy, ChevronDown, ChevronUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { webhooksApi } from '../lib/api';
-import { Act } from '../components/kit';
+import { Act, ExportArea } from '../components/kit';
 
 function RegisterModal({ onClose, onRegistered }) {
     const [url, setUrl] = useState('');
@@ -76,7 +76,7 @@ function DeliveryLog({ webhookId }) {
     if (deliveries.length === 0) return <div style={{ padding: '16px 22px', color: 'var(--text-2)', fontSize: 13 }}>No delivery attempts yet.</div>;
 
     return (
-        <table>
+        <ExportArea name="Webhooks"><table>
             <thead>
                 <tr><th>Event</th><th>Event ID</th><th>Status</th><th>Attempts</th><th>Response</th><th>Last attempt</th><th></th></tr>
             </thead>
@@ -93,7 +93,7 @@ function DeliveryLog({ webhookId }) {
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </table></ExportArea>
     );
 }
 
