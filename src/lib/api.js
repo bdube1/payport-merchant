@@ -52,7 +52,7 @@ api.interceptors.response.use(
             redirecting = true;
             authStorage.removeItem('pm_token');
             authStorage.removeItem('pm_user');
-            window.location.href = '/login';
+            window.location.href = '/login?timeout=1';
         }
         return Promise.reject(err);
     }
