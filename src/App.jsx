@@ -1,3 +1,5 @@
+import { useIdleLogout } from './lib/idle';
+import { authStorage } from './lib/api';
 import { lazy, Suspense } from 'react';
 const Pos = lazy(() => import('./pages/Pos'));
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -74,9 +76,21 @@ function AppRoutes() {
     );
 }
 
+/** Signs a merchant user out after the merchant time-out without activity (the agent portal has its own). */
+function IdleGuard() {
+    const { user, logout } = useAuth();
+    const agentArea = window.location.pathname.startsWith('/agent');
+    useIdleLogout(user && !agentArea ? authStorage.getItem('pm_token') : null, 'merchant', () => {
+        logout();
+        window.location.href = '/login?timeout=1';
+    });
+    return null;
+}
+
 export default function App() {
     return (
         <AuthProvider>
+            <IdleGuard />
             <BrowserRouter>
                 <Toaster position="top-right" />
                 <AppRoutes />

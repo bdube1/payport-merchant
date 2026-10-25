@@ -42,7 +42,7 @@ export function AgentLogin() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(() => (new URLSearchParams(window.location.search).get('timeout') ? 'Your session timed out. Please sign in again.' : ''));
     const [busy, setBusy] = useState(false);
     const submit = async (e) => {
         e.preventDefault();

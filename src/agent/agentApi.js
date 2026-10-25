@@ -28,7 +28,7 @@ agentHttp.interceptors.response.use((r) => r, (err) => {
     const code = err.response?.data?.error?.code;
     if (s === 401) {
         agentSession.clear();
-        if (!window.location.pathname.startsWith('/agent/login')) window.location.href = '/agent/login';
+        if (!window.location.pathname.startsWith('/agent/login')) window.location.href = '/agent/login?timeout=1';
     } else if (s === 403 && code === 'MUST_CHANGE_PASSWORD' && !window.location.pathname.startsWith('/agent/change-password')) {
         window.location.href = '/agent/change-password';
     }

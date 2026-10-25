@@ -1,3 +1,4 @@
+import { useIdleLogout } from '../lib/idle';
 import { Routes, Route, Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, ArrowDownUp, Landmark, Receipt, Percent, LogOut, KeyRound, QrCode } from 'lucide-react';
 import { agentSession } from './agentApi';
@@ -57,7 +58,12 @@ function AgentLayout({ children }) {
 }
 
 function RequireAgent({ children }) {
-    const { user } = useAgentAuth();
+    const { user, logout } = useAgentAuth();
+    // Signed out after the agent time-out without activity (set in ops).
+    useIdleLogout(user ? agentSession.token() : null, 'agent', () => {
+        logout();
+        window.location.href = '/agent/login?timeout=1';
+    });
     if (!user || !agentSession.token()) return <Navigate to="/agent/login" replace />;
     if (user.mustChangePassword) return <Navigate to="/agent/change-password" replace />;
     return <AgentLayout>{children}</AgentLayout>;
