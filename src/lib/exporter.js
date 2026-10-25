@@ -1,5 +1,4 @@
 // Export any report table on screen to Excel or PDF. Columns without a heading (row actions) are left out.
-import * as XLSX from 'xlsx';
 
 function readTable(table) {
     const cells = (tr) => [...tr.children].map(c => (c.innerText || '').replace(/\s+/g, ' ').trim());
@@ -13,7 +12,8 @@ function readTable(table) {
 const stamp = () => new Date().toISOString().slice(0, 10);
 const safe = (s) => String(s || 'report').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
 
-export function exportExcel(tables, name) {
+export async function exportExcel(tables, name) {
+    const XLSX = await import('xlsx');   // loaded only when someone exports
     const wb = XLSX.utils.book_new();
     tables.forEach((t, i) => {
         const { head, body } = readTable(t);
