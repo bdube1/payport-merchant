@@ -94,7 +94,7 @@ export function ExportArea({ name = 'Report', children, style }) {
         const tables = [...(ref.current?.querySelectorAll('table') || [])];
         if (!tables.length) { toast.error('Nothing to export'); return; }
         setBusy(kind);
-        try { if (kind === 'xlsx') exportExcel(tables, name); else await exportPdf(tables, name); }
+        try { if (kind === 'xlsx') await exportExcel(tables, name); else await exportPdf(tables, name); }
         catch (e) { toast.error(e?.message || 'Export failed'); }
         finally { setBusy(''); }
     };

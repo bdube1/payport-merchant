@@ -1,29 +1,30 @@
-import Pos from './pages/Pos';
+import { lazy, Suspense } from 'react';
+const Pos = lazy(() => import('./pages/Pos'));
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './lib/auth.jsx';
 import Layout from './components/Layout.jsx';
 import Login from './pages/Login.jsx';
-import Signup from './pages/Signup.jsx';
-import ChangePassword from './pages/ChangePassword.jsx';
-import ApplicationStatus from './pages/ApplicationStatus.jsx';
-import Track from './pages/Track.jsx';
-import ForgotPassword from './pages/ForgotPassword.jsx';
-import ResetPassword from './pages/ResetPassword.jsx';
-import AgentApp from './agent/AgentApp.jsx';
-import Codes from './pages/Codes';
-import Dashboard from './pages/Dashboard.jsx';
-import Transactions from './pages/Transactions.jsx';
-import Queries from './pages/Queries.jsx';
-import Reports from './pages/Reports.jsx';
-import PaymentLinks from './pages/PaymentLinks.jsx';
-import Settlements from './pages/Settlements.jsx';
-import Webhooks from './pages/Webhooks.jsx';
-import Team from './pages/Team.jsx';
-import Developers from './pages/Developers.jsx';
-import GoLive from './pages/GoLive.jsx';
-import Balances from './pages/Balances.jsx';
-import Payouts from './pages/Payouts.jsx';
+const Signup = lazy(() => import('./pages/Signup.jsx'));
+const ChangePassword = lazy(() => import('./pages/ChangePassword.jsx'));
+const ApplicationStatus = lazy(() => import('./pages/ApplicationStatus.jsx'));
+const Track = lazy(() => import('./pages/Track.jsx'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword.jsx'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword.jsx'));
+const AgentApp = lazy(() => import('./agent/AgentApp.jsx'));
+const Codes = lazy(() => import('./pages/Codes'));
+const Dashboard = lazy(() => import('./pages/Dashboard.jsx'));
+const Transactions = lazy(() => import('./pages/Transactions.jsx'));
+const Queries = lazy(() => import('./pages/Queries.jsx'));
+const Reports = lazy(() => import('./pages/Reports.jsx'));
+const PaymentLinks = lazy(() => import('./pages/PaymentLinks.jsx'));
+const Settlements = lazy(() => import('./pages/Settlements.jsx'));
+const Webhooks = lazy(() => import('./pages/Webhooks.jsx'));
+const Team = lazy(() => import('./pages/Team.jsx'));
+const Developers = lazy(() => import('./pages/Developers.jsx'));
+const GoLive = lazy(() => import('./pages/GoLive.jsx'));
+const Balances = lazy(() => import('./pages/Balances.jsx'));
+const Payouts = lazy(() => import('./pages/Payouts.jsx'));
 
 function RequireAuth({ children }) {
     const { user } = useAuth();
@@ -46,7 +47,7 @@ function RequireChangePasswordAuth() {
 
 function AppRoutes() {
     return (
-        <Routes>
+        <Suspense fallback={<div style={{ padding: 60, textAlign: 'center' }}>Loading…</div>}><Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/track" element={<Track />} />
@@ -69,7 +70,7 @@ function AppRoutes() {
             <Route path="/pos" element={<RequireAuth><Pos /></RequireAuth>} />
             <Route path="/codes" element={<RequireAuth><Codes /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        </Routes></Suspense>
     );
 }
 
