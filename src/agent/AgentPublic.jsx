@@ -210,7 +210,7 @@ export function AgentApply() {
                 <Err>{error}</Err>
                 <Field label="Business name (as customers will see it)"><input value={f.name} onChange={set('name')} required style={full} /></Field>
                 <Field label="Contact person"><input value={f.contactPerson} onChange={set('contactPerson')} required style={full} /></Field>
-                <Field label="Mobile number"><input value={f.phone} onChange={set('phone')} required placeholder="+263771234567" style={full} /></Field>
+                <Field label="Mobile number"><input value={f.phone} onChange={set('phone')} required style={full} /></Field>
                 <Field label="Email"><input type="email" value={f.email} onChange={set('email')} required style={full} /></Field>
                 <Field label="National ID or company registration number"><input value={f.idNumber} onChange={set('idNumber')} style={full} /></Field>
                 <Field label="Shop address / location"><input value={f.location} onChange={set('location')} required style={full} /></Field>
@@ -239,7 +239,7 @@ export function AgentTrack() {
         <Shell title="Track your agent application">
             <form onSubmit={submit}>
                 <Err>{error}</Err>
-                <Field label="Application reference"><input value={ref} onChange={e => setRef(e.target.value)} required placeholder="AGT-…" style={full} /></Field>
+                <Field label="Application reference"><input value={ref} onChange={e => setRef(e.target.value)} required style={full} /></Field>
                 <button type="submit" disabled={busy} className="btn btn-primary" style={submitBtn}>{busy ? 'Checking…' : 'Check status'}</button>
             </form>
             {s && (

@@ -76,7 +76,7 @@ function NewQueryModal({ onClose, onSent }) {
                         </p>
                         {lookupError && <div style={{ background: 'var(--badge-red)', color: 'var(--red)', padding: '10px 14px', borderRadius: 10, fontSize: 13, marginBottom: 14 }}>{lookupError}</div>}
                         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-                            <input value={reference} onChange={e => setReference(e.target.value)} placeholder="e.g. PP-API-20260818-314324" style={{ flex: 1 }} autoFocus />
+                            <input value={reference} onChange={e => setReference(e.target.value)} style={{ flex: 1 }} autoFocus />
                             <button type="submit" disabled={looking || !reference.trim()} className="btn btn-primary">
                                 <Search size={14} /> {looking ? 'Looking…' : 'Find'}
                             </button>
@@ -326,7 +326,7 @@ export default function Queries() {
             <form onSubmit={runSearch} style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
                 <input
                     value={search} onChange={e => setSearch(e.target.value)}
-                    placeholder="Search by query reference, e.g. QRY-20260822-4471"
+                    placeholder="Search by query reference"
                     style={{ flex: '1 1 320px', maxWidth: 420 }}
                 />
                 <button type="submit" disabled={searching} className="btn btn-ghost"><Search size={14} /> Search</button>

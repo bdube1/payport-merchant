@@ -36,13 +36,13 @@ function CreateModal({ onClose, onCreated }) {
                 {error && <div style={{ background: 'var(--badge-red)', color: 'var(--red)', padding: '10px 14px', borderRadius: 10, fontSize: 13, marginBottom: 14 }}>{error}</div>}
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Amount (leave blank to let the customer enter their own)</label>
-                <input type="number" step="0.01" min="0.01" value={amount} onChange={e => setAmount(e.target.value)} placeholder="10.00" style={{ width: '100%', marginBottom: 14 }} />
+                <input type="number" step="0.01" min="0.01" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', marginBottom: 14 }} />
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Currency</label>
                 <CurrencySelect value={currency} onChange={setCurrency} style={{ width: '100%', marginBottom: 14 }} />
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Description</label>
-                <input value={description} onChange={e => setDescription(e.target.value)} placeholder="Consulting fee, product name, etc." style={{ width: '100%', marginBottom: 14 }} />
+                <input value={description} onChange={e => setDescription(e.target.value)} style={{ width: '100%', marginBottom: 14 }} />
 
                 <label style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
                     <input type="checkbox" checked={reusable} onChange={e => setReusable(e.target.checked)} style={{ width: 'auto' }} />
