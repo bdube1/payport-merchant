@@ -41,7 +41,7 @@ export default function Track() {
                 </div>
                 <form onSubmit={e => { e.preventDefault(); look(reference); }}>
                     <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }} htmlFor="ref">Application reference</label>
-                    <input id="ref" value={reference} onChange={e => setReference(e.target.value)} placeholder="MER-20261023-1234"
+                    <input id="ref" value={reference} onChange={e => setReference(e.target.value)}
                         style={{ width: '100%', marginBottom: 14, fontFamily: 'monospace', textTransform: 'uppercase' }} autoFocus />
                     <button type="submit" disabled={loading || !reference.trim()} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: 13 }}>
                         {loading ? 'Checking…' : 'Check status'}

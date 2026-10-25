@@ -151,10 +151,10 @@ export default function Signup() {
                 </select>
 
                 <label style={label} htmlFor="contactPhone">Business phone</label>
-                <input id="contactPhone" type="tel" value={form.contactPhone} onChange={set('contactPhone')} required placeholder="+263 77 123 4567" style={field} autoComplete="tel" />
+                <input id="contactPhone" type="tel" value={form.contactPhone} onChange={set('contactPhone')} required style={field} autoComplete="tel" />
 
                 <label style={label} htmlFor="address">Business address / location</label>
-                <input id="address" value={form.address} onChange={set('address')} required placeholder="12 Samora Machel Ave, Harare" style={field} autoComplete="street-address" />
+                <input id="address" value={form.address} onChange={set('address')} required style={field} autoComplete="street-address" />
 
                 <h2 style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, color: 'var(--text-2)', margin: '8px 0 12px' }}>Your login (account owner)</h2>
                 <label style={label} htmlFor="ownerFullName">Full name</label>

@@ -49,10 +49,10 @@ function RefundModal({ session, onClose, onRefunded }) {
                 {error && <div style={{ background: 'var(--badge-red)', color: 'var(--red)', padding: '10px 14px', borderRadius: 10, fontSize: 13, marginBottom: 14 }}>{error}</div>}
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Amount (leave blank for full refund)</label>
-                <input type="number" step="0.01" min="0.01" value={amount} onChange={e => setAmount(e.target.value)} placeholder={`Up to ${(session.amountCents / 100).toFixed(2)}`} style={{ width: '100%', marginBottom: 14 }} />
+                <input type="number" step="0.01" min="0.01" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', marginBottom: 14 }} />
 
                 <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Reason</label>
-                <input value={reason} onChange={e => setReason(e.target.value)} placeholder="Customer requested, duplicate charge, etc." style={{ width: '100%', marginBottom: 20 }} />
+                <input value={reason} onChange={e => setReason(e.target.value)} style={{ width: '100%', marginBottom: 20 }} />
 
                 <div style={{ background: 'var(--badge-amber)', color: '#92600A', padding: '10px 14px', borderRadius: 10, fontSize: 12, marginBottom: 20 }}>
                     This records the refund and adjusts your balance. It doesn't automatically send money back through EcoCash/OneMoney/Omari/ZimSwitch yet — contact Payport support to coordinate the actual payout.

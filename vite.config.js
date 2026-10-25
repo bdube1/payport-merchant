@@ -7,6 +7,6 @@ export default defineConfig({
     port: 3002,
   },
   preview: {
-    allowedHosts: ['merchant.payport.africa'],
+    allowedHosts: ['merchant.payport.africa', 'merchant-staging.payport.africa', 'localhost'],
   },
 })

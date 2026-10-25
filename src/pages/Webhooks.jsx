@@ -37,7 +37,7 @@ function RegisterModal({ onClose, onRegistered }) {
                         </p>
                         {error && <div style={{ background: 'var(--badge-red)', color: 'var(--red)', padding: '10px 14px', borderRadius: 10, fontSize: 13, marginBottom: 14 }}>{error}</div>}
                         <label style={{ fontSize: 12.5, fontWeight: 700, display: 'block', marginBottom: 6 }}>Endpoint URL</label>
-                        <input type="url" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://yourapp.com/webhooks/payport" required style={{ width: '100%', marginBottom: 20 }} />
+                        <input type="url" value={url} onChange={e => setUrl(e.target.value)} required style={{ width: '100%', marginBottom: 20 }} />
                         <div style={{ display: 'flex', gap: 10 }}>
                             <button type="button" onClick={onClose} className="btn btn-ghost" style={{ flex: 1, justifyContent: 'center' }}>Cancel</button>
                             <button type="submit" disabled={submitting} className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
