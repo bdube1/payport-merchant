@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
     const login = async (email, password, rememberMe = true) => {
         const res = await authApi.login(email, password);
         const data = res.data?.data || res.data;
+        authStorage.removeItem('pm_store');
         authStorage.setItem('pm_token', data.token, rememberMe);
         authStorage.setItem('pm_user', JSON.stringify(data.user), rememberMe);
         setUser(data.user);
@@ -18,6 +19,7 @@ export function AuthProvider({ children }) {
     const logout = () => {
         authStorage.removeItem('pm_token');
         authStorage.removeItem('pm_user');
+        authStorage.removeItem('pm_store');
         setUser(null);
     };
 
