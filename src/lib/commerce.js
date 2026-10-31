@@ -72,6 +72,7 @@ export const storeApi = {
     addDomain: (domain) => commerceHttp.post('/domains', { domain }),
     verifyDomain: (id) => commerceHttp.post(`/domains/${id}/verify`),
     removeDomain: (id) => commerceHttp.delete(`/domains/${id}`),
+    insights: () => commerceHttp.get('/insights'),
     customers: (q) => commerceHttp.get('/customers', { params: { q: q || undefined } }),
 };
 
