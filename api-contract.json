@@ -138,6 +138,51 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/complaints",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/complaints",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/complaints/catalog",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/complaints/summary",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/complaints/trace",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/complaints/{id}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/complaints/{id}/assign",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/complaints/{id}/notes",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/complaints/{id}/status",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/compliance-authorities",
    "access": null
   },
@@ -413,6 +458,11 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/dashboard/volume",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/dispute-timelines",
    "access": null
   },
@@ -558,6 +608,21 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/health-lookups",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/health-lookups",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/health-lookups/check",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/health-status",
    "access": null
   },
@@ -569,6 +634,11 @@
   {
    "method": "GET",
    "path": "/api/v1/admin/integrations",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/integrations/connectivity",
    "access": null
   },
   {
@@ -1033,6 +1103,76 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/reversal-approvals",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/reversal-approvals/{ref}/approve",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/reversal-approvals/{ref}/payout",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/reversal-approvals/{ref}/reject",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reversals",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/reversals",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/reversals/trace",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/roles",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/roles",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/roles/catalog",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/roles/me",
+   "access": null
+  },
+  {
+   "method": "DELETE",
+   "path": "/api/v1/admin/roles/{code}",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/roles/{code}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/roles/{code}/reset",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/rules/{party}",
    "access": null
   },
@@ -1059,6 +1199,11 @@
   {
    "method": "POST",
    "path": "/api/v1/admin/service-lines/{code}",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/admin/session-timeouts",
    "access": null
   },
   {
@@ -1167,6 +1312,11 @@
    "access": null
   },
   {
+   "method": "POST",
+   "path": "/api/v1/admin/ussd/simulate",
+   "access": null
+  },
+  {
    "method": "GET",
    "path": "/api/v1/admin/wallet-balances",
    "access": null
@@ -1179,6 +1329,11 @@
   {
    "method": "GET",
    "path": "/api/v1/admin/wallets",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/wallets/balances",
    "access": null
   },
   {
@@ -1207,6 +1362,11 @@
    "access": null
   },
   {
+   "method": "GET",
+   "path": "/api/v1/admin/wallets/{ref}/statement-report",
+   "access": null
+  },
+  {
    "method": "POST",
    "path": "/api/v1/admin/wallets/{ref}/status",
    "access": null
@@ -1224,6 +1384,16 @@
   {
    "method": "PUT",
    "path": "/api/v1/admin/whatsapp/settings",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/whatsapp/simulate",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/whatsapp/simulate/outbox",
    "access": null
   },
   {
@@ -1388,7 +1558,17 @@
   },
   {
    "method": "POST",
+   "path": "/api/v1/bundles/admin/NETONE/sync",
+   "access": null
+  },
+  {
+   "method": "POST",
    "path": "/api/v1/bundles/admin/upload",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/bundles/admin/{provider}/all",
    "access": null
   },
   {
@@ -1494,6 +1674,31 @@
   {
    "method": "GET",
    "path": "/api/v1/codes/scan",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/commerce/checkouts",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/commerce/checkouts/{merchantId}/{reference}",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/commerce/events",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/commerce/merchants/{merchantId}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/commerce/refunds",
    "access": null
   },
   {
@@ -1669,6 +1874,11 @@
   {
    "method": "GET",
    "path": "/api/v1/merchant/collections-by-method",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/commerce/identity",
    "access": null
   },
   {
@@ -1877,6 +2087,11 @@
    "access": null
   },
   {
+   "method": "GET",
+   "path": "/api/v1/monitoring/targets",
+   "access": null
+  },
+  {
    "method": "POST",
    "path": "/api/v1/omari/admin/auth",
    "access": null
@@ -1969,6 +2184,11 @@
   {
    "method": "POST",
    "path": "/api/v1/qr/resolve",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/session-timeouts",
    "access": null
   },
   {

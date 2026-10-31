@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket, MonitorSmartphone, QrCode } from 'lucide-react';
+import { LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket, MonitorSmartphone, QrCode, Store } from 'lucide-react';
 import { ThemeToggle } from '../lib/theme.jsx';
 import { useAuth } from '../lib/auth.jsx';
 
@@ -9,6 +9,7 @@ import { useAuth } from '../lib/auth.jsx';
 const nav = [
     { to: '/', icon: LayoutDashboard, label: 'Dashboard', end: true, roles: null },
     { to: '/transactions', icon: Receipt, label: 'Transactions', roles: null },
+    { to: '/store', icon: Store, label: 'Store', roles: null },
     { to: '/queries', icon: MessageCircleQuestion, label: 'Queries', roles: null },
     { to: '/payment-links', icon: Link2, label: 'Payment Links', roles: ['OWNER', 'DEVELOPER'] },
     { to: '/balances', icon: Wallet, label: 'Balances', roles: null },
