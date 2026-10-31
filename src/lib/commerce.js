@@ -82,6 +82,15 @@ export const storeApi = {
     addDiscount: (b) => commerceHttp.post('/discounts', b),
     setDiscount: (id, active) => commerceHttp.post(`/discounts/${id}/status`, { active }),
     businessTypes: () => commerceHttp.get('/business-types'),
+    refreshMethods: () => commerceHttp.post('/methods/refresh'),
+    reviews: () => commerceHttp.get('/reviews'),
+    updateReview: (id, b) => commerceHttp.post(`/reviews/${id}`, b),
+    zones: () => commerceHttp.get('/zones'),
+    addZone: (b) => commerceHttp.post('/zones', b),
+    removeZone: (id) => commerceHttp.delete(`/zones/${id}`),
+    hours: () => commerceHttp.get('/hours'),
+    setHours: (b) => commerceHttp.put('/hours', b),
+    bookings: () => commerceHttp.get('/bookings'),
     cashReceived: (ref) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/cash-received`),
 };
 
