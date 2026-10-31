@@ -9,7 +9,7 @@ const STATUS = {
     ACTIVE: { label: 'Approved', color: '#2F855A', text: 'Your application is approved. Sign in to start accepting payments.' },
     APPROVED: { label: 'Approved', color: '#2F855A', text: 'Your application is approved. Sign in to start accepting payments.' },
     REJECTED: { label: 'Not approved', color: '#E53E3E', text: 'Your application was not approved. Sign in to see the reason.' },
-    SUSPENDED: { label: 'Suspended', color: '#E53E3E', text: 'This merchant account is suspended. Please contact PayPort.' },
+    SUSPENDED: { label: 'Suspended', color: '#E53E3E', text: 'This merchant account is suspended. Please contact Payport.' },
 };
 
 export default function Track() {

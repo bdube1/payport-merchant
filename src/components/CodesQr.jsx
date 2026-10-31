@@ -21,13 +21,13 @@ function printQr(src, title, code, sub) {
     const w = window.open('', '_blank', 'width=640,height=820');
     if (!w) { toast.error('Allow pop-ups to print'); return; }
     const esc = (s) => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    w.document.write(`<!doctype html><html><head><title>PayPort QR ${esc(code)}</title><style>
+    w.document.write(`<!doctype html><html><head><title>Payport QR ${esc(code)}</title><style>
         body{font-family:Arial,sans-serif;text-align:center;padding:40px;color:#091E3E}
         h1{font-size:28px;margin:0 0 6px} p{margin:4px 0;color:#5a7a91} img{width:380px;height:380px;margin:24px 0}
         .code{font-family:monospace;font-size:40px;font-weight:800;letter-spacing:6px;color:#091E3E}
         .brand{margin-top:28px;font-weight:800;color:#06A3DA;font-size:22px}</style></head><body>
         <h1>${esc(title)}</h1>${sub ? `<p>${esc(sub)}</p>` : ''}<img src="${src}" alt="QR"/>
-        <p>Scan with the PayPort app or enter the code</p><div class="code">${esc(code)}</div><div class="brand">PayPort</div>
+        <p>Scan with the Payport app or enter the code</p><div class="code">${esc(code)}</div><div class="brand">Payport</div>
         <script>window.onload=function(){window.print();}<\/script></body></html>`);
     w.document.close();
 }

@@ -28,7 +28,7 @@ export async function exportPdf(tables, name) {
     const [{ jsPDF }, { default: autoTable }] = await Promise.all([import('jspdf'), import('jspdf-autotable')]);
     const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
     doc.setFontSize(14);
-    doc.text(`PayPort — ${name}`, 36, 36);
+    doc.text(`Payport — ${name}`, 36, 36);
     doc.setFontSize(9);
     doc.text(`Exported ${new Date().toLocaleString()}`, 36, 52);
     let y = 64;

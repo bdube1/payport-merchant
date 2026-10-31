@@ -20,7 +20,7 @@ function Card({ label, value, sub }) {
 
 function StatusNotice({ agent }) {
     if (!agent) return null;
-    if (agent.status === 'SUSPENDED') return <Notice kind="error">Your agent account is suspended. Contact PayPort.</Notice>;
+    if (agent.status === 'SUSPENDED') return <Notice kind="error">Your agent account is suspended. Contact Payport.</Notice>;
     if (agent.status === 'PENDING') return <Notice kind="warn">Your application is being reviewed.</Notice>;
     return null;
 }
@@ -100,7 +100,7 @@ export function AgentServe() {
                         setLast(`Cash-in done: ${minor(d.amountMinor, d.currency)} to ${d.wallet}. Commission ${minor(d.commissionMinor, d.currency)}. E-float now ${minor(d.floatMinor, d.currency)}.`);
                         return r;
                     }} onDone={me.reload} />}>
-                    <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: 0 }}>Take the cash, then send the same amount from your e-float to the customer's PayPort wallet.</p>
+                    <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: 0 }}>Take the cash, then send the same amount from your e-float to the customer's Payport wallet.</p>
                 </Section>
                 <Section title="Cash out" right={<button className="btn btn-ghost" onClick={() => { tx.reload(); me.reload(); }} style={{ padding: '6px 12px', fontSize: 12.5 }}>Refresh</button>}>
                     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>

@@ -155,7 +155,7 @@ export default function Webhooks() {
                                         {w.status === 'ACTIVE' && <Act label="Disable" kind="danger" confirm="Stop sending events to this endpoint?" run={() => webhooksApi.disable(w.id)} done={load} />}
                                     </div>
                                     <div style={{ padding: '0 20px 12px', fontSize: 12.5, color: 'var(--text-2)' }}>
-                                        Verify every event: read <code>PayPort-Signature: t=…,v1=…</code>, compute the hex HMAC-SHA256 of <code>{'{t}.{raw body}'}</code> with your secret, compare it with <code>v1</code> in constant time, and reject old timestamps. Use the event ID to ignore duplicates. Endpoints must be https and public.
+                                        Verify every event: read <code>Payport-Signature: t=…,v1=…</code>, compute the hex HMAC-SHA256 of <code>{'{t}.{raw body}'}</code> with your secret, compare it with <code>v1</code> in constant time, and reject old timestamps. Use the event ID to ignore duplicates. Endpoints must be https and public.
                                     </div>
                                     <DeliveryLog webhookId={w.id} />
                                 </div>
