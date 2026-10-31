@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Plus, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { Page, Section, Table, Notice, Badge, minor, show } from '../components/kit';
@@ -7,8 +8,15 @@ import { storeApi, imageUrl, storeSession, STORE_BASE } from '../lib/commerce';
 const STORE_HOST = STORE_BASE.replace(/^https?:\/\//, '');
 import { errorMessage } from '../lib/api';
 import Share from './store/Share.jsx';
+import Chats from './store/Chats.jsx';
 
-const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Bookings', 'Reviews', 'Customers', 'Reports', 'Offers', 'Settings'];
+// The Store menu (sidebar): each section has its own address, /store/<section>.
+export const STORE_SECTIONS = [
+    ['', 'Overview', 'Dashboard'], ['products', 'Products', 'Products'], ['collections', 'Collections', 'Collections'], ['discounts', 'Discounts', 'Discounts'],
+    ['orders', 'Orders', 'Orders'], ['bookings', 'Bookings', 'Bookings'], ['customers', 'Customers', 'Customers'], ['chats', 'Chats', 'Chats'],
+    ['reviews', 'Reviews', 'Reviews and ratings'], ['reports', 'Reports', 'Reports'], ['offers', 'Offers', 'Offers'], ['links', 'Links', 'Payment links'],
+    ['settings', 'Settings', 'Settings'],
+];
 const CHANNEL_NAMES = { WEB: 'Website', APP: 'App', WHATSAPP: 'WhatsApp', USSD: 'USSD' };
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const METHOD_NAMES = { ECOCASH: 'EcoCash', ONEMONEY: 'OneMoney', OMARI: 'Omari', INNBUCKS: 'InnBucks', ZIMSWITCH: 'Card' };
@@ -82,6 +90,55 @@ function PictureField({ value, onChange }) {
     );
 }
 
+const MAX_PICTURES = 8;
+
+/** Several pictures of one product (the first is the cover); customers see them as a gallery. */
+function PicturesField({ value, onChange }) {
+    const [busy, setBusy] = useState(false);
+    const list = value || [];
+    const pick = async (e) => {
+        const files = Array.from(e.target.files || []).slice(0, MAX_PICTURES - list.length);
+        if (!files.length) return;
+        setBusy(true);
+        let next = [...list];
+        for (const f of files) {
+            try { next = [...next, data(await storeApi.upload(f)).imageId]; }
+            catch (err) { toast.error(`${f.name}: ${errorMessage(err, 'Upload failed')}`); }
+        }
+        onChange(next);
+        setBusy(false);
+        e.target.value = '';
+    };
+    const move = (i, d) => { const n = [...list]; const j = i + d; if (j < 0 || j >= n.length) return; [n[i], n[j]] = [n[j], n[i]]; onChange(n); };
+    const btn = { padding: '2px 7px', fontSize: 11.5 };
+    return (
+        <div>
+            <label style={label}>Pictures ({list.length}/{MAX_PICTURES})</label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                {list.map((id, i) => (
+                    <div key={id} style={{ width: 92, display: 'grid', gap: 4 }}>
+                        <div style={{ position: 'relative' }}>
+                            <img src={imageUrl(id)} alt="" style={{ width: 92, height: 92, objectFit: 'cover', borderRadius: 10, border: i === 0 ? '2px solid var(--primary, #06A3DA)' : '1px solid var(--border)' }} />
+                            {i === 0 && <span className="badge badge-blue" style={{ position: 'absolute', left: 4, top: 4, fontSize: 10 }}>Cover</span>}
+                        </div>
+                        <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
+                            <button type="button" className="btn btn-ghost" style={btn} disabled={i === 0} onClick={() => move(i, -1)} aria-label="Move left">‹</button>
+                            <button type="button" className="btn btn-ghost" style={btn} onClick={() => onChange(list.filter(x => x !== id))} aria-label="Remove">✕</button>
+                            <button type="button" className="btn btn-ghost" style={btn} disabled={i === list.length - 1} onClick={() => move(i, 1)} aria-label="Move right">›</button>
+                        </div>
+                    </div>
+                ))}
+                {list.length < MAX_PICTURES && (
+                    <label style={{ width: 92, height: 92, borderRadius: 10, border: '1px dashed var(--border)', display: 'grid', placeItems: 'center', cursor: 'pointer', fontSize: 12, color: 'var(--text-2)', textAlign: 'center' }}>
+                        {busy ? 'Uploading…' : <span><ImageIcon size={18} /><br />Add pictures</span>}
+                        <input type="file" accept="image/jpeg,image/png" multiple onChange={pick} style={{ display: 'none' }} />
+                    </label>
+                )}
+            </div>
+        </div>
+    );
+}
+
 // ─── overview ────────────────────────────────────────────────────────────────
 
 function Stat({ title, value, sub }) {
@@ -142,11 +199,11 @@ function Overview({ ov, go }) {
 function ProductForm({ product, currencies, collections, onClose, onDone }) {
     const f = useForm({
         name: product?.name || '', description: product?.description || '', price: product ? (product.priceMinor / 100).toFixed(2) : '',
-        currency: product?.currency || currencies[0] || 'USD', imageId: product?.imageId || null, visible: product ? product.status === 'ACTIVE' : true,
+        currency: product?.currency || currencies[0] || 'USD', imageIds: product?.imageIds || (product?.imageId ? [product.imageId] : []), visible: product ? product.status === 'ACTIVE' : true,
         stock: product?.stock ?? '', category: product?.category || '', kind: product?.kind || 'GOODS',
         was: product?.compareAtMinor != null ? (product.compareAtMinor / 100).toFixed(2) : '', featured: !!product?.featured, collectionIds: product?.collectionIds || [], duration: product?.durationMin ?? '',
     }, (v) => {
-        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN',
+        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageIds: v.imageIds, status: v.visible ? 'ACTIVE' : 'HIDDEN',
             stock: v.kind === 'SERVICE' || v.stock === '' ? null : Number(v.stock), category: v.category || null, kind: v.kind, compareAtMinor: toMinor(v.was),
             featured: !!v.featured, collectionIds: v.collectionIds, durationMin: v.kind === 'SERVICE' && v.duration !== '' ? Number(v.duration) : null };
         return product ? storeApi.saveProduct(product.id, b) : storeApi.createProduct(b);
@@ -167,7 +224,7 @@ function ProductForm({ product, currencies, collections, onClose, onDone }) {
                     <button key={k} type="button" className={`btn ${f.v.kind === k ? 'btn-primary' : 'btn-ghost'}`} style={{ flex: 1, padding: '7px 10px', fontSize: 12.5 }} onClick={() => f.set('kind')(k)}>{l}</button>
                 ))}
             </div>
-            <PictureField value={f.v.imageId} onChange={f.set('imageId')} />
+            <PicturesField value={f.v.imageIds} onChange={f.set('imageIds')} />
             <div><label style={label}>Name</label><input style={field} value={f.v.name} onChange={f.set('name')} required maxLength={120} /></div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 100px', gap: 10 }}>
                 <div><label style={label}>Price</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.price} onChange={f.set('price')} required /></div>
@@ -636,8 +693,25 @@ function Reviews({ canManage }) {
         try { setRows(data(await storeApi.updateReview(r.id, b)) || []); toast.success(ok); }
         catch (e) { toast.error(errorMessage(e, 'Could not change')); }
     };
+    const shown = (rows || []).filter(r => !r.hidden);
+    const avg = shown.length ? shown.reduce((a, r) => a + r.rating, 0) / shown.length : null;
+    const bars = [5, 4, 3, 2, 1].map(n => [n, shown.filter(r => r.rating === n).length]);
     return (
-        <Section title="Reviews">
+        <Section title="Reviews and ratings">
+            {avg != null && (
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap', marginBottom: 16 }}>
+                    <div><div style={{ fontSize: 34, fontWeight: 800 }}>{avg.toFixed(1)}</div><div style={{ fontSize: 12.5, color: 'var(--text-2)' }}>{shown.length} reviews</div></div>
+                    <div style={{ flex: 1, minWidth: 220, display: 'grid', gap: 4 }}>
+                        {bars.map(([n, c]) => (
+                            <div key={n} style={{ display: 'grid', gridTemplateColumns: '28px 1fr 34px', gap: 8, alignItems: 'center', fontSize: 12.5 }}>
+                                <span>{n}★</span>
+                                <div style={{ height: 8, borderRadius: 99, background: 'var(--bg-2)' }}><div style={{ width: `${(100 * c) / shown.length}%`, height: '100%', borderRadius: 99, background: '#E6A019' }} /></div>
+                                <span style={{ textAlign: 'right' }}>{c}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             {rows && rows.length === 0 && <div style={{ fontSize: 13, color: 'var(--text-2)' }}>No reviews yet.</div>}
             {(rows || []).map(r => (
                 <div key={r.id} className="card" style={{ padding: 14, marginBottom: 10, opacity: r.hidden ? 0.6 : 1 }}>
@@ -879,24 +953,24 @@ function Settings({ store, canManage, onSaved }) {
 // ─── page ────────────────────────────────────────────────────────────────────
 
 export default function Store() {
-    const [tab, setTab] = useState('Overview');
-    const [startNew, setStartNew] = useState(false);
+    const { section = '' } = useParams();
+    const navigate = useNavigate();
+    const found = STORE_SECTIONS.find(([slug]) => slug === section) || STORE_SECTIONS[0];
+    const tab = found[1];
+    const location = useLocation();
+    const startNew = !!location.state?.isNew;
     const [forProduct, setForProduct] = useState(null);
     const [ov, setOv] = useState(null);
     const [error, setError] = useState('');
     const load = () => storeApi.overview().then(r => { setOv(data(r)); setError(''); }).catch(e => setError(errorMessage(e, 'The store could not be reached')));
     useEffect(() => { load(); }, []);
+    useEffect(() => { if (tab === 'Overview') load(); if (tab !== 'Links') setForProduct(null); }, [tab]);
     const canManage = storeSession()?.canManage ?? false;
     const currencies = ov?.currencies?.length ? ov.currencies : ['USD'];
-    const go = (t, isNew) => { setStartNew(!!isNew); setTab(t); };
+    const setTab = (t, isNew) => { const s = STORE_SECTIONS.find(x => x[1] === t); navigate(s && s[0] ? `/store/${s[0]}` : '/store', { state: isNew ? { isNew: true } : null }); };
+    const go = (t, isNew) => setTab(t, isNew);
     return (
-        <Page title="Store" actions={
-            <div style={{ display: 'flex', gap: 4, background: 'var(--bg-2)', padding: 4, borderRadius: 12 }}>
-                {TABS.map(t => (
-                    <button key={t} onClick={() => { setStartNew(false); setForProduct(null); setTab(t); if (t === 'Overview') load(); }} className={`btn ${tab === t ? 'btn-primary' : 'btn-ghost'}`} style={{ padding: '6px 12px', fontSize: 12.5, border: 'none' }}>{t}</button>
-                ))}
-            </div>
-        }>
+        <Page title={found[0] ? `Store · ${found[2]}` : 'Store'}>
             {error && <Notice kind="error">{error} <button className="btn btn-ghost" style={{ marginLeft: 8, padding: '4px 10px', fontSize: 12 }} onClick={load}>Try again</button></Notice>}
             {tab === 'Overview' && <Overview ov={ov} go={go} />}
             {tab === 'Products' && <Products canManage={canManage} currencies={currencies} startNew={startNew} onLink={(p) => { setForProduct(p); setTab('Links'); }} />}
@@ -905,6 +979,7 @@ export default function Store() {
             {tab === 'Links' && <Links key={forProduct?.id || (startNew ? 'new' : 'list')} canManage={canManage} currencies={currencies} startNew={startNew} forProduct={forProduct} clearProduct={() => setForProduct(null)} />}
             {tab === 'Orders' && <Orders canManage={canManage} />}
             {tab === 'Bookings' && <Bookings />}
+            {tab === 'Chats' && <Chats canManage={canManage} />}
             {tab === 'Reviews' && <Reviews canManage={canManage} />}
             {tab === 'Customers' && <Customers />}
             {tab === 'Reports' && <Reports />}

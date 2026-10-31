@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { teamApi, authStorage, getCurrentUser } from '../lib/api';
+import { teamApi, getCurrentUser } from '../lib/api';
+import { useAuth } from '../lib/auth.jsx';
 
 export default function ChangePassword() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
     const user = getCurrentUser();
     const isForced = !!user?.mustChangePassword;
     const [currentPassword, setCurrentPassword] = useState('');
@@ -22,9 +24,9 @@ export default function ChangePassword() {
         setSubmitting(true);
         try {
             await teamApi.changePassword(currentPassword, newPassword);
-            const updated = { ...user, mustChangePassword: false };
-            authStorage.setItem('pm_user', JSON.stringify(updated), authStorage.isRemembered());
-            navigate('/', { replace: true });
+            // Signed out after a password change: sign in again with the new password.
+            logout();
+            navigate('/login?changed=1', { replace: true });
         } catch (err) {
             setError(err.response?.data?.message || 'Could not change password');
         } finally {

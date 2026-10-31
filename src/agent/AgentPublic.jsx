@@ -58,6 +58,7 @@ export function AgentLogin() {
         <Shell title="Agent Portal" sub="Sign in to your Payport agent account">
             <form onSubmit={submit}>
                 <Err>{error}</Err>
+                {!error && new URLSearchParams(window.location.search).get('changed') && <p style={{ fontSize: 13, color: 'var(--green)', marginBottom: 14 }}>Password changed. Sign in with your new password.</p>}
                 <Field label="Email"><input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={full} /></Field>
                 <Field label="Password"><input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={full} /></Field>
                 <div style={{ textAlign: 'right', marginBottom: 18 }}><Link to="/agent/forgot-password" style={{ fontSize: 13 }}>Forgot password?</Link></div>
@@ -143,7 +144,7 @@ export function AgentResetPassword() {
 }
 
 export function AgentChangePassword() {
-    const { user, update } = useAgentAuth();
+    const { user, logout } = useAgentAuth();
     const navigate = useNavigate();
     const forced = !!user?.mustChangePassword;
     const [current, setCurrent] = useState('');
@@ -159,8 +160,8 @@ export function AgentChangePassword() {
         setBusy(true);
         try {
             await agentApi.changePassword(current, next);
-            update({ mustChangePassword: false });
-            navigate('/agent', { replace: true });
+            logout();
+            navigate('/agent/login?changed=1', { replace: true });
         } catch (err) { setError(errorMessage(err, 'Could not change the password')); }
         finally { setBusy(false); }
     };

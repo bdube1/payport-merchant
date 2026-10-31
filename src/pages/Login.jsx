@@ -36,6 +36,11 @@ export default function Login() {
                     <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '4px 0 0' }}>Sign in to your Payport merchant account</p>
                 </div>
 
+                {!error && new URLSearchParams(window.location.search).get('changed') && (
+                    <div style={{ background: 'var(--badge-green)', color: 'var(--green)', padding: '10px 14px', borderRadius: 10, fontSize: 13, marginBottom: 18 }}>
+                        Password changed. Sign in with your new password.
+                    </div>
+                )}
                 {error && (
                     <div style={{ background: 'var(--badge-red)', color: 'var(--red)', padding: '10px 14px', borderRadius: 10, fontSize: 13, marginBottom: 18 }}>
                         {error}
