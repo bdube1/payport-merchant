@@ -91,6 +91,7 @@ export const storeApi = {
     hours: () => commerceHttp.get('/hours'),
     setHours: (b) => commerceHttp.put('/hours', b),
     bookings: () => commerceHttp.get('/bookings'),
+    describe: (b) => commerceHttp.post('/ai/describe', b),
     cashReceived: (ref) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/cash-received`),
 };
 
