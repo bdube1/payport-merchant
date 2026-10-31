@@ -74,6 +74,15 @@ export const storeApi = {
     removeDomain: (id) => commerceHttp.delete(`/domains/${id}`),
     insights: () => commerceHttp.get('/insights'),
     customers: (q) => commerceHttp.get('/customers', { params: { q: q || undefined } }),
+    collections: () => commerceHttp.get('/collections'),
+    addCollection: (name) => commerceHttp.post('/collections', { name }),
+    removeCollection: (id) => commerceHttp.delete(`/collections/${id}`),
+    moveCollection: (id, position) => commerceHttp.post(`/collections/${id}/position`, { position }),
+    discounts: () => commerceHttp.get('/discounts'),
+    addDiscount: (b) => commerceHttp.post('/discounts', b),
+    setDiscount: (id, active) => commerceHttp.post(`/discounts/${id}/status`, { active }),
+    businessTypes: () => commerceHttp.get('/business-types'),
+    cashReceived: (ref) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/cash-received`),
 };
 
 export const imageUrl = (id) => (id ? `${BASE}/img/${id}` : null);

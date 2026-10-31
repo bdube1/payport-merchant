@@ -8,10 +8,11 @@ const STORE_HOST = STORE_BASE.replace(/^https?:\/\//, '');
 import { errorMessage } from '../lib/api';
 import Share from './store/Share.jsx';
 
-const TABS = ['Overview', 'Products', 'Links', 'Orders', 'Customers', 'Settings'];
+const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Customers', 'Settings'];
+const TYPES = [['SHOP', 'Shop'], ['CLOTHING', 'Clothing and shoes'], ['FOOD', 'Food'], ['DRINKS', 'Drinks'], ['SERVICES', 'Services'], ['BEAUTY', 'Beauty and hair'], ['ELECTRONICS', 'Phones and electronics'], ['HOME', 'Home and garden'], ['CRAFTS', 'Art and crafts'], ['OTHER', 'Other']];
 const DELIVERY_LABEL = { PREPARING: 'Preparing', READY: 'Ready to collect', OUT: 'Out for delivery', DELIVERED: 'Delivered', COLLECTED: 'Collected', NOT_NEEDED: '—' };
 const NEXT_STEP = { DELIVERY: { PREPARING: ['OUT', 'Out for delivery'], OUT: ['DELIVERED', 'Delivered'] }, PICKUP: { PREPARING: ['READY', 'Ready to collect'], READY: ['COLLECTED', 'Collected'] } };
-const PAYMENT_LABEL = { NOT_STARTED: 'Not paid', AWAITING_PAYMENT: 'Not paid', PENDING: 'Being confirmed', CONFIRMING: 'Being confirmed', PAID: 'Paid', FAILED: 'Failed', EXPIRED: 'Not paid' };
+const PAYMENT_LABEL = { NOT_STARTED: 'Not paid', AWAITING_PAYMENT: 'Not paid', PENDING: 'Being confirmed', CONFIRMING: 'Being confirmed', PAID: 'Paid', FAILED: 'Failed', EXPIRED: 'Not paid', ON_DELIVERY: 'Pay on delivery' };
 const REFUND_LABEL = { REQUESTED: 'Refund requested', PARTIAL: 'Part refunded', REFUNDED: 'Refunded' };
 
 const data = (r) => r?.data?.data;
@@ -20,7 +21,7 @@ const field = { width: '100%', padding: 9, borderRadius: 9, border: '1px solid v
 const label = { fontSize: 12.5, fontWeight: 700, display: 'block', margin: '0 0 5px' };
 
 function PaymentBadge({ status }) {
-    const cls = { PAID: 'badge-green', PENDING: 'badge-amber', CONFIRMING: 'badge-amber', FAILED: 'badge-red' }[status] || 'badge-gray';
+    const cls = { PAID: 'badge-green', PENDING: 'badge-amber', CONFIRMING: 'badge-amber', ON_DELIVERY: 'badge-amber', FAILED: 'badge-red' }[status] || 'badge-gray';
     return <span className={`badge ${cls}`}>{PAYMENT_LABEL[status] || status}</span>;
 }
 
@@ -135,27 +136,45 @@ function Overview({ ov, go }) {
 
 // ─── products ────────────────────────────────────────────────────────────────
 
-function ProductForm({ product, currencies, onClose, onDone }) {
+function ProductForm({ product, currencies, collections, onClose, onDone }) {
     const f = useForm({
         name: product?.name || '', description: product?.description || '', price: product ? (product.priceMinor / 100).toFixed(2) : '',
         currency: product?.currency || currencies[0] || 'USD', imageId: product?.imageId || null, visible: product ? product.status === 'ACTIVE' : true,
-        stock: product?.stock ?? '', category: product?.category || '',
+        stock: product?.stock ?? '', category: product?.category || '', kind: product?.kind || 'GOODS',
+        was: product?.compareAtMinor != null ? (product.compareAtMinor / 100).toFixed(2) : '', featured: !!product?.featured, collectionIds: product?.collectionIds || [],
     }, (v) => {
-        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN', stock: v.stock === '' ? null : Number(v.stock), category: v.category || null };
+        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN',
+            stock: v.kind === 'SERVICE' || v.stock === '' ? null : Number(v.stock), category: v.category || null, kind: v.kind, compareAtMinor: toMinor(v.was),
+            featured: !!v.featured, collectionIds: v.collectionIds };
         return product ? storeApi.saveProduct(product.id, b) : storeApi.createProduct(b);
     }, (d) => { onDone(d); onClose(); });
     return (
         <Modal title={product ? 'Edit product' : 'New product'} onClose={onClose} onSubmit={f.submit} busy={f.busy} error={f.error}>
+            <div style={{ display: 'flex', gap: 6 }}>
+                {[['GOODS', 'Product'], ['SERVICE', 'Service']].map(([k, l]) => (
+                    <button key={k} type="button" className={`btn ${f.v.kind === k ? 'btn-primary' : 'btn-ghost'}`} style={{ flex: 1, padding: '7px 10px', fontSize: 12.5 }} onClick={() => f.set('kind')(k)}>{l}</button>
+                ))}
+            </div>
             <PictureField value={f.v.imageId} onChange={f.set('imageId')} />
             <div><label style={label}>Name</label><input style={field} value={f.v.name} onChange={f.set('name')} required maxLength={120} /></div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 110px', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 100px', gap: 10 }}>
                 <div><label style={label}>Price</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.price} onChange={f.set('price')} required /></div>
+                <div><label style={label}>Was (sale)</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.was} onChange={f.set('was')} /></div>
                 <div><label style={label}>Currency</label><select style={field} value={f.v.currency} onChange={f.set('currency')}>{currencies.map(c => <option key={c}>{c}</option>)}</select></div>
-                <div><label style={label}>In stock</label><input style={field} type="number" min="0" step="1" value={f.v.stock} onChange={f.set('stock')} placeholder="Not counted" /></div>
             </div>
+            {f.v.kind === 'GOODS' && <div><label style={label}>In stock</label><input style={field} type="number" min="0" step="1" value={f.v.stock} onChange={f.set('stock')} placeholder="Not counted" /></div>}
+            {collections.length > 0 && <div><label style={label}>Collections</label>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {collections.map(c => {
+                        const on = f.v.collectionIds.includes(c.id);
+                        return <button key={c.id} type="button" className={`btn ${on ? 'btn-primary' : 'btn-ghost'}`} style={{ padding: '5px 11px', fontSize: 12.5 }}
+                            onClick={() => f.set('collectionIds')(on ? f.v.collectionIds.filter(x => x !== c.id) : [...f.v.collectionIds, c.id])}>{c.name}</button>;
+                    })}
+                </div></div>}
             <div><label style={label}>Category</label><input style={field} value={f.v.category} onChange={f.set('category')} maxLength={40} /></div>
             <div><label style={label}>Description</label><textarea style={{ ...field, minHeight: 90 }} value={f.v.description} onChange={f.set('description')} maxLength={2000} /></div>
             <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={f.v.visible} onChange={f.set('visible')} /> On sale</label>
+            <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={f.v.featured} onChange={f.set('featured')} /> Featured on the front page</label>
         </Modal>
     );
 }
@@ -163,14 +182,15 @@ function ProductForm({ product, currencies, onClose, onDone }) {
 function Products({ canManage, currencies, startNew, onLink }) {
     const [rows, setRows] = useState(null);
     const [edit, setEdit] = useState(startNew ? 'new' : null);
+    const [collections, setCollections] = useState([]);
     const load = () => storeApi.products().then(r => setRows(data(r))).catch(e => toast.error(errorMessage(e, 'Could not load')));
-    useEffect(() => { load(); }, []);
+    useEffect(() => { load(); storeApi.collections().then(r => setCollections(data(r) || [])).catch(() => setCollections([])); }, []);
     return (
         <Section title="Products" right={canManage && <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: 12.5 }} onClick={() => setEdit('new')}><Plus size={14} /> New product</button>}>
             <Table rows={rows || []} noExport empty={rows ? 'No products yet.' : 'Loading…'} onRow={canManage ? (p) => setEdit(p) : undefined} columns={[
                 { key: 'pic', label: '', render: p => p.imageId ? <img src={imageUrl(p.imageId)} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 8 }} /> : null },
-                { key: 'name', label: 'Product' },
-                { key: 'price', label: 'Price', render: p => `${p.currency} ${p.price}` },
+                { key: 'name', label: 'Product', render: p => <>{p.name}{p.featured && <> <span className="badge badge-green">Featured</span></>}{p.kind === 'SERVICE' && <> <span className="badge badge-gray">Service</span></>}</> },
+                { key: 'price', label: 'Price', render: p => <>{p.currency} {p.price}{p.compareAtMinor != null && <span style={{ color: 'var(--text-2)', textDecoration: 'line-through', marginLeft: 6 }}>{(p.compareAtMinor / 100).toFixed(2)}</span>}</> },
                 { key: 'stock', label: 'In stock', render: p => p.stock == null ? '—' : p.stock === 0 ? <Badge value="SOLD_OUT" /> : p.stock },
                 { key: 'status', label: 'Status', render: p => <Badge value={p.status === 'ACTIVE' ? 'ON_SALE' : 'HIDDEN'} /> },
                 { key: 'share', label: '', render: p => (
@@ -180,7 +200,97 @@ function Products({ canManage, currencies, startNew, onLink }) {
                     </div>
                 ) },
             ]} />
-            {edit && <ProductForm product={edit === 'new' ? null : edit} currencies={currencies} onClose={() => setEdit(null)} onDone={load} />}
+            {edit && <ProductForm product={edit === 'new' ? null : edit} currencies={currencies} collections={collections} onClose={() => setEdit(null)} onDone={load} />}
+        </Section>
+    );
+}
+
+// ─── collections ─────────────────────────────────────────────────────────────
+
+function Collections({ canManage }) {
+    const [rows, setRows] = useState(null);
+    const [name, setName] = useState('');
+    const load = () => storeApi.collections().then(r => setRows(data(r) || [])).catch(e => toast.error(errorMessage(e, 'Could not load')));
+    useEffect(() => { load(); }, []);
+    const run = async (fn, ok) => { try { await fn(); toast.success(ok); load(); return true; } catch (e) { toast.error(errorMessage(e, 'Could not change')); return false; } };
+    const move = (i, d) => {
+        const list = [...rows];
+        const [x] = list.splice(i, 1);
+        list.splice(i + d, 0, x);
+        run(() => Promise.all(list.map((c, n) => storeApi.moveCollection(c.id, n + 1))), 'Saved');
+    };
+    return (
+        <Section title="Collections">
+            {canManage && (
+                <form onSubmit={async e => { e.preventDefault(); if (await run(() => storeApi.addCollection(name), 'Added')) setName(''); }} style={{ display: 'flex', gap: 8, marginBottom: 12, maxWidth: 520 }}>
+                    <input style={field} placeholder="Men, Women, Kids, Breakfast, Hair…" value={name} onChange={e => setName(e.target.value)} required maxLength={60} />
+                    <button className="btn btn-primary" type="submit"><Plus size={14} /> Add</button>
+                </form>
+            )}
+            <Table rows={rows || []} noExport empty={rows ? 'No collections yet.' : 'Loading…'} columns={[
+                { key: 'name', label: 'Collection' },
+                { key: 'products', label: 'Products' },
+                { key: 'actions', label: '', render: (c) => canManage && (
+                    <div style={{ display: 'flex', gap: 6 }}>
+                        <button className="btn btn-ghost" style={{ padding: '4px 9px', fontSize: 12.5 }} disabled={rows.indexOf(c) === 0} onClick={() => move(rows.indexOf(c), -1)}>↑</button>
+                        <button className="btn btn-ghost" style={{ padding: '4px 9px', fontSize: 12.5 }} disabled={rows.indexOf(c) === rows.length - 1} onClick={() => move(rows.indexOf(c), 1)}>↓</button>
+                        <button className="btn btn-ghost" style={{ padding: '4px 9px', fontSize: 12.5 }} onClick={() => window.confirm('Are you sure?') && run(() => storeApi.removeCollection(c.id), 'Removed')}>Remove</button>
+                    </div>
+                ) },
+            ]} />
+        </Section>
+    );
+}
+
+// ─── discounts ───────────────────────────────────────────────────────────────
+
+function DiscountForm({ currencies, onClose, onDone }) {
+    const f = useForm({ code: '', kind: 'PERCENT', value: '', min: '', ends: '', maxUses: '' }, (v) => storeApi.addDiscount({
+        code: v.code, kind: v.kind, value: v.kind === 'PERCENT' ? Number(v.value) : toMinor(v.value), minOrderMinor: toMinor(v.min), endsAt: v.ends || null, maxUses: v.maxUses === '' ? null : Number(v.maxUses),
+    }), (d) => { onDone(d); onClose(); });
+    return (
+        <Modal title="New discount code" submitLabel="Create code" onClose={onClose} onSubmit={f.submit} busy={f.busy} error={f.error}>
+            <div style={{ display: 'flex', gap: 6 }}>
+                {[['PERCENT', 'Percentage off'], ['AMOUNT', `Amount off (${currencies[0] || 'USD'})`]].map(([k, l]) => (
+                    <button key={k} type="button" className={`btn ${f.v.kind === k ? 'btn-primary' : 'btn-ghost'}`} style={{ flex: 1, padding: '7px 10px', fontSize: 12.5 }} onClick={() => f.set('kind')(k)}>{l}</button>
+                ))}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div><label style={label}>Code</label><input style={{ ...field, textTransform: 'uppercase' }} value={f.v.code} onChange={f.set('code')} required maxLength={30} pattern="[A-Za-z0-9_-]{3,30}" /></div>
+                <div><label style={label}>{f.v.kind === 'PERCENT' ? '% off' : 'Amount off'}</label>
+                    <input style={field} type="number" min={f.v.kind === 'PERCENT' ? 1 : 0.01} max={f.v.kind === 'PERCENT' ? 90 : undefined} step={f.v.kind === 'PERCENT' ? 1 : 0.01} value={f.v.value} onChange={f.set('value')} required /></div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+                <div><label style={label}>Minimum order</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.min} onChange={f.set('min')} /></div>
+                <div><label style={label}>Ends</label><input style={field} type="date" value={f.v.ends} onChange={f.set('ends')} min={new Date().toISOString().slice(0, 10)} /></div>
+                <div><label style={label}>Uses</label><input style={field} type="number" min="1" step="1" value={f.v.maxUses} onChange={f.set('maxUses')} placeholder="No limit" /></div>
+            </div>
+        </Modal>
+    );
+}
+
+function Discounts({ canManage, currencies }) {
+    const [rows, setRows] = useState(null);
+    const [creating, setCreating] = useState(false);
+    const load = () => storeApi.discounts().then(r => setRows(data(r) || [])).catch(e => toast.error(errorMessage(e, 'Could not load')));
+    useEffect(() => { load(); }, []);
+    const toggle = async (d) => {
+        if (!window.confirm('Are you sure?')) return;
+        try { await storeApi.setDiscount(d.id, !d.active); toast.success(d.active ? 'Switched off' : 'Switched on'); load(); }
+        catch (e) { toast.error(errorMessage(e, 'Could not change')); }
+    };
+    return (
+        <Section title="Discount codes" right={canManage && <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: 12.5 }} onClick={() => setCreating(true)}><Plus size={14} /> New code</button>}>
+            <Table rows={rows || []} noExport empty={rows ? 'No discount codes yet.' : 'Loading…'} columns={[
+                { key: 'code', label: 'Code', render: d => <strong>{d.code}</strong> },
+                { key: 'value', label: 'Off', render: d => d.kind === 'PERCENT' ? `${d.value}%` : (d.value / 100).toFixed(2) },
+                { key: 'minOrderMinor', label: 'Minimum', render: d => d.minOrderMinor != null ? (d.minOrderMinor / 100).toFixed(2) : '—' },
+                { key: 'endsAt', label: 'Ends', render: d => d.endsAt ? String(d.endsAt).slice(0, 10) : '—' },
+                { key: 'used', label: 'Used', render: d => d.maxUses != null ? `${d.used} / ${d.maxUses}` : d.used },
+                { key: 'active', label: 'Status', render: d => <Badge value={d.active ? 'ACTIVE' : 'DISABLED'} /> },
+                { key: 'actions', label: '', render: d => canManage && <button className="btn btn-ghost" style={{ padding: '5px 9px', fontSize: 12.5 }} onClick={() => toggle(d)}>{d.active ? 'Switch off' : 'Switch on'}</button> },
+            ]} />
+            {creating && <DiscountForm currencies={currencies} onClose={() => setCreating(false)} onDone={load} />}
         </Section>
     );
 }
@@ -275,6 +385,22 @@ function Links({ canManage, currencies, startNew, forProduct, clearProduct }) {
 
 // ─── orders ──────────────────────────────────────────────────────────────────
 
+// A WhatsApp message to the customer about their order, written for them; the merchant presses send in WhatsApp.
+function whatsapp(o) {
+    let p = String(o.customerPhone || '').replace(/[^0-9+]/g, '');
+    if (!p) return null;
+    if (p.startsWith('+')) p = p.slice(1);
+    else if (p.startsWith('0')) p = `263${p.slice(1)}`;
+    const state = o.orderStatus === 'CANCELLED' ? 'has been cancelled'
+        : o.deliveryStatus === 'READY' ? 'is ready to collect'
+        : o.deliveryStatus === 'OUT' ? 'is on its way'
+        : o.deliveryStatus === 'DELIVERED' || o.deliveryStatus === 'COLLECTED' ? 'is complete. Thank you'
+        : o.paymentStatus === 'PAID' ? 'is paid and being prepared'
+        : o.paymentStatus === 'ON_DELIVERY' ? `is being prepared. Please have ${minor(o.amountMinor, o.currency)} ready`
+        : 'has been received';
+    return `https://wa.me/${p}?text=${encodeURIComponent(`Hi${o.customerName ? ` ${o.customerName}` : ''}, your order ${o.orderRef} ${state}.`)}`;
+}
+
 function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
     const [o, setO] = useState(null);
     const [refund, setRefund] = useState(false);
@@ -283,6 +409,11 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
     const status = async (s) => {
         if (!window.confirm('Are you sure?')) return;
         try { await storeApi.orderStatus(orderRef, s); toast.success('Saved'); load(); onChanged(); }
+        catch (e) { toast.error(errorMessage(e, 'Could not change')); }
+    };
+    const cash = async () => {
+        if (!window.confirm('Are you sure?')) return;
+        try { await storeApi.cashReceived(orderRef); toast.success('Saved'); load(); onChanged(); }
         catch (e) { toast.error(errorMessage(e, 'Could not change')); }
     };
     const step = async (s) => {
@@ -313,8 +444,11 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
                             {o.deliveryMethod !== 'NONE' && <><div style={{ color: 'var(--text-2)' }}>{o.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}</div>
                                 <div>{DELIVERY_LABEL[o.deliveryStatus] || o.deliveryStatus}{o.deliveryFeeMinor > 0 ? ` · fee ${minor(o.deliveryFeeMinor, o.currency)}` : ''}</div></>}
                             {o.deliveryAddress && <><div style={{ color: 'var(--text-2)' }}>Deliver to</div><div>{o.deliveryAddress}</div></>}
+                            {o.discountMinor > 0 && <><div style={{ color: 'var(--text-2)' }}>Discount</div><div>{o.discountCode} · −{minor(o.discountMinor, o.currency)}</div></>}
+                            <div style={{ color: 'var(--text-2)' }}>Payment</div><div>{o.payMethod === 'CASH' ? 'Cash on delivery or collection' : 'Online'}</div>
                             <div style={{ color: 'var(--text-2)' }}>Total</div><div style={{ fontWeight: 800 }}>{minor(o.amountMinor, o.currency)}</div>
-                            <div style={{ color: 'var(--text-2)' }}>Customer</div><div>{[o.customerName, o.customerPhone].filter(Boolean).join(' · ') || '—'}</div>
+                            <div style={{ color: 'var(--text-2)' }}>Customer</div><div>{[o.customerName, o.customerPhone].filter(Boolean).join(' · ') || '—'}
+                                {whatsapp(o) && <a className="btn btn-ghost" style={{ marginLeft: 8, padding: '3px 9px', fontSize: 12 }} href={whatsapp(o)} target="_blank" rel="noopener noreferrer">WhatsApp</a>}</div>
                             {o.note && <><div style={{ color: 'var(--text-2)' }}>Note</div><div>{o.note}</div></>}
                             <div style={{ color: 'var(--text-2)' }}>From</div><div>{o.source === 'LINK' ? 'Payment link' : 'Store'}</div>
                             <div style={{ color: 'var(--text-2)' }}>Order</div><div><Badge value={o.orderStatus} /></div>
@@ -332,10 +466,13 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
                         )}
                         {canManage && (
                             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                                {o.paymentStatus === 'ON_DELIVERY' && o.orderStatus === 'OPEN' && <button className="btn btn-primary" onClick={cash}>Cash received</button>}
+                                {o.paymentStatus === 'ON_DELIVERY' && NEXT_STEP[o.deliveryMethod]?.[o.deliveryStatus] && (
+                                    <button className="btn btn-ghost" onClick={() => step(NEXT_STEP[o.deliveryMethod][o.deliveryStatus][0])}>{NEXT_STEP[o.deliveryMethod][o.deliveryStatus][1]}</button>)}
                                 {o.paymentStatus === 'PAID' && NEXT_STEP[o.deliveryMethod]?.[o.deliveryStatus] && (
                                     <button className="btn btn-primary" onClick={() => step(NEXT_STEP[o.deliveryMethod][o.deliveryStatus][0])}>{NEXT_STEP[o.deliveryMethod][o.deliveryStatus][1]}</button>)}
                                 {o.paymentStatus === 'PAID' && o.orderStatus === 'OPEN' && o.deliveryMethod === 'NONE' && <button className="btn btn-primary" onClick={() => status('FULFILLED')}>Mark fulfilled</button>}
-                                {o.paymentStatus === 'PAID' && left > 0 && <button className="btn btn-ghost" onClick={() => setRefund(true)}>Refund</button>}
+                                {o.paymentStatus === 'PAID' && o.payMethod !== 'CASH' && left > 0 && <button className="btn btn-ghost" onClick={() => setRefund(true)}>Refund</button>}
                                 {o.orderStatus !== 'CANCELLED' && (o.paymentStatus !== 'PAID' || o.refundStatus === 'REFUNDED') && <button className="btn btn-ghost" onClick={() => status('CANCELLED')}>Cancel order</button>}
                             </div>
                         )}
@@ -367,6 +504,7 @@ function Orders({ canManage }) {
                 <select value={filter} onChange={e => setFilter(e.target.value)} style={{ ...field, width: 170 }}>
                     <option value="">All</option>
                     <option value="PAID">Paid</option>
+                    <option value="ON_DELIVERY">Pay on delivery</option>
                     <option value="CONFIRMING">Being confirmed</option>
                     <option value="AWAITING_PAYMENT">Not paid</option>
                     <option value="FAILED">Failed</option>
@@ -458,13 +596,16 @@ function Settings({ store, canManage, onSaved }) {
         if (store.status !== 'CLOSED' && !v.open && !window.confirm('Are you sure?')) return Promise.reject(new Error('Cancelled'));
         return storeApi.saveStore({ name: v.name, slug: v.slug, about: v.about, whatsapp: v.whatsapp, themeColor: v.themeColor, logoImage: v.logoImage, status: v.open ? 'OPEN' : 'CLOSED',
             pickupEnabled: !!v.pickupEnabled, pickupNote: v.pickupNote, deliveryEnabled: !!v.deliveryEnabled, deliveryNote: v.deliveryNote,
-            deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom), design: v.design, bannerImage: v.bannerImage, tagline: v.tagline });
+            deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom), design: v.design, bannerImage: v.bannerImage, tagline: v.tagline,
+            businessType: v.businessType || 'SHOP', announcement: v.announcement || null, codEnabled: !!v.codEnabled, listed: !!v.listed });
     }, onSaved);
     const base = useMemo(() => (store.url || '').replace(/[^/]*$/, ''), [store.url]);
     return (
         <Section title="Store">
             {f.error && <Notice kind="error">{f.error}</Notice>}
             <form onSubmit={f.submit} style={{ display: 'grid', gap: 12, maxWidth: 560 }}>
+                <div><label style={label}>What you sell</label>
+                    <select style={field} value={f.v.businessType || 'SHOP'} onChange={f.set('businessType')} disabled={!canManage}>{TYPES.map(([k, t]) => <option key={k} value={k}>{t}</option>)}</select></div>
                 <div><label style={label}>Design</label>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
                         {DESIGNS.map(([k, t, d]) => (
@@ -477,6 +618,7 @@ function Settings({ store, canManage, onSaved }) {
                     </div></div>
                 <div><label style={label}>Logo</label><PictureField value={f.v.logoImage} onChange={f.set('logoImage')} /></div>
                 <div><label style={label}>Banner</label><PictureField value={f.v.bannerImage} onChange={f.set('bannerImage')} /></div>
+                <div><label style={label}>Announcement</label><input style={field} value={f.v.announcement || ''} onChange={f.set('announcement')} maxLength={200} placeholder="Free delivery this weekend" disabled={!canManage} /></div>
                 <div><label style={label}>Tagline</label><input style={field} value={f.v.tagline || ''} onChange={f.set('tagline')} maxLength={120} disabled={!canManage} /></div>
                 <div><label style={label}>Store name</label><input style={field} value={f.v.name || ''} onChange={f.set('name')} required maxLength={120} disabled={!canManage} /></div>
                 <div><label style={label}>Store address</label>
@@ -497,6 +639,8 @@ function Settings({ store, canManage, onSaved }) {
                     </div>
                     <div><label style={label}>Delivery areas and times</label><input style={field} value={f.v.deliveryNote || ''} onChange={f.set('deliveryNote')} maxLength={300} disabled={!canManage} /></div>
                 </>}
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.codEnabled} onChange={f.set('codEnabled')} disabled={!canManage} /> Pay on delivery or collection</label>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.listed} onChange={f.set('listed')} disabled={!canManage} /> Listed on PayPort Store</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.open} onChange={f.set('open')} disabled={!canManage} /> Taking orders</label>
                 {canManage && <div><button type="submit" className="btn btn-primary" disabled={f.busy}>{f.busy ? 'Saving…' : 'Save'}</button></div>}
             </form>
@@ -528,6 +672,8 @@ export default function Store() {
             {error && <Notice kind="error">{error} <button className="btn btn-ghost" style={{ marginLeft: 8, padding: '4px 10px', fontSize: 12 }} onClick={load}>Try again</button></Notice>}
             {tab === 'Overview' && <Overview ov={ov} go={go} />}
             {tab === 'Products' && <Products canManage={canManage} currencies={currencies} startNew={startNew} onLink={(p) => { setForProduct(p); setTab('Links'); }} />}
+            {tab === 'Collections' && <Collections canManage={canManage} />}
+            {tab === 'Discounts' && <Discounts canManage={canManage} currencies={currencies} />}
             {tab === 'Links' && <Links key={forProduct?.id || (startNew ? 'new' : 'list')} canManage={canManage} currencies={currencies} startNew={startNew} forProduct={forProduct} clearProduct={() => setForProduct(null)} />}
             {tab === 'Orders' && <Orders canManage={canManage} />}
             {tab === 'Customers' && <Customers />}
