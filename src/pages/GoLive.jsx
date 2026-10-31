@@ -15,13 +15,13 @@ export default function GoLive() {
                 ? <Notice kind="ok">You are ready to take live payments. Create a live key under API keys.</Notice>
                 : <Notice kind="warn">Not live yet. Still needed:<ul style={{ margin: '6px 0 0 18px' }}>{(r.blockers || []).map(b => <li key={b}>{b}</li>)}</ul></Notice>)}
             <Section title="Currencies enabled for live payments">
-                <p style={{ fontSize: 12.5, color: 'var(--text-2)', marginTop: 0 }}>PayPort enables currencies after review. Ask your account manager if one you need is missing.</p>
+                <p style={{ fontSize: 12.5, color: 'var(--text-2)', marginTop: 0 }}>Payport enables currencies after review. Ask your account manager if one you need is missing.</p>
                 <Table rows={r?.enablements} empty="None yet." columns={[{ key: 'country', label: 'Country' }, { key: 'currency', label: 'Currency' },
                     { key: 'status', label: 'Status', render: x => <Badge value={x.status} /> }, { key: 'enabled_at', label: 'Since' }]} />
             </Section>
             <Section title="Settlement destinations" right={user?.role === 'OWNER' && (
                 <FormButton label="Add destination" title="New settlement destination"
-                    intro="PayPort verifies every destination (and every change) before paying anything to it. The account must be in your business's name."
+                    intro="Payport verifies every destination (and every change) before paying anything to it. The account must be in your business's name."
                     fields={[{ name: 'currency', label: 'Currency', type: 'currency', required: true, initial: 'USD' },
                         { name: 'type', label: 'Type', type: 'select', options: ['BANK', 'MOBILE_WALLET'], required: true, initial: 'BANK' },
                         { name: 'accountName', label: 'Account name', type: 'text', required: true }, { name: 'accountNumber', label: 'Account / wallet number', type: 'text', required: true },

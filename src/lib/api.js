@@ -66,7 +66,7 @@ const portalApi = axios.create({
     headers: { 'Content-Type': 'application/json' },
 });
 
-// Public, read-only: countries and currencies PayPort serves.
+// Public, read-only: countries and currencies Payport serves.
 export const marketsApi = { list: () => axios.get(`${BASE}/api/v1/markets`) };
 
 export const authApi = {
@@ -184,7 +184,7 @@ export const paymentMethodsApi = {
     set: (changes) => api.put('/payment-methods', changes),
 };
 
-// POS terminals (switched on by PayPort).
+// POS terminals (switched on by Payport).
 export const posApi = {
     terminals: () => api.get('/pos/terminals'),
     register: (label) => api.post('/pos/terminals', { label }),

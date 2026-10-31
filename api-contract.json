@@ -2247,6 +2247,41 @@
    "access": null
   },
   {
+   "method": "GET",
+   "path": "/api/v1/store/orders",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/store/orders",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/store/orders/{ref}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/store/quote",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/store/stores",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/store/stores/{slug}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/store/stores/{slug}/slots",
+   "access": null
+  },
+  {
    "method": "POST",
    "path": "/api/v1/transactions/initiate",
    "access": null

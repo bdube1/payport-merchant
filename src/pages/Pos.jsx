@@ -12,11 +12,11 @@ export default function Pos() {
     const [secret, setSecret] = useState(null);
     const reload = () => { terminals.reload(); sales.reload(); };
     return (
-        <Page title="POS terminals" subtitle="Each sale on a terminal becomes a checkout the customer pays by QR, PayPort wallet or mobile money. Card acceptance at terminals is switched on separately by PayPort.">
+        <Page title="POS terminals" subtitle="Each sale on a terminal becomes a checkout the customer pays by QR, Payport wallet or mobile money. Card acceptance at terminals is switched on separately by Payport.">
             {terminals.error && <Notice kind={terminals.error.includes('not available') ? 'warn' : 'error'}>{terminals.error}</Notice>}
             {secret && <Notice kind="ok">
                 <b>Terminal {secret.terminalId}</b> registered. Its secret is <code style={{ userSelect: 'all' }}>{secret.secret}</code>.
-                Enter it in the terminal now: PayPort will not show it again.
+                Enter it in the terminal now: Payport will not show it again.
                 <button className="btn btn-ghost" style={{ marginLeft: 10, padding: '2px 10px' }} onClick={() => setSecret(null)}>Done</button>
             </Notice>}
             <Section title="Terminals" right={<FormButton label="Register terminal" title="Register a POS terminal" submitLabel="Register"

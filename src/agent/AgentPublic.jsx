@@ -5,10 +5,10 @@ import { useAgentAuth } from './agentAuth.jsx';
 import { ThemeToggle } from '../lib/theme.jsx';
 
 const STATUS = {
-    PENDING: { label: 'Under review', color: 'var(--amber)', text: 'PayPort is reviewing your application.' },
+    PENDING: { label: 'Under review', color: 'var(--amber)', text: 'Payport is reviewing your application.' },
     ACTIVE: { label: 'Approved', color: 'var(--green)', text: 'Your agent account is open. Your sign-in details were sent to your email address.' },
-    REJECTED: { label: 'Not approved', color: 'var(--red)', text: 'Your application was not approved. Contact PayPort for details.' },
-    SUSPENDED: { label: 'Suspended', color: 'var(--red)', text: 'Your agent account is suspended. Contact PayPort.' },
+    REJECTED: { label: 'Not approved', color: 'var(--red)', text: 'Your application was not approved. Contact Payport for details.' },
+    SUSPENDED: { label: 'Suspended', color: 'var(--red)', text: 'Your agent account is suspended. Contact Payport.' },
 };
 
 export function Shell({ title, sub, children, width = 400 }) {
@@ -55,7 +55,7 @@ export function AgentLogin() {
         } finally { setBusy(false); }
     };
     return (
-        <Shell title="Agent Portal" sub="Sign in to your PayPort agent account">
+        <Shell title="Agent Portal" sub="Sign in to your Payport agent account">
             <form onSubmit={submit}>
                 <Err>{error}</Err>
                 <Field label="Email"><input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={full} /></Field>
@@ -205,7 +205,7 @@ export function AgentApply() {
         );
     }
     return (
-        <Shell title="Become a PayPort agent" sub="Offer cash-in and cash-out to PayPort customers and earn commission." width={480}>
+        <Shell title="Become a Payport agent" sub="Offer cash-in and cash-out to Payport customers and earn commission." width={480}>
             <form onSubmit={submit}>
                 <Err>{error}</Err>
                 <Field label="Business name (as customers will see it)"><input value={f.name} onChange={set('name')} required style={full} /></Field>

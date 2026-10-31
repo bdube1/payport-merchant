@@ -67,10 +67,10 @@ export default function Login() {
                 </button>
 
                 <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 20 }}>
-                    New to PayPort? <Link to="/signup">Apply for a merchant account</Link> · <Link to="/track">Track an application</Link>
+                    New to Payport? <Link to="/signup">Apply for a merchant account</Link> · <Link to="/track">Track an application</Link>
                 </p>
                 <p style={{ fontSize: 13, color: 'var(--text-2)', textAlign: 'center', marginTop: 8 }}>
-                    PayPort agent? <Link to="/agent/login">Sign in to the agent portal</Link>
+                    Payport agent? <Link to="/agent/login">Sign in to the agent portal</Link>
                 </p>
             </form>
         </div>

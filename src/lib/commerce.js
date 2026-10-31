@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authStorage } from './api';
 
-// PayPort Commerce is its own service (store.payport.africa), so it keeps working when PayPort Payments is down.
+// Payport Commerce is its own service (store.payport.africa), so it keeps working when Payport Payments is down.
 // The portal signs in to it once with the portal's own login; Commerce gives a 12-hour store session.
 const BASE = import.meta.env.VITE_COMMERCE_URL || 'https://store.payport.africa';
 export const STORE_BASE = BASE;

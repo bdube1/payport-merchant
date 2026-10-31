@@ -49,7 +49,7 @@ export default function Developers() {
                 ]} />
             </Section>
             <Section title="Testing">
-                <p style={{ fontSize: 13, color: 'var(--text-2)', margin: 0 }}>With a test key, wallet numbers ending in <code>0000001</code> or <code>0000002</code> are declined by the sandbox; any other number succeeds. Webhooks are signed (<code>PayPort-Signature</code>): verify them with your endpoint's secret before trusting an event.</p>
+                <p style={{ fontSize: 13, color: 'var(--text-2)', margin: 0 }}>With a test key, wallet numbers ending in <code>0000001</code> or <code>0000002</code> are declined by the sandbox; any other number succeeds. Webhooks are signed (<code>Payport-Signature</code>): verify them with your endpoint's secret before trusting an event.</p>
             </Section>
             {creating && (
                 <FormModal title="Create an API key" onClose={() => setCreating(false)}

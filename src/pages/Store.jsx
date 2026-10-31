@@ -894,7 +894,7 @@ function Settings({ store, canManage, onSaved }) {
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.customerSms} onChange={f.set('customerSms')} disabled={!canManage} /> Text customers when their order is confirmed or ready</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.loyaltyEnabled} onChange={f.set('loyaltyEnabled')} disabled={!canManage} /> Loyalty points</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.cartReminders} onChange={f.set('cartReminders')} disabled={!canManage} /> Cart reminders</label>
-                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.listed} onChange={f.set('listed')} disabled={!canManage} /> Listed on PayPort Store</label>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.listed} onChange={f.set('listed')} disabled={!canManage} /> Listed on Payport Store</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.open} onChange={f.set('open')} disabled={!canManage} /> Taking orders</label>
                 {canManage && <div><button type="submit" className="btn btn-primary" disabled={f.busy}>{f.busy ? 'Saving…' : 'Save'}</button></div>}
             </form>

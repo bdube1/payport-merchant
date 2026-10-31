@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { authApi, errorMessage, DOC_TYPES, uploadDocumentWithToken } from '../lib/api.js';
 
 // Merchant application form. Creates the business and its owner login in one step
-// (POST /api/v1/merchant-portal/signup). The account stays PENDING until PayPort's KYB review
+// (POST /api/v1/merchant-portal/signup). The account stays PENDING until Payport's KYB review
 // (two staff members) approves it; the applicant can sign in straight away to track the review
 // and answer questions, but gets no API keys or live payments until approved.
 
@@ -128,7 +128,7 @@ export default function Signup() {
                 <div style={{ textAlign: 'center', marginBottom: 24 }}>
                     <img src="/favicon.png" alt="" style={{ width: 44, height: 44, borderRadius: 10, marginBottom: 12 }} />
                     <h1 style={{ fontSize: 19, fontWeight: 800, margin: 0 }}>Apply for a merchant account</h1>
-                    <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '4px 0 0' }}>Accept mobile money and card payments with PayPort</p>
+                    <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '4px 0 0' }}>Accept mobile money and card payments with Payport</p>
                 </div>
 
                 {error && (
@@ -183,7 +183,7 @@ export default function Signup() {
 
                 <label style={{ fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 8, margin: '4px 0 22px', cursor: 'pointer', lineHeight: 1.5 }}>
                     <input type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} style={{ width: 'auto', marginTop: 3 }} />
-                    I confirm the information is true and that PayPort may verify the business, its directors and its bank account before approving it.
+                    I confirm the information is true and that Payport may verify the business, its directors and its bank account before approving it.
                 </label>
 
                 <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: 13 }}>
