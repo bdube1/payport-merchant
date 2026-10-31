@@ -68,6 +68,10 @@ export const storeApi = {
     orderStatus: (ref, status) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/status`, { status }),
     refund: (ref, amountMinor, reason) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/refunds`, { amountMinor, reason }),
     delivery: (ref, status) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/delivery`, { status }),
+    domains: () => commerceHttp.get('/domains'),
+    addDomain: (domain) => commerceHttp.post('/domains', { domain }),
+    verifyDomain: (id) => commerceHttp.post(`/domains/${id}/verify`),
+    removeDomain: (id) => commerceHttp.delete(`/domains/${id}`),
     customers: (q) => commerceHttp.get('/customers', { params: { q: q || undefined } }),
 };
 
