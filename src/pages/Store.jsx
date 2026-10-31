@@ -150,6 +150,15 @@ function ProductForm({ product, currencies, collections, onClose, onDone }) {
             featured: !!v.featured, collectionIds: v.collectionIds, durationMin: v.kind === 'SERVICE' && v.duration !== '' ? Number(v.duration) : null };
         return product ? storeApi.saveProduct(product.id, b) : storeApi.createProduct(b);
     }, (d) => { onDone(d); onClose(); });
+    const [writing, setWriting] = useState(false);
+    const write = async () => {
+        setWriting(true);
+        try {
+            const r = data(await storeApi.describe({ name: f.v.name, category: f.v.category, kind: f.v.kind, notes: f.v.description }));
+            f.set('description')(r.description);
+        } catch (e) { toast.error(errorMessage(e, 'Could not write it')); }
+        finally { setWriting(false); }
+    };
     return (
         <Modal title={product ? 'Edit product' : 'New product'} onClose={onClose} onSubmit={f.submit} busy={f.busy} error={f.error}>
             <div style={{ display: 'flex', gap: 6 }}>
@@ -175,7 +184,13 @@ function ProductForm({ product, currencies, collections, onClose, onDone }) {
                     })}
                 </div></div>}
             <div><label style={label}>Category</label><input style={field} value={f.v.category} onChange={f.set('category')} maxLength={40} /></div>
-            <div><label style={label}>Description</label><textarea style={{ ...field, minHeight: 90 }} value={f.v.description} onChange={f.set('description')} maxLength={2000} /></div>
+            <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label style={label}>Description</label>
+                    <button type="button" className="btn btn-ghost" style={{ padding: '3px 10px', fontSize: 12 }} disabled={writing || !f.v.name} onClick={write}>{writing ? 'Writing…' : 'Write with AI'}</button>
+                </div>
+                <textarea style={{ ...field, minHeight: 90 }} value={f.v.description} onChange={f.set('description')} maxLength={2000} />
+            </div>
             <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={f.v.visible} onChange={f.set('visible')} /> On sale</label>
             <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={f.v.featured} onChange={f.set('featured')} /> Featured on the front page</label>
         </Modal>
