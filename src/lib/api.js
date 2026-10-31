@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { API_BASE } from './apiBase';
 
 // Same safe pattern as payport-ops and payport-consumer: defaults to the
 // real production API, never to localhost, so a missing env override
 // can't silently break a production build. Local dev gets localhost via
 // .env.development.local (mode-specific, verified not to leak into
 // `npm run build`), never by changing this fallback.
-const BASE = import.meta.env.VITE_API_URL || 'https://api.payport.africa';
+const BASE = API_BASE;
 
 // "Remember me" toggles which storage a session lives in -- localStorage
 // persists across browser restarts, sessionStorage clears when the tab

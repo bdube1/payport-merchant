@@ -2,8 +2,9 @@
 // any activity, the person is signed out and taken to the login page. Activity in any tab of this portal counts,
 // and a page reopened after the time has passed signs out at once.
 import { useEffect, useRef } from 'react';
+import { API_BASE } from './apiBase';
 
-const BASE = (import.meta.env.VITE_API_URL || 'https://api.payport.africa').replace(/\/$/, '');
+const BASE = API_BASE;
 const EVENTS = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'wheel'];
 let settings = null;
 

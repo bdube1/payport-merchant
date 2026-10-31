@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { authStorage } from './api';
+import { COMMERCE_BASE } from './apiBase';
 
 // Payport Commerce is its own service (store.payport.africa), so it keeps working when Payport Payments is down.
 // The portal signs in to it once with the portal's own login; Commerce gives a 12-hour store session.
-const BASE = import.meta.env.VITE_COMMERCE_URL || 'https://store.payport.africa';
+const BASE = COMMERCE_BASE;
 export const STORE_BASE = BASE;
 
 const commerceHttp = axios.create({ baseURL: `${BASE}/api/commerce`, timeout: 30000, headers: { 'Content-Type': 'application/json' } });
