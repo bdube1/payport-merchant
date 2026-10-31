@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Plus, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { Page, Section, Table, Notice, Badge, minor, show } from '../components/kit';
-import { storeApi, imageUrl, storeSession } from '../lib/commerce';
+import { storeApi, imageUrl, storeSession, STORE_BASE } from '../lib/commerce';
+
+const STORE_HOST = STORE_BASE.replace(/^https?:\/\//, '');
 import { errorMessage } from '../lib/api';
 import Share from './store/Share.jsx';
 
@@ -122,9 +124,9 @@ function ProductForm({ product, currencies, onClose, onDone }) {
     const f = useForm({
         name: product?.name || '', description: product?.description || '', price: product ? (product.priceMinor / 100).toFixed(2) : '',
         currency: product?.currency || currencies[0] || 'USD', imageId: product?.imageId || null, visible: product ? product.status === 'ACTIVE' : true,
-        stock: product?.stock ?? '',
+        stock: product?.stock ?? '', category: product?.category || '',
     }, (v) => {
-        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN', stock: v.stock === '' ? null : Number(v.stock) };
+        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN', stock: v.stock === '' ? null : Number(v.stock), category: v.category || null };
         return product ? storeApi.saveProduct(product.id, b) : storeApi.createProduct(b);
     }, (d) => { onDone(d); onClose(); });
     return (
@@ -136,6 +138,7 @@ function ProductForm({ product, currencies, onClose, onDone }) {
                 <div><label style={label}>Currency</label><select style={field} value={f.v.currency} onChange={f.set('currency')}>{currencies.map(c => <option key={c}>{c}</option>)}</select></div>
                 <div><label style={label}>In stock</label><input style={field} type="number" min="0" step="1" value={f.v.stock} onChange={f.set('stock')} placeholder="Not counted" /></div>
             </div>
+            <div><label style={label}>Category</label><input style={field} value={f.v.category} onChange={f.set('category')} maxLength={40} /></div>
             <div><label style={label}>Description</label><textarea style={{ ...field, minHeight: 90 }} value={f.v.description} onChange={f.set('description')} maxLength={2000} /></div>
             <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={f.v.visible} onChange={f.set('visible')} /> On sale</label>
         </Modal>
@@ -391,6 +394,47 @@ function Customers() {
     );
 }
 
+const DESIGNS = [['PRODUCT', 'Product', 'Big pictures and prices'], ['BOUTIQUE', 'Boutique', 'Catalogue with categories'], ['LOCAL', 'Local business', 'Menu list, pickup and WhatsApp']];
+
+function Domains({ canManage }) {
+    const [rows, setRows] = useState([]);
+    const [domain, setDomain] = useState('');
+    const load = () => storeApi.domains().then(r => setRows(data(r) || [])).catch(() => setRows([]));
+    useEffect(() => { load(); }, []);
+    const run = async (fn, ok) => { try { await fn(); toast.success(ok); load(); } catch (e) { toast.error(errorMessage(e, 'Could not change')); } };
+    return (
+        <Section title="Your own domain">
+            {canManage && (
+                <form onSubmit={e => { e.preventDefault(); run(() => storeApi.addDomain(domain), 'Added').then(() => setDomain('')); }} style={{ display: 'flex', gap: 8, marginBottom: 12, maxWidth: 560 }}>
+                    <input style={field} placeholder="shop.yourbusiness.co.zw" value={domain} onChange={e => setDomain(e.target.value)} required />
+                    <button className="btn btn-primary" type="submit">Add</button>
+                </form>
+            )}
+            {rows.map(d => (
+                <div key={d.id} className="card" style={{ padding: 14, marginBottom: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                        <strong>{d.domain}</strong>
+                        <Badge value={d.status} />
+                    </div>
+                    {d.status !== 'VERIFIED' && (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', gap: '4px 12px', fontSize: 12.5, margin: '10px 0' }}>
+                            <span style={{ color: 'var(--text-2)' }}>CNAME</span><code>{d.domain} → {STORE_HOST}</code>
+                            <span style={{ color: 'var(--text-2)' }}>TXT</span><code style={{ wordBreak: 'break-all' }}>{d.txtName} = {d.txtValue}</code>
+                        </div>
+                    )}
+                    {d.lastError && d.status !== 'VERIFIED' && <div style={{ fontSize: 12, color: 'var(--text-2)', marginBottom: 8 }}>{d.lastError}</div>}
+                    {canManage && (
+                        <div style={{ display: 'flex', gap: 8 }}>
+                            {d.status !== 'VERIFIED' && <button className="btn btn-primary" style={{ padding: '5px 10px', fontSize: 12.5 }} onClick={() => run(() => storeApi.verifyDomain(d.id), 'Checked')}>Check</button>}
+                            <button className="btn btn-ghost" style={{ padding: '5px 10px', fontSize: 12.5 }} onClick={() => window.confirm('Are you sure?') && run(() => storeApi.removeDomain(d.id), 'Removed')}>Remove</button>
+                        </div>
+                    )}
+                </div>
+            ))}
+        </Section>
+    );
+}
+
 // ─── settings ────────────────────────────────────────────────────────────────
 
 function Settings({ store, canManage, onSaved }) {
@@ -399,14 +443,26 @@ function Settings({ store, canManage, onSaved }) {
         if (store.status !== 'CLOSED' && !v.open && !window.confirm('Are you sure?')) return Promise.reject(new Error('Cancelled'));
         return storeApi.saveStore({ name: v.name, slug: v.slug, about: v.about, whatsapp: v.whatsapp, themeColor: v.themeColor, logoImage: v.logoImage, status: v.open ? 'OPEN' : 'CLOSED',
             pickupEnabled: !!v.pickupEnabled, pickupNote: v.pickupNote, deliveryEnabled: !!v.deliveryEnabled, deliveryNote: v.deliveryNote,
-            deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom) });
+            deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom), design: v.design, bannerImage: v.bannerImage, tagline: v.tagline });
     }, onSaved);
     const base = useMemo(() => (store.url || '').replace(/[^/]*$/, ''), [store.url]);
     return (
         <Section title="Store">
             {f.error && <Notice kind="error">{f.error}</Notice>}
             <form onSubmit={f.submit} style={{ display: 'grid', gap: 12, maxWidth: 560 }}>
-                <PictureField value={f.v.logoImage} onChange={f.set('logoImage')} />
+                <div><label style={label}>Design</label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                        {DESIGNS.map(([k, t, d]) => (
+                            <button type="button" key={k} disabled={!canManage} onClick={() => f.set('design')(k)} className="card"
+                                style={{ padding: 12, textAlign: 'left', cursor: 'pointer', border: f.v.design === k ? '2px solid var(--primary)' : '1px solid var(--border)' }}>
+                                <div style={{ fontWeight: 800, fontSize: 13 }}>{t}</div>
+                                <div style={{ fontSize: 11.5, color: 'var(--text-2)' }}>{d}</div>
+                            </button>
+                        ))}
+                    </div></div>
+                <div><label style={label}>Logo</label><PictureField value={f.v.logoImage} onChange={f.set('logoImage')} /></div>
+                <div><label style={label}>Banner</label><PictureField value={f.v.bannerImage} onChange={f.set('bannerImage')} /></div>
+                <div><label style={label}>Tagline</label><input style={field} value={f.v.tagline || ''} onChange={f.set('tagline')} maxLength={120} disabled={!canManage} /></div>
                 <div><label style={label}>Store name</label><input style={field} value={f.v.name || ''} onChange={f.set('name')} required maxLength={120} disabled={!canManage} /></div>
                 <div><label style={label}>Store address</label>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><span style={{ fontSize: 13, color: 'var(--text-2)', whiteSpace: 'nowrap' }}>{base}</span>
@@ -461,6 +517,7 @@ export default function Store() {
             {tab === 'Orders' && <Orders canManage={canManage} />}
             {tab === 'Customers' && <Customers />}
             {tab === 'Settings' && ov?.store && <Settings store={ov.store} canManage={canManage} onSaved={(s) => setOv(o => ({ ...o, store: s }))} />}
+            {tab === 'Settings' && ov?.store && <Domains canManage={canManage} />}
         </Page>
     );
 }
