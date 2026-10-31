@@ -67,6 +67,8 @@ export const storeApi = {
     order: (ref) => commerceHttp.get(`/orders/${encodeURIComponent(ref)}`),
     orderStatus: (ref, status) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/status`, { status }),
     refund: (ref, amountMinor, reason) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/refunds`, { amountMinor, reason }),
+    delivery: (ref, status) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/delivery`, { status }),
+    customers: (q) => commerceHttp.get('/customers', { params: { q: q || undefined } }),
 };
 
 export const imageUrl = (id) => (id ? `${BASE}/img/${id}` : null);

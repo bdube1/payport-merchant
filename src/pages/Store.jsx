@@ -6,7 +6,9 @@ import { storeApi, imageUrl, storeSession } from '../lib/commerce';
 import { errorMessage } from '../lib/api';
 import Share from './store/Share.jsx';
 
-const TABS = ['Overview', 'Products', 'Links', 'Orders', 'Settings'];
+const TABS = ['Overview', 'Products', 'Links', 'Orders', 'Customers', 'Settings'];
+const DELIVERY_LABEL = { PREPARING: 'Preparing', READY: 'Ready to collect', OUT: 'Out for delivery', DELIVERED: 'Delivered', COLLECTED: 'Collected', NOT_NEEDED: '—' };
+const NEXT_STEP = { DELIVERY: { PREPARING: ['OUT', 'Out for delivery'], OUT: ['DELIVERED', 'Delivered'] }, PICKUP: { PREPARING: ['READY', 'Ready to collect'], READY: ['COLLECTED', 'Collected'] } };
 const PAYMENT_LABEL = { NOT_STARTED: 'Not paid', AWAITING_PAYMENT: 'Not paid', PENDING: 'Being confirmed', CONFIRMING: 'Being confirmed', PAID: 'Paid', FAILED: 'Failed', EXPIRED: 'Not paid' };
 const REFUND_LABEL = { REQUESTED: 'Refund requested', PARTIAL: 'Part refunded', REFUNDED: 'Refunded' };
 
@@ -120,17 +122,19 @@ function ProductForm({ product, currencies, onClose, onDone }) {
     const f = useForm({
         name: product?.name || '', description: product?.description || '', price: product ? (product.priceMinor / 100).toFixed(2) : '',
         currency: product?.currency || currencies[0] || 'USD', imageId: product?.imageId || null, visible: product ? product.status === 'ACTIVE' : true,
+        stock: product?.stock ?? '',
     }, (v) => {
-        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN' };
+        const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN', stock: v.stock === '' ? null : Number(v.stock) };
         return product ? storeApi.saveProduct(product.id, b) : storeApi.createProduct(b);
     }, (d) => { onDone(d); onClose(); });
     return (
         <Modal title={product ? 'Edit product' : 'New product'} onClose={onClose} onSubmit={f.submit} busy={f.busy} error={f.error}>
             <PictureField value={f.v.imageId} onChange={f.set('imageId')} />
             <div><label style={label}>Name</label><input style={field} value={f.v.name} onChange={f.set('name')} required maxLength={120} /></div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 110px', gap: 10 }}>
                 <div><label style={label}>Price</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.price} onChange={f.set('price')} required /></div>
                 <div><label style={label}>Currency</label><select style={field} value={f.v.currency} onChange={f.set('currency')}>{currencies.map(c => <option key={c}>{c}</option>)}</select></div>
+                <div><label style={label}>In stock</label><input style={field} type="number" min="0" step="1" value={f.v.stock} onChange={f.set('stock')} placeholder="Not counted" /></div>
             </div>
             <div><label style={label}>Description</label><textarea style={{ ...field, minHeight: 90 }} value={f.v.description} onChange={f.set('description')} maxLength={2000} /></div>
             <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={f.v.visible} onChange={f.set('visible')} /> On sale</label>
@@ -149,6 +153,7 @@ function Products({ canManage, currencies, startNew, onLink }) {
                 { key: 'pic', label: '', render: p => p.imageId ? <img src={imageUrl(p.imageId)} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 8 }} /> : null },
                 { key: 'name', label: 'Product' },
                 { key: 'price', label: 'Price', render: p => `${p.currency} ${p.price}` },
+                { key: 'stock', label: 'In stock', render: p => p.stock == null ? '—' : p.stock === 0 ? <Badge value="SOLD_OUT" /> : p.stock },
                 { key: 'status', label: 'Status', render: p => <Badge value={p.status === 'ACTIVE' ? 'ON_SALE' : 'HIDDEN'} /> },
                 { key: 'share', label: '', render: p => (
                     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }} onClick={e => e.stopPropagation()}>
@@ -262,6 +267,11 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
         try { await storeApi.orderStatus(orderRef, s); toast.success('Saved'); load(); onChanged(); }
         catch (e) { toast.error(errorMessage(e, 'Could not change')); }
     };
+    const step = async (s) => {
+        if (!window.confirm('Are you sure?')) return;
+        try { await storeApi.delivery(orderRef, s); toast.success('Saved'); load(); onChanged(); }
+        catch (e) { toast.error(errorMessage(e, 'Could not change')); }
+    };
     const left = o ? o.amountMinor - (o.refunds || []).filter(r => r.status !== 'FAILED').reduce((a, r) => a + r.amountMinor, 0) : 0;
     const f = useForm({ amount: '', reason: '' }, (v) => {
         if (!window.confirm('Are you sure?')) return Promise.reject(new Error('Cancelled'));
@@ -276,9 +286,15 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
                             <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>{o.orderRef}</h2>
                             <PaymentBadge status={o.paymentStatus} />
                         </div>
+                        {o.stockShort && <Notice kind="warn">Sold out while this order was being paid</Notice>}
                         {REFUND_LABEL[o.refundStatus] && <Notice kind={o.refundStatus === 'REQUESTED' ? 'warn' : 'info'}>{REFUND_LABEL[o.refundStatus]}</Notice>}
                         <div style={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', gap: '8px 16px', fontSize: 13.5, marginBottom: 18 }}>
-                            <div style={{ color: 'var(--text-2)' }}>Item</div><div>{o.itemName}{o.quantity > 1 ? ` x${o.quantity}` : ''}</div>
+                            {(o.items || []).length > 0
+                                ? <><div style={{ color: 'var(--text-2)' }}>Items</div><div>{o.items.map((i, n) => <div key={n}>{i.quantity} x {i.name} <span style={{ color: 'var(--text-2)' }}>{minor(i.unitMinor * i.quantity, o.currency)}</span></div>)}</div></>
+                                : <><div style={{ color: 'var(--text-2)' }}>Item</div><div>{o.itemName}{o.quantity > 1 ? ` x${o.quantity}` : ''}</div></>}
+                            {o.deliveryMethod !== 'NONE' && <><div style={{ color: 'var(--text-2)' }}>{o.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}</div>
+                                <div>{DELIVERY_LABEL[o.deliveryStatus] || o.deliveryStatus}{o.deliveryFeeMinor > 0 ? ` · fee ${minor(o.deliveryFeeMinor, o.currency)}` : ''}</div></>}
+                            {o.deliveryAddress && <><div style={{ color: 'var(--text-2)' }}>Deliver to</div><div>{o.deliveryAddress}</div></>}
                             <div style={{ color: 'var(--text-2)' }}>Total</div><div style={{ fontWeight: 800 }}>{minor(o.amountMinor, o.currency)}</div>
                             <div style={{ color: 'var(--text-2)' }}>Customer</div><div>{[o.customerName, o.customerPhone].filter(Boolean).join(' · ') || '—'}</div>
                             {o.note && <><div style={{ color: 'var(--text-2)' }}>Note</div><div>{o.note}</div></>}
@@ -298,7 +314,9 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
                         )}
                         {canManage && (
                             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                                {o.paymentStatus === 'PAID' && o.orderStatus === 'OPEN' && <button className="btn btn-primary" onClick={() => status('FULFILLED')}>Mark fulfilled</button>}
+                                {o.paymentStatus === 'PAID' && NEXT_STEP[o.deliveryMethod]?.[o.deliveryStatus] && (
+                                    <button className="btn btn-primary" onClick={() => step(NEXT_STEP[o.deliveryMethod][o.deliveryStatus][0])}>{NEXT_STEP[o.deliveryMethod][o.deliveryStatus][1]}</button>)}
+                                {o.paymentStatus === 'PAID' && o.orderStatus === 'OPEN' && o.deliveryMethod === 'NONE' && <button className="btn btn-primary" onClick={() => status('FULFILLED')}>Mark fulfilled</button>}
                                 {o.paymentStatus === 'PAID' && left > 0 && <button className="btn btn-ghost" onClick={() => setRefund(true)}>Refund</button>}
                                 {o.orderStatus !== 'CANCELLED' && (o.paymentStatus !== 'PAID' || o.refundStatus === 'REFUNDED') && <button className="btn btn-ghost" onClick={() => status('CANCELLED')}>Cancel order</button>}
                             </div>
@@ -344,6 +362,7 @@ function Orders({ canManage }) {
                 { key: 'customer', label: 'Customer', render: o => [o.customerName, o.customerPhone].filter(Boolean).join(' · ') || '—' },
                 { key: 'amountMinor', label: 'Total', render: o => minor(o.amountMinor, o.currency) },
                 { key: 'paymentStatus', label: 'Payment', render: o => <PaymentBadge status={o.paymentStatus} /> },
+                { key: 'deliveryStatus', label: 'Delivery', render: o => o.deliveryMethod === 'NONE' ? '—' : `${o.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'} · ${DELIVERY_LABEL[o.deliveryStatus] || o.deliveryStatus}` },
                 { key: 'refundStatus', label: 'Refund', render: o => REFUND_LABEL[o.refundStatus] || '—' },
                 { key: 'orderStatus', label: 'Order', render: o => <Badge value={o.orderStatus} /> },
             ]} />
@@ -352,12 +371,35 @@ function Orders({ canManage }) {
     );
 }
 
+// ─── customers ───────────────────────────────────────────────────────────────
+
+function Customers() {
+    const [rows, setRows] = useState(null);
+    const [q, setQ] = useState('');
+    const load = () => storeApi.customers(q).then(r => setRows(data(r))).catch(e => toast.error(errorMessage(e, 'Could not load')));
+    useEffect(() => { load(); }, []);
+    return (
+        <Section title="Customers" right={<input placeholder="Search" value={q} onChange={e => setQ(e.target.value)} onKeyDown={e => e.key === 'Enter' && load()} style={{ ...field, width: 200 }} />}>
+            <Table rows={rows || []} exportName="Store customers" empty={rows ? 'No customers yet.' : 'Loading…'} columns={[
+                { key: 'name', label: 'Name' },
+                { key: 'phone', label: 'Phone' },
+                { key: 'orders', label: 'Paid orders' },
+                { key: 'spent', label: 'Spent' },
+                { key: 'lastOrderAt', label: 'Last order', render: c => show(c.lastOrderAt).slice(0, 16) },
+            ]} />
+        </Section>
+    );
+}
+
 // ─── settings ────────────────────────────────────────────────────────────────
 
 function Settings({ store, canManage, onSaved }) {
-    const f = useForm({ ...store, open: store.status !== 'CLOSED' }, (v) => {
+    const f = useForm({ ...store, open: store.status !== 'CLOSED', deliveryFee: ((store.deliveryFeeMinor || 0) / 100).toFixed(2),
+        freeFrom: store.freeDeliveryFromMinor != null ? (store.freeDeliveryFromMinor / 100).toFixed(2) : '' }, (v) => {
         if (store.status !== 'CLOSED' && !v.open && !window.confirm('Are you sure?')) return Promise.reject(new Error('Cancelled'));
-        return storeApi.saveStore({ name: v.name, slug: v.slug, about: v.about, whatsapp: v.whatsapp, themeColor: v.themeColor, logoImage: v.logoImage, status: v.open ? 'OPEN' : 'CLOSED' });
+        return storeApi.saveStore({ name: v.name, slug: v.slug, about: v.about, whatsapp: v.whatsapp, themeColor: v.themeColor, logoImage: v.logoImage, status: v.open ? 'OPEN' : 'CLOSED',
+            pickupEnabled: !!v.pickupEnabled, pickupNote: v.pickupNote, deliveryEnabled: !!v.deliveryEnabled, deliveryNote: v.deliveryNote,
+            deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom) });
     }, onSaved);
     const base = useMemo(() => (store.url || '').replace(/[^/]*$/, ''), [store.url]);
     return (
@@ -374,6 +416,16 @@ function Settings({ store, canManage, onSaved }) {
                     <div><label style={label}>WhatsApp number</label><input style={field} value={f.v.whatsapp || ''} onChange={f.set('whatsapp')} placeholder="+263…" maxLength={20} disabled={!canManage} /></div>
                     <div><label style={label}>Colour</label><input style={{ ...field, padding: 3, height: 38 }} type="color" value={f.v.themeColor || '#0B6E4F'} onChange={f.set('themeColor')} disabled={!canManage} /></div>
                 </div>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.pickupEnabled} onChange={f.set('pickupEnabled')} disabled={!canManage} /> Pickup</label>
+                {f.v.pickupEnabled && <div><label style={label}>Where and when to collect</label><input style={field} value={f.v.pickupNote || ''} onChange={f.set('pickupNote')} maxLength={300} disabled={!canManage} /></div>}
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.deliveryEnabled} onChange={f.set('deliveryEnabled')} disabled={!canManage} /> Delivery</label>
+                {f.v.deliveryEnabled && <>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                        <div><label style={label}>Delivery fee</label><input style={field} type="number" min="0" step="0.01" value={f.v.deliveryFee} onChange={f.set('deliveryFee')} disabled={!canManage} /></div>
+                        <div><label style={label}>Free delivery from</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.freeFrom} onChange={f.set('freeFrom')} disabled={!canManage} /></div>
+                    </div>
+                    <div><label style={label}>Delivery areas and times</label><input style={field} value={f.v.deliveryNote || ''} onChange={f.set('deliveryNote')} maxLength={300} disabled={!canManage} /></div>
+                </>}
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.open} onChange={f.set('open')} disabled={!canManage} /> Taking orders</label>
                 {canManage && <div><button type="submit" className="btn btn-primary" disabled={f.busy}>{f.busy ? 'Saving…' : 'Save'}</button></div>}
             </form>
@@ -407,6 +459,7 @@ export default function Store() {
             {tab === 'Products' && <Products canManage={canManage} currencies={currencies} startNew={startNew} onLink={(p) => { setForProduct(p); setTab('Links'); }} />}
             {tab === 'Links' && <Links key={forProduct?.id || (startNew ? 'new' : 'list')} canManage={canManage} currencies={currencies} startNew={startNew} forProduct={forProduct} clearProduct={() => setForProduct(null)} />}
             {tab === 'Orders' && <Orders canManage={canManage} />}
+            {tab === 'Customers' && <Customers />}
             {tab === 'Settings' && ov?.store && <Settings store={ov.store} canManage={canManage} onSaved={(s) => setOv(o => ({ ...o, store: s }))} />}
         </Page>
     );
