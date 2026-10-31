@@ -5,10 +5,12 @@ import { Page, Section, Table, Notice, Badge, minor, show } from '../components/
 import { storeApi, imageUrl, storeSession, STORE_BASE } from '../lib/commerce';
 
 const STORE_HOST = STORE_BASE.replace(/^https?:\/\//, '');
-import { errorMessage } from '../lib/api';
+import { errorMessage, paymentMethodsApi } from '../lib/api';
 import Share from './store/Share.jsx';
 
-const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Customers', 'Settings'];
+const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Bookings', 'Reviews', 'Customers', 'Settings'];
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const METHOD_NAMES = { ECOCASH: 'EcoCash', ONEMONEY: 'OneMoney', OMARI: 'Omari', INNBUCKS: 'InnBucks', ZIMSWITCH: 'Card' };
 const TYPES = [['SHOP', 'Shop'], ['CLOTHING', 'Clothing and shoes'], ['FOOD', 'Food'], ['DRINKS', 'Drinks'], ['SERVICES', 'Services'], ['BEAUTY', 'Beauty and hair'], ['ELECTRONICS', 'Phones and electronics'], ['HOME', 'Home and garden'], ['CRAFTS', 'Art and crafts'], ['OTHER', 'Other']];
 const DELIVERY_LABEL = { PREPARING: 'Preparing', READY: 'Ready to collect', OUT: 'Out for delivery', DELIVERED: 'Delivered', COLLECTED: 'Collected', NOT_NEEDED: '—' };
 const NEXT_STEP = { DELIVERY: { PREPARING: ['OUT', 'Out for delivery'], OUT: ['DELIVERED', 'Delivered'] }, PICKUP: { PREPARING: ['READY', 'Ready to collect'], READY: ['COLLECTED', 'Collected'] } };
@@ -141,11 +143,11 @@ function ProductForm({ product, currencies, collections, onClose, onDone }) {
         name: product?.name || '', description: product?.description || '', price: product ? (product.priceMinor / 100).toFixed(2) : '',
         currency: product?.currency || currencies[0] || 'USD', imageId: product?.imageId || null, visible: product ? product.status === 'ACTIVE' : true,
         stock: product?.stock ?? '', category: product?.category || '', kind: product?.kind || 'GOODS',
-        was: product?.compareAtMinor != null ? (product.compareAtMinor / 100).toFixed(2) : '', featured: !!product?.featured, collectionIds: product?.collectionIds || [],
+        was: product?.compareAtMinor != null ? (product.compareAtMinor / 100).toFixed(2) : '', featured: !!product?.featured, collectionIds: product?.collectionIds || [], duration: product?.durationMin ?? '',
     }, (v) => {
         const b = { name: v.name, description: v.description, priceMinor: toMinor(v.price), currency: v.currency, imageId: v.imageId, status: v.visible ? 'ACTIVE' : 'HIDDEN',
             stock: v.kind === 'SERVICE' || v.stock === '' ? null : Number(v.stock), category: v.category || null, kind: v.kind, compareAtMinor: toMinor(v.was),
-            featured: !!v.featured, collectionIds: v.collectionIds };
+            featured: !!v.featured, collectionIds: v.collectionIds, durationMin: v.kind === 'SERVICE' && v.duration !== '' ? Number(v.duration) : null };
         return product ? storeApi.saveProduct(product.id, b) : storeApi.createProduct(b);
     }, (d) => { onDone(d); onClose(); });
     return (
@@ -162,6 +164,7 @@ function ProductForm({ product, currencies, collections, onClose, onDone }) {
                 <div><label style={label}>Was (sale)</label><input style={field} type="number" min="0.01" step="0.01" value={f.v.was} onChange={f.set('was')} /></div>
                 <div><label style={label}>Currency</label><select style={field} value={f.v.currency} onChange={f.set('currency')}>{currencies.map(c => <option key={c}>{c}</option>)}</select></div>
             </div>
+            {f.v.kind === 'SERVICE' && <div><label style={label}>Takes (minutes)</label><input style={field} type="number" min="5" max="720" step="5" value={f.v.duration} onChange={f.set('duration')} placeholder="60" /></div>}
             {f.v.kind === 'GOODS' && <div><label style={label}>In stock</label><input style={field} type="number" min="0" step="1" value={f.v.stock} onChange={f.set('stock')} placeholder="Not counted" /></div>}
             {collections.length > 0 && <div><label style={label}>Collections</label>
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -444,8 +447,10 @@ function OrderPanel({ orderRef, canManage, onClose, onChanged }) {
                             {o.deliveryMethod !== 'NONE' && <><div style={{ color: 'var(--text-2)' }}>{o.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}</div>
                                 <div>{DELIVERY_LABEL[o.deliveryStatus] || o.deliveryStatus}{o.deliveryFeeMinor > 0 ? ` · fee ${minor(o.deliveryFeeMinor, o.currency)}` : ''}</div></>}
                             {o.deliveryAddress && <><div style={{ color: 'var(--text-2)' }}>Deliver to</div><div>{o.deliveryAddress}</div></>}
+                            {o.booking && <><div style={{ color: 'var(--text-2)' }}>Appointment</div><div style={{ fontWeight: 700 }}>{o.booking}</div></>}
+                            {o.deliveryZone && <><div style={{ color: 'var(--text-2)' }}>Area</div><div>{o.deliveryZone}</div></>}
                             {o.discountMinor > 0 && <><div style={{ color: 'var(--text-2)' }}>Discount</div><div>{o.discountCode} · −{minor(o.discountMinor, o.currency)}</div></>}
-                            <div style={{ color: 'var(--text-2)' }}>Payment</div><div>{o.payMethod === 'CASH' ? 'Cash on delivery or collection' : 'Online'}</div>
+                            <div style={{ color: 'var(--text-2)' }}>Payment</div><div>{o.payMethod === 'CASH' ? 'Cash on delivery or collection' : `Online${o.payChoice ? ` · ${METHOD_NAMES[o.payChoice] || o.payChoice}` : ''}`}</div>
                             <div style={{ color: 'var(--text-2)' }}>Total</div><div style={{ fontWeight: 800 }}>{minor(o.amountMinor, o.currency)}</div>
                             <div style={{ color: 'var(--text-2)' }}>Customer</div><div>{[o.customerName, o.customerPhone].filter(Boolean).join(' · ') || '—'}
                                 {whatsapp(o) && <a className="btn btn-ghost" style={{ marginLeft: 8, padding: '3px 9px', fontSize: 12 }} href={whatsapp(o)} target="_blank" rel="noopener noreferrer">WhatsApp</a>}</div>
@@ -588,6 +593,163 @@ function Domains({ canManage }) {
     );
 }
 
+// ─── bookings and reviews ────────────────────────────────────────────────────
+
+function Bookings() {
+    const [rows, setRows] = useState(null);
+    useEffect(() => { storeApi.bookings().then(r => setRows(data(r) || [])).catch(e => toast.error(errorMessage(e, 'Could not load'))); }, []);
+    return (
+        <Section title="Bookings">
+            <Table rows={rows || []} exportName="Store bookings" empty={rows ? 'No bookings yet.' : 'Loading…'} columns={[
+                { key: 'when', label: 'When' },
+                { key: 'service', label: 'Service' },
+                { key: 'customer', label: 'Customer', render: b => [b.customerName, b.customerPhone].filter(Boolean).join(' · ') || '—' },
+                { key: 'paymentStatus', label: 'Payment', render: b => <PaymentBadge status={b.paymentStatus} /> },
+                { key: 'status', label: 'Booking', render: b => <Badge value={b.status === 'CONFIRMED' ? 'ACTIVE' : 'PENDING'} /> },
+                { key: 'orderRef', label: 'Order' },
+            ]} />
+        </Section>
+    );
+}
+
+function Reviews({ canManage }) {
+    const [rows, setRows] = useState(null);
+    const load = () => storeApi.reviews().then(r => setRows(data(r) || [])).catch(e => toast.error(errorMessage(e, 'Could not load')));
+    useEffect(() => { load(); }, []);
+    const save = async (r, b, ok) => {
+        try { setRows(data(await storeApi.updateReview(r.id, b)) || []); toast.success(ok); }
+        catch (e) { toast.error(errorMessage(e, 'Could not change')); }
+    };
+    return (
+        <Section title="Reviews">
+            {rows && rows.length === 0 && <div style={{ fontSize: 13, color: 'var(--text-2)' }}>No reviews yet.</div>}
+            {(rows || []).map(r => (
+                <div key={r.id} className="card" style={{ padding: 14, marginBottom: 10, opacity: r.hidden ? 0.6 : 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+                        <strong>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)} · {r.product}</strong>
+                        <span style={{ fontSize: 12, color: 'var(--text-2)' }}>{r.name || 'A customer'} · {String(r.createdAt).slice(0, 10)} · {r.orderRef}</span>
+                    </div>
+                    {r.comment && <div style={{ fontSize: 13.5, margin: '6px 0' }}>{r.comment}</div>}
+                    {r.reply && <div style={{ fontSize: 13, color: 'var(--text-2)', borderLeft: '3px solid var(--border)', paddingLeft: 8 }}>{r.reply}</div>}
+                    {canManage && (
+                        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                            <button className="btn btn-ghost" style={{ padding: '5px 10px', fontSize: 12.5 }} onClick={() => {
+                                const reply = window.prompt('Reply', r.reply || '');
+                                if (reply !== null) save(r, { reply }, 'Saved');
+                            }}>{r.reply ? 'Edit reply' : 'Reply'}</button>
+                            <button className="btn btn-ghost" style={{ padding: '5px 10px', fontSize: 12.5 }} onClick={() => window.confirm('Are you sure?') && save(r, { hidden: !r.hidden }, r.hidden ? 'Shown' : 'Hidden')}>{r.hidden ? 'Show' : 'Hide'}</button>
+                        </div>
+                    )}
+                </div>
+            ))}
+        </Section>
+    );
+}
+
+// ─── payment methods, delivery areas, opening hours ──────────────────────────
+
+function PaymentMethods({ canManage }) {
+    const [rows, setRows] = useState(null);
+    const load = () => paymentMethodsApi.list().then(r => setRows(data(r) || [])).catch(() => setRows([]));
+    useEffect(() => { load(); }, []);
+    const toggle = async (m) => {
+        if (!window.confirm('Are you sure?')) return;
+        try {
+            setRows(data(await paymentMethodsApi.set({ [m.code]: !m.enabled })) || []);
+            await storeApi.refreshMethods().catch(() => null);
+            toast.success(m.enabled ? 'Switched off' : 'Switched on');
+        } catch (e) { toast.error(errorMessage(e, 'Could not change')); }
+    };
+    return (
+        <Section title="Payment methods">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 8 }}>
+                {(rows || []).map(m => (
+                    <label key={m.code} className="card" style={{ padding: 12, display: 'flex', gap: 10, alignItems: 'center', cursor: canManage ? 'pointer' : 'default' }}>
+                        <input type="checkbox" checked={!!m.enabled} disabled={!canManage} onChange={() => toggle(m)} />
+                        <span style={{ fontWeight: 700, fontSize: 13 }}>{m.name}</span>
+                    </label>
+                ))}
+            </div>
+        </Section>
+    );
+}
+
+function Zones({ canManage }) {
+    const [rows, setRows] = useState([]);
+    const [v, setV] = useState({ name: '', fee: '', free: '' });
+    const load = () => storeApi.zones().then(r => setRows(data(r) || [])).catch(() => setRows([]));
+    useEffect(() => { load(); }, []);
+    const add = async (e) => {
+        e.preventDefault();
+        try { setRows(data(await storeApi.addZone({ name: v.name, feeMinor: toMinor(v.fee) || 0, freeFromMinor: toMinor(v.free) })) || []); setV({ name: '', fee: '', free: '' }); toast.success('Added'); }
+        catch (err) { toast.error(errorMessage(err, 'Could not add')); }
+    };
+    const remove = async (z) => {
+        if (!window.confirm('Are you sure?')) return;
+        try { setRows(data(await storeApi.removeZone(z.id)) || []); toast.success('Removed'); }
+        catch (err) { toast.error(errorMessage(err, 'Could not remove')); }
+    };
+    return (
+        <Section title="Delivery areas">
+            {canManage && (
+                <form onSubmit={add} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto', gap: 8, marginBottom: 12, maxWidth: 640 }}>
+                    <input style={field} placeholder="Avondale" value={v.name} onChange={e => setV({ ...v, name: e.target.value })} required maxLength={60} />
+                    <input style={field} type="number" min="0" step="0.01" placeholder="Fee" value={v.fee} onChange={e => setV({ ...v, fee: e.target.value })} />
+                    <input style={field} type="number" min="0.01" step="0.01" placeholder="Free from" value={v.free} onChange={e => setV({ ...v, free: e.target.value })} />
+                    <button className="btn btn-primary" type="submit"><Plus size={14} /> Add</button>
+                </form>
+            )}
+            <Table rows={rows} noExport empty="No areas: one delivery fee for everywhere." columns={[
+                { key: 'name', label: 'Area' },
+                { key: 'feeMinor', label: 'Fee', render: z => (z.feeMinor / 100).toFixed(2) },
+                { key: 'freeFromMinor', label: 'Free from', render: z => z.freeFromMinor != null ? (z.freeFromMinor / 100).toFixed(2) : '—' },
+                { key: 'actions', label: '', render: z => canManage && <button className="btn btn-ghost" style={{ padding: '4px 9px', fontSize: 12.5 }} onClick={() => remove(z)}>Remove</button> },
+            ]} />
+        </Section>
+    );
+}
+
+function Hours({ canManage }) {
+    const [staff, setStaff] = useState(1);
+    const [days, setDays] = useState(DAYS.map((_, i) => ({ weekday: i + 1, on: false, opens: '08:00', closes: '17:00' })));
+    useEffect(() => {
+        storeApi.hours().then(r => {
+            const h = data(r) || {};
+            setStaff(h.staff || 1);
+            setDays(DAYS.map((_, i) => {
+                const d = (h.days || []).find(x => x.weekday === i + 1);
+                return d ? { weekday: i + 1, on: true, opens: String(d.opens).slice(0, 5), closes: String(d.closes).slice(0, 5) } : { weekday: i + 1, on: false, opens: '08:00', closes: '17:00' };
+            }));
+        }).catch(() => null);
+    }, []);
+    const set = (i, k, val) => setDays(ds => ds.map((d, n) => (n === i ? { ...d, [k]: val } : d)));
+    const save = async (e) => {
+        e.preventDefault();
+        try {
+            await storeApi.setHours({ staff: Number(staff), days: days.filter(d => d.on).map(d => ({ weekday: d.weekday, opens: d.opens, closes: d.closes })) });
+            toast.success('Saved');
+        } catch (err) { toast.error(errorMessage(err, 'Could not save')); }
+    };
+    return (
+        <Section title="Opening hours for bookings">
+            <form onSubmit={save} style={{ display: 'grid', gap: 8, maxWidth: 520 }}>
+                {days.map((d, i) => (
+                    <div key={d.weekday} style={{ display: 'grid', gridTemplateColumns: '130px 1fr 1fr', gap: 8, alignItems: 'center' }}>
+                        <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={d.on} disabled={!canManage} onChange={e => set(i, 'on', e.target.checked)} /> {DAYS[i]}</label>
+                        <input style={field} type="time" value={d.opens} disabled={!canManage || !d.on} onChange={e => set(i, 'opens', e.target.value)} />
+                        <input style={field} type="time" value={d.closes} disabled={!canManage || !d.on} onChange={e => set(i, 'closes', e.target.value)} />
+                    </div>
+                ))}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: 8, alignItems: 'center' }}>
+                    <label style={label}>People serving at the same time</label>
+                    <input style={field} type="number" min="1" max="50" value={staff} disabled={!canManage} onChange={e => setStaff(e.target.value)} />
+                </div>
+                {canManage && <div><button type="submit" className="btn btn-primary">Save</button></div>}
+            </form>
+        </Section>
+    );
+}
+
 // ─── settings ────────────────────────────────────────────────────────────────
 
 function Settings({ store, canManage, onSaved }) {
@@ -597,7 +759,8 @@ function Settings({ store, canManage, onSaved }) {
         return storeApi.saveStore({ name: v.name, slug: v.slug, about: v.about, whatsapp: v.whatsapp, themeColor: v.themeColor, logoImage: v.logoImage, status: v.open ? 'OPEN' : 'CLOSED',
             pickupEnabled: !!v.pickupEnabled, pickupNote: v.pickupNote, deliveryEnabled: !!v.deliveryEnabled, deliveryNote: v.deliveryNote,
             deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom), design: v.design, bannerImage: v.bannerImage, tagline: v.tagline,
-            businessType: v.businessType || 'SHOP', announcement: v.announcement || null, codEnabled: !!v.codEnabled, listed: !!v.listed });
+            businessType: v.businessType || 'SHOP', announcement: v.announcement || null, codEnabled: !!v.codEnabled, listed: !!v.listed,
+            alertsEnabled: !!v.alertsEnabled, customerSms: !!v.customerSms });
     }, onSaved);
     const base = useMemo(() => (store.url || '').replace(/[^/]*$/, ''), [store.url]);
     return (
@@ -640,6 +803,8 @@ function Settings({ store, canManage, onSaved }) {
                     <div><label style={label}>Delivery areas and times</label><input style={field} value={f.v.deliveryNote || ''} onChange={f.set('deliveryNote')} maxLength={300} disabled={!canManage} /></div>
                 </>}
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.codEnabled} onChange={f.set('codEnabled')} disabled={!canManage} /> Pay on delivery or collection</label>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.alertsEnabled} onChange={f.set('alertsEnabled')} disabled={!canManage} /> Text me about new orders</label>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.customerSms} onChange={f.set('customerSms')} disabled={!canManage} /> Text customers when their order is confirmed or ready</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.listed} onChange={f.set('listed')} disabled={!canManage} /> Listed on PayPort Store</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.open} onChange={f.set('open')} disabled={!canManage} /> Taking orders</label>
                 {canManage && <div><button type="submit" className="btn btn-primary" disabled={f.busy}>{f.busy ? 'Saving…' : 'Save'}</button></div>}
@@ -676,8 +841,13 @@ export default function Store() {
             {tab === 'Discounts' && <Discounts canManage={canManage} currencies={currencies} />}
             {tab === 'Links' && <Links key={forProduct?.id || (startNew ? 'new' : 'list')} canManage={canManage} currencies={currencies} startNew={startNew} forProduct={forProduct} clearProduct={() => setForProduct(null)} />}
             {tab === 'Orders' && <Orders canManage={canManage} />}
+            {tab === 'Bookings' && <Bookings />}
+            {tab === 'Reviews' && <Reviews canManage={canManage} />}
             {tab === 'Customers' && <Customers />}
             {tab === 'Settings' && ov?.store && <Settings store={ov.store} canManage={canManage} onSaved={(s) => setOv(o => ({ ...o, store: s }))} />}
+            {tab === 'Settings' && ov?.store && <PaymentMethods canManage={canManage} />}
+            {tab === 'Settings' && ov?.store && <Zones canManage={canManage} />}
+            {tab === 'Settings' && ov?.store && <Hours canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Domains canManage={canManage} />}
         </Page>
     );

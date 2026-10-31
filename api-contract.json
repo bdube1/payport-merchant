@@ -148,7 +148,17 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/complaints/assist",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/complaints/catalog",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/complaints/explain",
    "access": null
   },
   {
@@ -159,6 +169,11 @@
   {
    "method": "GET",
    "path": "/api/v1/admin/complaints/trace",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/complaints/triage",
    "access": null
   },
   {
@@ -663,6 +678,21 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/admin/intelligence",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/intelligence/features/{feature}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/intelligence/triage/retrain",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/admin/ledger/accounts",
    "access": null
   },
@@ -919,6 +949,16 @@
   {
    "method": "GET",
    "path": "/api/v1/admin/netone/wallet-balance-usd",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/admin/payments/live-readiness",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/admin/payments/store-live",
    "access": null
   },
   {
@@ -1698,6 +1738,11 @@
   },
   {
    "method": "POST",
+   "path": "/api/v1/commerce/messages",
+   "access": null
+  },
+  {
+   "method": "POST",
    "path": "/api/v1/commerce/refunds",
    "access": null
   },
@@ -1904,6 +1949,16 @@
   {
    "method": "POST",
    "path": "/api/v1/merchant/payment-links/{id}/disable",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/merchant/payment-methods",
+   "access": null
+  },
+  {
+   "method": "PUT",
+   "path": "/api/v1/merchant/payment-methods",
    "access": null
   },
   {
