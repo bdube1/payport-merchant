@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_BASE } from '../lib/apiBase';
 
 // The agent portal: its own login and token, separate from the merchant dashboard.
-const BASE = import.meta.env.VITE_API_URL || 'https://api.payport.africa';
+const BASE = API_BASE;
 
 export const agentSession = {
     token: () => { try { return localStorage.getItem('pa_token'); } catch { return null; } },
