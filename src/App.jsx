@@ -63,6 +63,7 @@ function AppRoutes() {
             <Route path="/queries" element={<RequireAuth><Queries /></RequireAuth>} />
             <Route path="/reports" element={<RequireAuth><Reports /></RequireAuth>} />
             <Route path="/store" element={<RequireAuth><Store /></RequireAuth>} />
+            <Route path="/store/:section" element={<RequireAuth><Store /></RequireAuth>} />
             <Route path="/payment-links" element={<RequireAuth><PaymentLinks /></RequireAuth>} />
             <Route path="/settlements" element={<RequireAuth><Settlements /></RequireAuth>} />
             <Route path="/api-keys" element={<RequireAuth><Developers /></RequireAuth>} />

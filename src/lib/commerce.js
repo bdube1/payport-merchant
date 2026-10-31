@@ -96,6 +96,13 @@ export const storeApi = {
     campaigns: () => commerceHttp.get('/campaigns'),
     sendCampaign: (text) => commerceHttp.post('/campaigns', { text }),
     cashReceived: (ref) => commerceHttp.post(`/orders/${encodeURIComponent(ref)}/cash-received`),
+    chats: () => commerceHttp.get('/chats'),
+    chat: (id) => commerceHttp.get(`/chats/${id}`),
+    chatReply: (id, text) => commerceHttp.post(`/chats/${id}/reply`, { text }),
+    chatBlock: (id, blocked) => commerceHttp.post(`/chats/${id}/block`, { blocked }),
+    chatReport: (id, reason, details) => commerceHttp.post(`/chats/${id}/report`, { reason, details }),
+    chatReasons: () => commerceHttp.get('/chats/reasons'),
+    chatInsights: () => commerceHttp.get('/chats/insights'),
 };
 
 export const imageUrl = (id) => (id ? `${BASE}/img/${id}` : null);
