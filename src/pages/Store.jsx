@@ -8,7 +8,8 @@ const STORE_HOST = STORE_BASE.replace(/^https?:\/\//, '');
 import { errorMessage, paymentMethodsApi } from '../lib/api';
 import Share from './store/Share.jsx';
 
-const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Bookings', 'Reviews', 'Customers', 'Settings'];
+const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Bookings', 'Reviews', 'Customers', 'Reports', 'Offers', 'Settings'];
+const CHANNEL_NAMES = { WEB: 'Website', APP: 'App', WHATSAPP: 'WhatsApp', USSD: 'USSD' };
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const METHOD_NAMES = { ECOCASH: 'EcoCash', ONEMONEY: 'OneMoney', OMARI: 'Omari', INNBUCKS: 'InnBucks', ZIMSWITCH: 'Card' };
 const TYPES = [['SHOP', 'Shop'], ['CLOTHING', 'Clothing and shoes'], ['FOOD', 'Food'], ['DRINKS', 'Drinks'], ['SERVICES', 'Services'], ['BEAUTY', 'Beauty and hair'], ['ELECTRONICS', 'Phones and electronics'], ['HOME', 'Home and garden'], ['CRAFTS', 'Art and crafts'], ['OTHER', 'Other']];
@@ -661,6 +662,77 @@ function Reviews({ canManage }) {
     );
 }
 
+// ─── reports and offers ──────────────────────────────────────────────────────
+
+function Reports() {
+    const [days, setDays] = useState(30);
+    const [r, setR] = useState(null);
+    useEffect(() => { setR(null); storeApi.reports(days).then(x => setR(data(x))).catch(e => toast.error(errorMessage(e, 'Could not load'))); }, [days]);
+    const m = (v, c) => minor(v, c);
+    return (
+        <>
+            <Section title="Sales" right={
+                <select value={days} onChange={e => setDays(Number(e.target.value))} style={{ ...field, width: 150 }}>
+                    {[7, 30, 90, 365].map(d => <option key={d} value={d}>Last {d} days</option>)}
+                </select>}>
+                {!r ? 'Loading…' : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: 12 }}>
+                        {(r.totals.length ? r.totals : [{ currency: 'USD', orders: 0, salesMinor: 0 }]).map(t => <Stat key={t.currency} title={`Sales (${t.currency})`} value={m(t.salesMinor)} sub={`${t.orders} paid orders`} />)}
+                        <Stat title="Customers" value={r.customers} sub={`${r.returningCustomers} came back`} />
+                        <Stat title="Agreed to offers" value={r.audience} />
+                    </div>
+                )}
+            </Section>
+            {r && <>
+                <Section title="By day"><Table rows={r.byDay} exportName="Sales by day" empty="No sales yet." columns={[
+                    { key: 'day', label: 'Day', render: x => String(x.day).slice(0, 10) }, { key: 'orders', label: 'Orders' }, { key: 'salesMinor', label: 'Sales', render: x => m(x.salesMinor, x.currency) }]} /></Section>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 12 }}>
+                    <Section title="Best sellers"><Table rows={r.topItems} exportName="Best sellers" empty="—" columns={[
+                        { key: 'name', label: 'Item' }, { key: 'sold', label: 'Sold' }, { key: 'salesMinor', label: 'Sales', render: x => m(x.salesMinor, x.currency) }]} /></Section>
+                    <Section title="By channel"><Table rows={r.byChannel} exportName="Sales by channel" empty="—" columns={[
+                        { key: 'channel', label: 'Channel', render: x => CHANNEL_NAMES[x.channel] || x.channel }, { key: 'orders', label: 'Orders' }, { key: 'salesMinor', label: 'Sales', render: x => m(x.salesMinor, x.currency) }]} /></Section>
+                    <Section title="By payment"><Table rows={r.byPayment} exportName="Sales by payment" empty="—" columns={[
+                        { key: 'method', label: 'Paid with', render: x => x.method === 'CASH' ? 'Cash on delivery' : METHOD_NAMES[x.method] || 'Online' }, { key: 'orders', label: 'Orders' }, { key: 'salesMinor', label: 'Sales', render: x => m(x.salesMinor, x.currency) }]} /></Section>
+                    <Section title="Discount codes used"><Table rows={r.discounts} exportName="Discount codes used" empty="—" columns={[
+                        { key: 'code', label: 'Code' }, { key: 'orders', label: 'Orders' }, { key: 'discountMinor', label: 'Given', render: x => m(x.discountMinor, x.currency) }]} /></Section>
+                </div>
+            </>}
+        </>
+    );
+}
+
+function Offers({ canManage }) {
+    const [x, setX] = useState(null);
+    const [text, setText] = useState('');
+    const [busy, setBusy] = useState(false);
+    const load = () => storeApi.campaigns().then(r => setX(data(r))).catch(e => toast.error(errorMessage(e, 'Could not load')));
+    useEffect(() => { load(); }, []);
+    const send = async (e) => {
+        e.preventDefault();
+        if (!window.confirm('Are you sure?')) return;
+        setBusy(true);
+        try { const r = data(await storeApi.sendCampaign(text)); toast.success(`Sent to ${r.recipients}`); setText(''); load(); }
+        catch (err) { toast.error(errorMessage(err, 'Could not send')); }
+        finally { setBusy(false); }
+    };
+    return (
+        <Section title="Offers by SMS">
+            <div style={{ fontSize: 13, color: 'var(--text-2)', marginBottom: 10 }}>{x ? `${x.audience} customers agreed to offers` : ''}</div>
+            {canManage && (
+                <form onSubmit={send} style={{ display: 'grid', gap: 8, maxWidth: 560, marginBottom: 16 }}>
+                    <textarea style={{ ...field, minHeight: 70 }} maxLength={120} value={text} onChange={e => setText(e.target.value)} placeholder="20% off all drinks this weekend" required />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: 12, color: 'var(--text-2)' }}>{text.length}/120</span>
+                        <button className="btn btn-primary" type="submit" disabled={busy || !x?.audience}>{busy ? 'Sending…' : 'Send offer'}</button>
+                    </div>
+                </form>
+            )}
+            <Table rows={x?.campaigns || []} noExport empty="No offers sent yet." columns={[
+                { key: 'createdAt', label: 'Sent', render: c => show(c.createdAt).slice(0, 16) }, { key: 'text', label: 'Offer' }, { key: 'recipients', label: 'To' }]} />
+        </Section>
+    );
+}
+
 // ─── payment methods, delivery areas, opening hours ──────────────────────────
 
 function PaymentMethods({ canManage }) {
@@ -775,7 +847,7 @@ function Settings({ store, canManage, onSaved }) {
             pickupEnabled: !!v.pickupEnabled, pickupNote: v.pickupNote, deliveryEnabled: !!v.deliveryEnabled, deliveryNote: v.deliveryNote,
             deliveryFeeMinor: toMinor(v.deliveryFee) || 0, freeDeliveryFromMinor: toMinor(v.freeFrom), design: v.design, bannerImage: v.bannerImage, tagline: v.tagline,
             businessType: v.businessType || 'SHOP', announcement: v.announcement || null, codEnabled: !!v.codEnabled, listed: !!v.listed,
-            alertsEnabled: !!v.alertsEnabled, customerSms: !!v.customerSms });
+            alertsEnabled: !!v.alertsEnabled, customerSms: !!v.customerSms, cartReminders: !!v.cartReminders, loyaltyEnabled: !!v.loyaltyEnabled });
     }, onSaved);
     const base = useMemo(() => (store.url || '').replace(/[^/]*$/, ''), [store.url]);
     return (
@@ -820,6 +892,8 @@ function Settings({ store, canManage, onSaved }) {
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.codEnabled} onChange={f.set('codEnabled')} disabled={!canManage} /> Pay on delivery or collection</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.alertsEnabled} onChange={f.set('alertsEnabled')} disabled={!canManage} /> Text me about new orders</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.customerSms} onChange={f.set('customerSms')} disabled={!canManage} /> Text customers when their order is confirmed or ready</label>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.loyaltyEnabled} onChange={f.set('loyaltyEnabled')} disabled={!canManage} /> Loyalty points</label>
+                <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.cartReminders} onChange={f.set('cartReminders')} disabled={!canManage} /> Cart reminders</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.listed} onChange={f.set('listed')} disabled={!canManage} /> Listed on PayPort Store</label>
                 <label style={{ fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><input type="checkbox" checked={!!f.v.open} onChange={f.set('open')} disabled={!canManage} /> Taking orders</label>
                 {canManage && <div><button type="submit" className="btn btn-primary" disabled={f.busy}>{f.busy ? 'Saving…' : 'Save'}</button></div>}
@@ -859,6 +933,8 @@ export default function Store() {
             {tab === 'Bookings' && <Bookings />}
             {tab === 'Reviews' && <Reviews canManage={canManage} />}
             {tab === 'Customers' && <Customers />}
+            {tab === 'Reports' && <Reports />}
+            {tab === 'Offers' && <Offers canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Settings store={ov.store} canManage={canManage} onSaved={(s) => setOv(o => ({ ...o, store: s }))} />}
             {tab === 'Settings' && ov?.store && <PaymentMethods canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Zones canManage={canManage} />}
