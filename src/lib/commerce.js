@@ -83,7 +83,6 @@ export const storeApi = {
     addDiscount: (b) => commerceHttp.post('/discounts', b),
     setDiscount: (id, active) => commerceHttp.post(`/discounts/${id}/status`, { active }),
     businessTypes: () => commerceHttp.get('/business-types'),
-    refreshMethods: () => commerceHttp.post('/methods/refresh'),
     reviews: () => commerceHttp.get('/reviews'),
     updateReview: (id, b) => commerceHttp.post(`/reviews/${id}`, b),
     zones: () => commerceHttp.get('/zones'),

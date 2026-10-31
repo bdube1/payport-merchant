@@ -5,7 +5,7 @@ import { Page, Section, Table, Notice, Badge, minor, show } from '../components/
 import { storeApi, imageUrl, storeSession, STORE_BASE } from '../lib/commerce';
 
 const STORE_HOST = STORE_BASE.replace(/^https?:\/\//, '');
-import { errorMessage, paymentMethodsApi } from '../lib/api';
+import { errorMessage } from '../lib/api';
 import Share from './store/Share.jsx';
 
 const TABS = ['Overview', 'Products', 'Collections', 'Discounts', 'Links', 'Orders', 'Bookings', 'Reviews', 'Customers', 'Reports', 'Offers', 'Settings'];
@@ -733,33 +733,7 @@ function Offers({ canManage }) {
     );
 }
 
-// ─── payment methods, delivery areas, opening hours ──────────────────────────
-
-function PaymentMethods({ canManage }) {
-    const [rows, setRows] = useState(null);
-    const load = () => paymentMethodsApi.list().then(r => setRows(data(r) || [])).catch(() => setRows([]));
-    useEffect(() => { load(); }, []);
-    const toggle = async (m) => {
-        if (!window.confirm('Are you sure?')) return;
-        try {
-            setRows(data(await paymentMethodsApi.set({ [m.code]: !m.enabled })) || []);
-            await storeApi.refreshMethods().catch(() => null);
-            toast.success(m.enabled ? 'Switched off' : 'Switched on');
-        } catch (e) { toast.error(errorMessage(e, 'Could not change')); }
-    };
-    return (
-        <Section title="Payment methods">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 8 }}>
-                {(rows || []).map(m => (
-                    <label key={m.code} className="card" style={{ padding: 12, display: 'flex', gap: 10, alignItems: 'center', cursor: canManage ? 'pointer' : 'default' }}>
-                        <input type="checkbox" checked={!!m.enabled} disabled={!canManage} onChange={() => toggle(m)} />
-                        <span style={{ fontWeight: 700, fontSize: 13 }}>{m.name}</span>
-                    </label>
-                ))}
-            </div>
-        </Section>
-    );
-}
+// ─── delivery areas, opening hours ──────────────────────────
 
 function Zones({ canManage }) {
     const [rows, setRows] = useState([]);
@@ -936,7 +910,6 @@ export default function Store() {
             {tab === 'Reports' && <Reports />}
             {tab === 'Offers' && <Offers canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Settings store={ov.store} canManage={canManage} onSaved={(s) => setOv(o => ({ ...o, store: s }))} />}
-            {tab === 'Settings' && ov?.store && <PaymentMethods canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Zones canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Hours canManage={canManage} />}
             {tab === 'Settings' && ov?.store && <Domains canManage={canManage} />}

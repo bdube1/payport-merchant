@@ -179,11 +179,6 @@ export const platformApi = {
     addDestination: (body) => api.post('/settlement-destinations', body),
 };
 
-// The payment methods this business accepts (everywhere: store, links, hosted checkout).
-export const paymentMethodsApi = {
-    list: () => api.get('/payment-methods'),
-    set: (changes) => api.put('/payment-methods', changes),
-};
 
 // POS terminals (switched on by Payport).
 export const posApi = {
