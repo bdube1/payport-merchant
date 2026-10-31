@@ -90,6 +90,20 @@ function Stat({ title, value, sub }) {
     );
 }
 
+function InsightsPanel() {
+    const [x, setX] = useState(null);
+    useEffect(() => { storeApi.insights().then(r => setX(data(r))).catch(() => setX(null)); }, []);
+    if (!x) return null;
+    const list = (rows, render) => rows.length ? rows.map((r, i) => <div key={i} style={{ fontSize: 13, padding: '4px 0', borderBottom: '1px solid var(--border)' }}>{render(r)}</div>) : <div style={{ fontSize: 13, color: 'var(--text-2)' }}>—</div>;
+    return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12, marginBottom: 18 }}>
+            <Section title="Best sellers (30 days)">{list(x.bestSellers, r => <>{r.name} · <strong>{r.sold30d}</strong> · {minor(r.revenue30dMinor, r.currency)}</>)}</Section>
+            <Section title="Restock">{list(x.restock, r => <>{r.name} · {r.why === 'SOLD_OUT' ? <Badge value="SOLD_OUT" /> : `${r.stock} left, about ${r.daysLeft} days`}</>)}</Section>
+            <Section title="Not selling (30 days)">{list(x.notSelling, r => <>{r.name} · {r.stock} in stock</>)}</Section>
+        </div>
+    );
+}
+
 function Overview({ ov, go }) {
     if (!ov) return null;
     const store = ov.store || {};
@@ -110,6 +124,7 @@ function Overview({ ov, go }) {
                 <Stat title="Products on sale" value={ov.activeProducts} />
                 <Stat title="Paid / started (30 days)" value={`${ov.checkoutsPaid30d} / ${ov.checkoutsStarted30d}`} sub={ov.conversion30d == null ? null : `${Math.round(ov.conversion30d * 100)}%`} />
             </div>
+            <InsightsPanel />
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <button className="btn btn-primary" onClick={() => go('Links', true)}><Plus size={15} /> Payment link</button>
                 <button className="btn btn-ghost" onClick={() => go('Products', true)}><Plus size={15} /> Product</button>
