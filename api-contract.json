@@ -1703,6 +1703,11 @@
   },
   {
    "method": "POST",
+   "path": "/api/v1/checkout/{id}/omari-otp",
+   "access": null
+  },
+  {
+   "method": "POST",
    "path": "/api/v1/checkout/{id}/pay",
    "access": null
   },
