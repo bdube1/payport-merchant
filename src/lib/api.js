@@ -163,6 +163,10 @@ export const queriesApi = {
     downloadAttachment: (queryId, attachmentId) => api.get(`/queries/${queryId}/attachments/${attachmentId}/download`, { responseType: 'blob' }),
 };
 
+export const tapApi = {
+    charge: (tap, amountMinor, currency, description) => api.post('/tap-charges', { tap, amountMinor, currency, description }),
+};
+
 export const paymentLinksApi = {
     list: () => api.get('/payment-links'),
     create: (amountCents, currency, description, reusable) => api.post('/payment-links', { amountCents, currency, description, reusable }),

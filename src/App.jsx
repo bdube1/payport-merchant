@@ -20,6 +20,7 @@ const Transactions = lazy(() => import('./pages/Transactions.jsx'));
 const Queries = lazy(() => import('./pages/Queries.jsx'));
 const Reports = lazy(() => import('./pages/Reports.jsx'));
 const PaymentLinks = lazy(() => import('./pages/PaymentLinks.jsx'));
+const TapToPay = lazy(() => import('./pages/TapToPay.jsx'));
 const Settlements = lazy(() => import('./pages/Settlements.jsx'));
 const Webhooks = lazy(() => import('./pages/Webhooks.jsx'));
 const Team = lazy(() => import('./pages/Team.jsx'));
@@ -65,6 +66,7 @@ function AppRoutes() {
             <Route path="/store" element={<RequireAuth><Store /></RequireAuth>} />
             <Route path="/store/:section" element={<RequireAuth><Store /></RequireAuth>} />
             <Route path="/payment-links" element={<RequireAuth><PaymentLinks /></RequireAuth>} />
+            <Route path="/tap" element={<RequireAuth><TapToPay /></RequireAuth>} />
             <Route path="/settlements" element={<RequireAuth><Settlements /></RequireAuth>} />
             <Route path="/api-keys" element={<RequireAuth><Developers /></RequireAuth>} />
             <Route path="/go-live" element={<RequireAuth><GoLive /></RequireAuth>} />
