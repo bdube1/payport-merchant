@@ -103,8 +103,23 @@ export const storeApi = {
     chatReport: (id, reason, details) => commerceHttp.post(`/chats/${id}/report`, { reason, details }),
     chatReasons: () => commerceHttp.get('/chats/reasons'),
     chatInsights: () => commerceHttp.get('/chats/insights'),
+    chatFile: (id, file, voice) => {
+        const f = new FormData();
+        f.append('file', file, file.name || 'voice.webm');
+        if (voice) f.append('voice', '1');
+        return commerceHttp.post(`/chats/${id}/files`, f, { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120000 });
+    },
+    chatContact: (id, name, phone) => commerceHttp.post(`/chats/${id}/contact`, { name, phone }),
+    chatAvatar: () => commerceHttp.get('/chat-avatar'),
+    setChatAvatar: (file) => {
+        const f = new FormData();
+        f.append('file', file);
+        return commerceHttp.post('/chat-avatar', f, { headers: { 'Content-Type': 'multipart/form-data' } });
+    },
     notifications: () => commerceHttp.get('/notifications'),
     notificationsSeen: () => commerceHttp.post('/notifications/seen'),
 };
 
 export const imageUrl = (id) => (id ? `${BASE}/img/${id}` : null);
+/** A store link (signed chat file, picture) as a full address. */
+export const storeUrl = (u) => (typeof u === 'string' && u.startsWith('/') && !u.startsWith('//') ? `${BASE}${u}` : null);
