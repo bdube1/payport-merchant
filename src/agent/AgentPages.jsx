@@ -52,6 +52,15 @@ export function AgentDashboard() {
                     <Card label="Commission this month" value={fmt(Object.fromEntries((v.commissionThisMonth || []).map(r => [r.currency, Number(r.commission_minor)])))}
                         sub={`Last 30 days: ${fmt(sumBy(v.last30Days, null, 'commission_minor'))}`} />
                 </div>
+                {(v.forecast || []).length > 0 && <Section title="E-float, next 7 days">
+                    <Table rows={v.forecast} empty="—" columns={[
+                        { key: 'currency', label: 'Currency' },
+                        { key: 'floatNowMinor', label: 'E-float now', render: f => minor(f.floatNowMinor, f.currency) },
+                        { key: 'useNext7DaysMinor', label: 'Expected use', render: f => minor(f.useNext7DaysMinor, f.currency) },
+                        { key: 'runsOutInDays', label: 'Runs out', render: f => f.runsOutInDays == null ? 'Not this week' : <Badge value={`IN ${f.runsOutInDays} DAY${f.runsOutInDays === 1 ? '' : 'S'}`} /> },
+                        { key: 'topUpMinor', label: 'Top up to cover a busy week', render: f => f.topUpMinor > 0 ? <strong>{minor(f.topUpMinor, f.currency)}</strong> : 'Not needed' },
+                    ]} />
+                </Section>}
                 <Section title="Last 30 days">
                     <Table rows={v.last30Days} empty="No operations in the last 30 days." columns={[
                         { key: 'kind', label: 'Type', render: r => <Badge value={r.kind} /> }, { key: 'currency', label: 'Currency' },
