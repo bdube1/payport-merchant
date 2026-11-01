@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { ChevronDown, ChevronRight, LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket, MonitorSmartphone, QrCode, Store } from 'lucide-react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Bell, ChevronDown, ChevronRight, LayoutDashboard, Receipt, Key, Webhook, LogOut, PieChart, Users, Link2, KeyRound, Landmark, MessageCircleQuestion, Wallet, Rocket, MonitorSmartphone, QrCode, Store } from 'lucide-react';
 import { ThemeToggle } from '../lib/theme.jsx';
 import { useAuth } from '../lib/auth.jsx';
 import { storeApi } from '../lib/commerce';
@@ -40,13 +40,23 @@ export default function Layout({ children }) {
     const inStore = pathname === '/store' || pathname.startsWith('/store/');
     const [storeOpen, setStoreOpen] = useState(inStore);
     const [unread, setUnread] = useState(0);
+    const [bell, setBell] = useState({ unread: 0, items: [] });
+    const [bellOpen, setBellOpen] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => { if (inStore) setStoreOpen(true); }, [inStore]);
     useEffect(() => {
-        const check = () => storeApi.chats().then(r => setUnread(r?.data?.data?.unread || 0)).catch(() => {});
+        const check = () => {
+            storeApi.chats().then(r => setUnread(r?.data?.data?.unread || 0)).catch(() => {});
+            storeApi.notifications().then(r => setBell(r?.data?.data || { unread: 0, items: [] })).catch(() => {});
+        };
         check();
-        const t = setInterval(check, 60000);
+        const t = setInterval(check, 30000);
         return () => clearInterval(t);
     }, []);
+    const openBell = () => {
+        setBellOpen(o => !o);
+        if (!bellOpen) storeApi.notificationsSeen().then(r => setBell(b => ({ ...(r?.data?.data || b), items: b.items }))).catch(() => {});
+    };
     const link = (active, sub) => ({
         display: 'flex', alignItems: 'center', gap: 10, padding: sub ? '7px 12px 7px 39px' : '10px 12px', borderRadius: 10, textDecoration: 'none',
         color: active ? 'white' : 'rgba(255,255,255,0.65)', background: active ? 'rgba(6,163,218,0.18)' : 'transparent', fontSize: sub ? 13 : 13.5, fontWeight: 600,
@@ -103,7 +113,26 @@ export default function Layout({ children }) {
                 </div>
             </aside>
 
-            <main style={{ flex: 1, minWidth: 0 }}>{children}</main>
+            <main style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '12px 24px 0', position: 'relative' }}>
+                    <button type="button" aria-label="Notifications" onClick={openBell}
+                        style={{ position: 'relative', width: 40, height: 40, borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg-2)', color: 'var(--text)', display: 'grid', placeItems: 'center', cursor: 'pointer' }}>
+                        <Bell size={18} />
+                        {bell.unread > 0 && <span style={{ position: 'absolute', top: -4, right: -4, minWidth: 18, height: 18, borderRadius: 9, background: '#e53e3e', color: '#fff', fontSize: 11, fontWeight: 800, display: 'grid', placeItems: 'center', padding: '0 5px' }}>{bell.unread}</span>}
+                    </button>
+                    {bellOpen && (
+                        <div className="card" style={{ position: 'absolute', top: 58, right: 24, width: 320, maxHeight: 420, overflowY: 'auto', padding: 8, zIndex: 40 }} onMouseLeave={() => setBellOpen(false)}>
+                            {bell.items.length === 0 ? <div style={{ padding: 12, fontSize: 13, color: 'var(--text-2)' }}>Nothing new</div> : bell.items.map((a, i) => (
+                                <button key={i} type="button" onClick={() => { setBellOpen(false); navigate(a.link.split('?')[0]); }}
+                                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 12px', border: 0, borderRadius: 8, background: a.unread ? 'var(--bg-2)' : 'transparent', color: 'var(--text)', fontSize: 13, fontWeight: a.unread ? 700 : 500, cursor: 'pointer', marginBottom: 2 }}>
+                                    {a.text}<div style={{ fontSize: 11, color: 'var(--text-2)', fontWeight: 500 }}>{a.at}</div>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                {children}
+            </main>
         </div>
     );
 }

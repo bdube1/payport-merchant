@@ -103,6 +103,8 @@ export const storeApi = {
     chatReport: (id, reason, details) => commerceHttp.post(`/chats/${id}/report`, { reason, details }),
     chatReasons: () => commerceHttp.get('/chats/reasons'),
     chatInsights: () => commerceHttp.get('/chats/insights'),
+    notifications: () => commerceHttp.get('/notifications'),
+    notificationsSeen: () => commerceHttp.post('/notifications/seen'),
 };
 
 export const imageUrl = (id) => (id ? `${BASE}/img/${id}` : null);

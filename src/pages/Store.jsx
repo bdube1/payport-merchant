@@ -90,7 +90,7 @@ function PictureField({ value, onChange }) {
     );
 }
 
-const MAX_PICTURES = 8;
+const MAX_PICTURES = 5;
 
 /** Several pictures of one product (the first is the cover); customers see them as a gallery. */
 function PicturesField({ value, onChange }) {
@@ -170,6 +170,7 @@ function Overview({ ov, go }) {
     const store = ov.store || {};
     return (
         <>
+            {store.suspendedReason && <Notice kind="error">Your store has been disabled by Payport and is not shown to customers: {store.suspendedReason}. Contact Payport.</Notice>}
             {!ov.paymentsOnline && <Notice kind="warn">Payments are reconnecting. Your store stays open; payments made meanwhile appear when it is back.</Notice>}
             <Section title={store.name} right={<a className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 12.5 }} href={store.url} target="_blank" rel="noopener noreferrer"><ExternalLink size={14} /> Open store</a>}>
                 <div style={{ fontSize: 13, color: 'var(--text-2)', marginBottom: 10, wordBreak: 'break-all' }}>{store.url}</div>
