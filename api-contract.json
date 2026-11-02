@@ -2263,6 +2263,31 @@
   },
   {
    "method": "GET",
+   "path": "/api/v1/store/calls/incoming",
+   "access": null
+  },
+  {
+   "method": "GET",
+   "path": "/api/v1/store/calls/{callId}",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/store/calls/{callId}/answer",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/store/calls/{callId}/end",
+   "access": null
+  },
+  {
+   "method": "POST",
+   "path": "/api/v1/store/chats/{chatId}/calls",
+   "access": null
+  },
+  {
+   "method": "GET",
    "path": "/api/v1/store/orders",
    "access": null
   },
