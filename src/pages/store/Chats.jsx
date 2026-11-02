@@ -76,7 +76,7 @@ const PICKS = [
     ['🎵 Audio', 'audio/*'],
 ];
 // Payport blues (the same as the customer's Messages page)
-const WA = { out: 'rgba(6,163,218,.18)', in: 'var(--bg)', bg: 'rgba(6,163,218,.07)', green: '#06A3DA', navy: '#0E2A47' };
+const WA = { out: 'rgba(6,163,218,.18)', in: 'var(--bg)', bg: 'rgba(6,163,218,.07)', green: '#06A3DA', navy: '#0E2A47', head: '#d4eefa' };
 
 function Avatar({ src, name, size = 40 }) {
     const url = storeUrl(src);
@@ -205,7 +205,7 @@ export default function Chats({ canManage }) {
             {error && <Notice kind="error">{error}</Notice>}
             <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 340px) 1fr', height: 'calc(100vh - 190px)', minHeight: 480, overflow: 'hidden', padding: 0 }}>
                 <div style={{ borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: WA.navy, color: '#fff', minHeight: 62 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: WA.head, color: WA.navy, minHeight: 62, borderBottom: '1px solid rgba(14,42,71,.12)' }}>
                         <button type="button" onClick={() => canManage && avatarRef.current?.click()} title={canManage ? 'Change the store\'s profile picture' : ''} style={{ border: 0, padding: 0, background: 'none', cursor: canManage ? 'pointer' : 'default' }}>
                             <Avatar src={mine} name="Store" />
                         </button>
@@ -244,18 +244,18 @@ export default function Chats({ canManage }) {
                     onDrop={e => { e.preventDefault(); setDragging(false); if (thread) sendFiles(e.dataTransfer.files); }}>
                     {!thread ? <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-2)' }}><div style={{ fontSize: 26, color: 'var(--text)' }}>Payport Messages</div><div style={{ fontSize: 13 }}>Choose a conversation</div></div> : (
                         <>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', background: WA.navy, color: '#fff', minHeight: 62, flex: 'none' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', background: WA.head, color: WA.navy, minHeight: 62, flex: 'none', borderBottom: '1px solid rgba(14,42,71,.12)' }}>
                                 <Avatar src={thread.avatar} name={thread.customer} />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <strong>{thread.customer}</strong>
-                                    <div style={{ fontSize: 12, color: '#b9d8ec' }}>{CHANNEL[thread.channel] || thread.channel}{thread.phone ? ` · ${thread.phone}` : ''}{thread.product ? ` · ${thread.product}` : ''}</div>
+                                    <div style={{ fontSize: 12, color: '#3d5a75' }}>{CHANNEL[thread.channel] || thread.channel}{thread.phone ? ` · ${thread.phone}` : ''}{thread.product ? ` · ${thread.product}` : ''}</div>
                                 </div>
                                 {thread.canCall && <>
-                                    <button type="button" title="Voice call" aria-label="Voice call" style={{ ...icon, color: '#fff' }} onClick={() => setCallStart({ chatId: thread.id, video: false, name: thread.customer, avatar: thread.avatar })}><Phone size={20} /></button>
-                                    <button type="button" title="Video call" aria-label="Video call" style={{ ...icon, color: '#fff' }} onClick={() => setCallStart({ chatId: thread.id, video: true, name: thread.customer, avatar: thread.avatar })}><Video size={20} /></button>
+                                    <button type="button" title="Voice call" aria-label="Voice call" style={{ ...icon, color: WA.navy }} onClick={() => setCallStart({ chatId: thread.id, video: false, name: thread.customer, avatar: thread.avatar })}><Phone size={20} /></button>
+                                    <button type="button" title="Video call" aria-label="Video call" style={{ ...icon, color: WA.navy }} onClick={() => setCallStart({ chatId: thread.id, video: true, name: thread.customer, avatar: thread.avatar })}><Video size={20} /></button>
                                 </>}
-                                {canManage && <button className="btn btn-ghost" style={{ padding: '6px 10px', fontSize: 12.5, color: '#fff' }} onClick={block}><Ban size={14} /> {thread.blocked ? 'Unblock' : 'Block'}</button>}
-                                <button className="btn btn-ghost" style={{ padding: '6px 10px', fontSize: 12.5, color: '#fff' }} onClick={() => setReporting(true)}><Flag size={14} /> Report</button>
+                                {canManage && <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 12.5, fontWeight: 600, color: WA.navy, background: '#fff', border: '1px solid rgba(14,42,71,.25)', borderRadius: 8, display: 'inline-flex', alignItems: 'center', gap: 6 }} onClick={block}><Ban size={14} /> {thread.blocked ? 'Unblock' : 'Block'}</button>}
+                                <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 12.5, fontWeight: 600, color: WA.navy, background: '#fff', border: '1px solid rgba(14,42,71,.25)', borderRadius: 8, display: 'inline-flex', alignItems: 'center', gap: 6 }} onClick={() => setReporting(true)}><Flag size={14} /> Report</button>
                             </div>
                             <div style={{ flex: '1 1 auto', minHeight: 0, overflowY: 'auto', padding: '16px 6%', display: 'flex', flexDirection: 'column', gap: 4 }}>
                                 <div style={{ alignSelf: 'center', background: 'rgba(6,163,218,.14)', color: 'var(--text)', borderRadius: 8, padding: '6px 12px', fontSize: 12.5, marginBottom: 8 }}>🔒 Messages are encrypted. Customers pay only through Payport.</div>
