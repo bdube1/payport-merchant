@@ -111,6 +111,11 @@ export const storeApi = {
     },
     chatContact: (id, name, phone) => commerceHttp.post(`/chats/${id}/contact`, { name, phone }),
     chatAvatar: () => commerceHttp.get('/chat-avatar'),
+    incomingCalls: () => commerceHttp.get('/calls/incoming'),
+    startCall: (chatId, video, sdp) => commerceHttp.post(`/chats/${chatId}/calls`, { video, sdp }),
+    call: (id) => commerceHttp.get(`/calls/${id}`),
+    answerCall: (id, sdp) => commerceHttp.post(`/calls/${id}/answer`, { sdp }),
+    endCall: (id) => commerceHttp.post(`/calls/${id}/end`),
     setChatAvatar: (file) => {
         const f = new FormData();
         f.append('file', file);

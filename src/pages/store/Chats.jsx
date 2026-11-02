@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Send, Flag, Ban, ShieldAlert, Paperclip, Mic, Square } from 'lucide-react';
+import { Send, Flag, Ban, ShieldAlert, Paperclip, Mic, Square, Phone, Video } from 'lucide-react';
+import CallBox from './CallBox.jsx';
 import { Section, Notice } from '../../components/kit';
 import { storeApi, storeUrl } from '../../lib/commerce';
 import { errorMessage } from '../../lib/api';
@@ -74,7 +75,8 @@ const PICKS = [
     ['📄 Document', '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv'],
     ['🎵 Audio', 'audio/*'],
 ];
-const WA = { out: 'var(--wa-out, #d9fdd3)', in: 'var(--bg)', bg: 'var(--wa-bg, #efeae2)', green: '#00a884' };
+// Payport blues (the same as the customer's Messages page)
+const WA = { out: 'rgba(6,163,218,.18)', in: 'var(--bg)', bg: 'rgba(6,163,218,.07)', green: '#06A3DA', navy: '#0E2A47' };
 
 function Avatar({ src, name, size = 40 }) {
     const url = storeUrl(src);
@@ -94,7 +96,8 @@ function Body({ m }) {
             {m.kind === 'AUDIO' && url && <audio src={url} controls preload="metadata" style={{ maxWidth: 260 }} />}
             {m.kind === 'DOCUMENT' && url && <a href={url} style={box}><span style={{ fontSize: 26 }}>📄</span><span>{m.file.name}</span></a>}
             {m.kind === 'CONTACT' && m.contact && <span style={box}><span style={{ fontSize: 26 }}>👤</span><span><b>{m.contact.name}</b><br />{m.contact.phone}</span></span>}
-            {(m.kind === 'TEXT' || !m.kind || (m.kind !== 'CONTACT' && m.file && m.text !== m.file.name)) && <span style={{ whiteSpace: 'pre-wrap' }}>{m.text}</span>}
+            {m.kind === 'CALL' && <span style={{ ...box, minWidth: 0, fontWeight: 600 }}>📞 {m.text}</span>}
+            {(m.kind === 'TEXT' || !m.kind || (m.kind !== 'CONTACT' && m.kind !== 'CALL' && m.file && m.text !== m.file.name)) && <span style={{ whiteSpace: 'pre-wrap' }}>{m.text}</span>}
         </>
     );
 }
@@ -113,6 +116,8 @@ export default function Chats({ canManage }) {
     const [dragging, setDragging] = useState(false);
     const [recording, setRecording] = useState(null);
     const [mine, setMine] = useState(null);
+    const [callStart, setCallStart] = useState(null);
+    const [ringing, setRinging] = useState(null);
     const end = useRef(null);
     const fileRef = useRef(null);
     const avatarRef = useRef(null);
@@ -128,6 +133,14 @@ export default function Chats({ canManage }) {
         return () => clearInterval(t);
     }, [open]);
     useEffect(() => { end.current?.scrollIntoView({ block: 'end' }); }, [thread?.messages?.length]);
+    // incoming calls ring here (the portal's other pages show a note that opens this one)
+    useEffect(() => {
+        const t = setInterval(() => {
+            if (callStart || ringing) return;
+            storeApi.incomingCalls().then(r => { const c = data(r)?.calls?.[0]; if (c) { setRinging(c); setOpen(c.chatId); } }).catch(() => {});
+        }, 3000);
+        return () => clearInterval(t);
+    }, [callStart, ringing]);
 
     const reply = async (e) => {
         e?.preventDefault();
@@ -190,10 +203,9 @@ export default function Chats({ canManage }) {
     return (
         <>
             {error && <Notice kind="error">{error}</Notice>}
-            <WhatCustomersAsk />
-            <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 340px) 1fr', height: 'min(78vh, 760px)', overflow: 'hidden', padding: 0 }}>
+            <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 340px) 1fr', height: 'calc(100vh - 190px)', minHeight: 480, overflow: 'hidden', padding: 0 }}>
                 <div style={{ borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: 'var(--bg-2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: WA.navy, color: '#fff', minHeight: 62 }}>
                         <button type="button" onClick={() => canManage && avatarRef.current?.click()} title={canManage ? 'Change the store\'s profile picture' : ''} style={{ border: 0, padding: 0, background: 'none', cursor: canManage ? 'pointer' : 'default' }}>
                             <Avatar src={mine} name="Store" />
                         </button>
@@ -226,23 +238,27 @@ export default function Chats({ canManage }) {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0, position: 'relative', background: WA.bg }}
+                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0, height: '100%', position: 'relative', background: WA.bg }}
                     onDragOver={e => { if (thread) { e.preventDefault(); setDragging(true); } }}
                     onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setDragging(false); }}
                     onDrop={e => { e.preventDefault(); setDragging(false); if (thread) sendFiles(e.dataTransfer.files); }}>
                     {!thread ? <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-2)' }}><div style={{ fontSize: 26, color: 'var(--text)' }}>Payport Messages</div><div style={{ fontSize: 13 }}>Choose a conversation</div></div> : (
                         <>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: 'var(--bg-2)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', background: WA.navy, color: '#fff', minHeight: 62, flex: 'none' }}>
                                 <Avatar src={thread.avatar} name={thread.customer} />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <strong>{thread.customer}</strong>
-                                    <div style={{ fontSize: 12, color: 'var(--text-2)' }}>{CHANNEL[thread.channel] || thread.channel}{thread.phone ? ` · ${thread.phone}` : ''}{thread.product ? ` · ${thread.product}` : ''}</div>
+                                    <div style={{ fontSize: 12, color: '#b9d8ec' }}>{CHANNEL[thread.channel] || thread.channel}{thread.phone ? ` · ${thread.phone}` : ''}{thread.product ? ` · ${thread.product}` : ''}</div>
                                 </div>
-                                {canManage && <button className="btn btn-ghost" style={{ padding: '6px 10px', fontSize: 12.5 }} onClick={block}><Ban size={14} /> {thread.blocked ? 'Unblock' : 'Block'}</button>}
-                                <button className="btn btn-ghost" style={{ padding: '6px 10px', fontSize: 12.5 }} onClick={() => setReporting(true)}><Flag size={14} /> Report</button>
+                                {thread.canCall && <>
+                                    <button type="button" title="Voice call" aria-label="Voice call" style={{ ...icon, color: '#fff' }} onClick={() => setCallStart({ chatId: thread.id, video: false, name: thread.customer, avatar: thread.avatar })}><Phone size={20} /></button>
+                                    <button type="button" title="Video call" aria-label="Video call" style={{ ...icon, color: '#fff' }} onClick={() => setCallStart({ chatId: thread.id, video: true, name: thread.customer, avatar: thread.avatar })}><Video size={20} /></button>
+                                </>}
+                                {canManage && <button className="btn btn-ghost" style={{ padding: '6px 10px', fontSize: 12.5, color: '#fff' }} onClick={block}><Ban size={14} /> {thread.blocked ? 'Unblock' : 'Block'}</button>}
+                                <button className="btn btn-ghost" style={{ padding: '6px 10px', fontSize: 12.5, color: '#fff' }} onClick={() => setReporting(true)}><Flag size={14} /> Report</button>
                             </div>
-                            <div style={{ flex: 1, overflowY: 'auto', padding: '16px 6%', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                                <div style={{ alignSelf: 'center', background: '#ffeecd', color: '#54656f', borderRadius: 8, padding: '6px 12px', fontSize: 12.5, marginBottom: 8 }}>🔒 Messages are encrypted. Customers pay only through Payport.</div>
+                            <div style={{ flex: '1 1 auto', minHeight: 0, overflowY: 'auto', padding: '16px 6%', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                                <div style={{ alignSelf: 'center', background: 'rgba(6,163,218,.14)', color: 'var(--text)', borderRadius: 8, padding: '6px 12px', fontSize: 12.5, marginBottom: 8 }}>🔒 Messages are encrypted. Customers pay only through Payport.</div>
                                 {thread.messages.map(m => (
                                     <div key={m.id} style={{ alignSelf: m.from === 'seller' ? 'flex-end' : 'flex-start', maxWidth: '65%', padding: '6px 8px 4px', borderRadius: 8, fontSize: 14,
                                         background: m.from === 'seller' ? WA.out : WA.in, color: 'var(--text)', boxShadow: '0 1px .5px rgba(11,20,26,.13)', display: 'flex', flexDirection: 'column', gap: 4, overflowWrap: 'anywhere' }}>
@@ -265,7 +281,7 @@ export default function Chats({ canManage }) {
                                 <button type="button" className="btn btn-primary" onClick={sendContact}>Send contact</button>
                             </div>}
                             <input ref={fileRef} type="file" hidden multiple onChange={e => { sendFiles(e.target.files); e.target.value = ''; }} />
-                            <form onSubmit={reply} style={{ display: 'flex', alignItems: 'flex-end', gap: 6, padding: '8px 12px', background: 'var(--bg-2)' }}>
+                            <form onSubmit={reply} style={{ flex: 'none', display: 'flex', alignItems: 'flex-end', gap: 6, padding: '10px 12px', background: 'var(--bg-2)', borderTop: '1px solid var(--border)' }}>
                                 <button type="button" style={icon} aria-label="Emoji" onClick={() => setPopup(popup === 'emoji' ? '' : 'emoji')}>😊</button>
                                 <button type="button" style={icon} aria-label="Attach" onClick={() => setPopup(popup === 'attach' ? '' : 'attach')}><Paperclip size={20} /></button>
                                 <textarea ref={textRef} style={{ ...field, flex: 1, minHeight: 42, height: 42, resize: 'none', background: 'var(--bg)' }} value={text} onChange={e => setText(e.target.value)} maxLength={1000} placeholder="Type a message"
@@ -280,7 +296,10 @@ export default function Chats({ canManage }) {
                     )}
                 </div>
             </div>
+            <div style={{ marginTop: 16 }}><WhatCustomersAsk /></div>
             {reporting && thread && <ReportCustomer chat={thread} onClose={() => setReporting(false)} />}
+            {callStart && <CallBox start={callStart} onClose={() => { setCallStart(null); if (open) loadThread(open); loadList(); }} />}
+            {ringing && <CallBox incoming={ringing} onClose={() => { setRinging(null); if (open) loadThread(open); loadList(); }} />}
         </>
     );
 }

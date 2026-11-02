@@ -54,6 +54,16 @@ export default function Layout({ children }) {
         const t = setInterval(check, 30000);
         return () => clearInterval(t);
     }, []);
+    // a customer calling: a note on every page except the chats (which ring themselves)
+    const [calling, setCalling] = useState(null);
+    useEffect(() => {
+        if (pathname.startsWith('/store/chats')) { setCalling(null); return undefined; }
+        const t = setInterval(() => {
+            if (document.hidden) return;
+            storeApi.incomingCalls().then(r => setCalling(r?.data?.data?.calls?.[0] || null)).catch(() => {});
+        }, 5000);
+        return () => clearInterval(t);
+    }, [pathname]);
     const openBell = () => {
         setBellOpen(o => !o);
         if (!bellOpen) storeApi.notificationsSeen().then(r => setBell(b => ({ ...(r?.data?.data || b), items: b.items }))).catch(() => {});
@@ -133,6 +143,9 @@ export default function Layout({ children }) {
                     )}
                 </div>
                 {children}
+                {calling && <button type="button" onClick={() => { setCalling(null); navigate('/store/chats'); }}
+                    style={{ position: 'fixed', right: 20, bottom: 20, zIndex: 90, background: '#0E2A47', color: '#fff', border: 0, borderRadius: 14, padding: '14px 18px', fontWeight: 700, cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,.35)' }}>
+                    📞 {calling.name || 'A customer'} is calling. Answer</button>}
             </main>
         </div>
     );
